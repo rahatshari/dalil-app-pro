@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>দলিল সংরক্ষণ</title>
+    <!-- PWA Link -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a73e8">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Roboto', sans-serif; background-color: #f2f2f7; color: #1c1e21; margin: 0; padding: 0; overflow-x: hidden; }
+        .app-bar { background-color: #ffffff; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .app-bar h1 { margin: 0; font-size: 18px; font-weight: 500; color: #1a73e8; display: flex; align-items: center; gap: 8px; }
+        .settings-btn { position: absolute; left: 15px; background: transparent; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #5f6368; }
+        .settings-menu { display: none; position: absolute; top: 60px; left: 10px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 250px; border: 1px solid #dadce0; z-index: 1001; }
+        .settings-menu h4 { margin: 0; padding: 15px; background: #f8f9fa; font-size: 14px; color: #3c4043; border-bottom: 1px solid #dadce0; border-radius: 8px 8px 0 0; }
+        .settings-menu ul { list-style: none; padding: 0; margin: 0; }
+        .settings-menu li { padding: 15px; display: flex; align-items: center; gap: 12px; cursor: pointer; color: #3c4043; font-size: 14px; border-bottom: 1px solid #f1f3f4; }
+        .settings-menu li:last-child { border-bottom: none; }
+        .container { max-width: 800px; margin: 15px auto; padding: 0 15px; }
+        .card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        .global-header-box { background-color: #e8f0fe; border: 1px solid #d2e3fc; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+        .global-header-toggle { padding: 15px; background: transparent; width: 100%; text-align: left; border: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; color: #1967d2; font-size: 15px; font-weight: 500; }
+        .global-header-content { padding: 0 15px 15px 15px; display: none; }
+        .header-inputs { display: flex; flex-direction: column; gap: 10px; }
+        .header-inputs input { width: 100%; background: white !important; padding: 12px !important; border: 1px solid #dadce0 !important; border-radius: 8px !important; font-size: 14px; }
+        .header-inputs input:focus { border-color: #1a73e8 !important; outline: none; }
+        .header-btns { display: flex; gap: 10px; margin-top: 15px; }
+        .form-grid { display: grid; gap: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        label { font-weight: 500; color: #5f6368; margin-bottom: 6px; font-size: 13px; }
+        input[type="text"], input[type="date"], select { width: 100%; padding: 12px 15px; background: #f8f9fa; border: 1px solid #e8eaed; border-radius: 8px; font-size: 15px; color: #202124; outline: none; transition: all 0.2s; margin-bottom: 5px; }
+        input:focus, select:focus { background: #ffffff; border-color: #1a73e8; box-shadow: 0 0 0 2px rgba(26,115,232,0.1); }
+        .auto-number-display { background-color: #e8eaed; border-radius: 8px; padding: 12px 15px; font-size: 16px; color: #3c4043; font-weight: bold; text-align: center; }
+        .date-container { position: relative; display: flex; align-items: center; }
+        .date-container input[type="text"] { width: 100%; padding-right: 40px; margin-bottom: 0;}
+        .date-icon-wrapper { position: absolute; right: 10px; height: 100%; display: flex; align-items: center; }
+        .date-icon-wrapper input[type="date"] { opacity: 0; position: absolute; right: 0; top: 0; width: 30px; height: 100%; cursor: pointer; }
+        .date-icon-wrapper .material-icons { color: #1a73e8; pointer-events: none; }
+        .person-block { background: #ffffff; border-radius: 8px; padding: 15px; margin-bottom: 10px; border: 1px solid #dadce0; }
+        .person-block strong { display: block; margin-bottom: 10px; color: #1a73e8; font-size: 14px; }
+        #donors-container .person-block strong { color: #d93025; }
+        .mother-input-group { display: none; }
+        body.show-mother-name .mother-input-group { display: block; }
+        .khatian-block { border-left: 4px solid #34a853; }
+        .khatian-row { display: flex; gap: 10px; align-items: center; width: 100%; flex-wrap: wrap; }
+        .khatian-row > div { flex: 1; min-width: 45%; }
+        .khatian-row label { font-size: 11px; margin-bottom: 2px; }
+        .khatian-row input, .khatian-row select { margin-bottom: 0; padding: 10px; }
+        .khatian-land, .khatian-dag { text-align: center; }
+        button.action-btn { background: #1a73e8; border: none; border-radius: 24px; padding: 12px 20px; font-size: 15px; font-weight: 500; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; transition: transform 0.1s, background 0.2s; }
+        button.action-btn:active { transform: scale(0.98); }
+        .add-more-btn { background: transparent; color: #1a73e8; border: 1px dashed #1a73e8; border-radius: 8px; padding: 10px; width: 100%; margin-top: 5px; font-size: 14px; }
+        .btn-add { background-color: #1e8e3e; margin-top: 10px; }
+        .output-container { max-width: 100%; margin: 0 auto 30px auto; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; }
+        .print-header { display: none; padding: 20px; background: #fff; border-bottom: 2px solid #3c4043; display: flex; justify-content: space-between; align-items: stretch; }
+        .header-col-left { flex: 1; display: flex; flex-direction: column; justify-content: center; font-size: 13px; line-height: 1.6; color: #202124; }
+        .header-col-center { flex: 1.5; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .header-col-center h3 { margin: 0; font-size: 22px; font-weight: 700; color: #000; text-decoration: underline; line-height: 1.2; }
+        .header-col-right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; font-size: 13px; line-height: 1.6; color: #202124; }
+        #default-title { margin: 0; padding: 20px; text-align: center; background: #fff; border-bottom: 1px solid #dadce0; }
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; }
+        th, td { border: 1px solid #bdc1c6; padding: 8px 6px; text-align: left; vertical-align: middle; line-height: 1.5; color: #202124; }
+        th { background: #f1f3f4; color: #202124; font-weight: 600; text-align: center; white-space: nowrap; }
+        .align-center { text-align: center !important; }
+        .person-data { padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px dotted #9aa0a6; }
+        .person-data:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .icon-btn { background: transparent; border: none; padding: 6px; border-radius: 50%; color: #5f6368; cursor: pointer; }
+        .delete-btn { color: #d93025; } .edit-btn { color: #1a73e8; } .move-btn { color: #0f9d58; }
+        .bottom-bar { padding: 15px; display: flex; gap: 15px; background: #fff; border-top: 1px solid #e8eaed; }
+        .btn-pdf { background-color: #4285f4; } .btn-clear { background-color: #ea4335; }
+        .toast { visibility: hidden; min-width: 250px; background-color: #323232; color: #fff; text-align: center; border-radius: 24px; padding: 12px 24px; position: fixed; z-index: 2000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.3s, bottom 0.3s, visibility 0.3s; }
+        .toast.show { visibility: visible; opacity: 1; bottom: 50px; }
+        @media print {
+            body { background: white !important; padding: 0; margin: 0; color: #000; font-family: 'Times New Roman', serif; }
+            .no-print, .app-bar, .bottom-bar { display: none !important; }
+            .container, #pdf-section { box-shadow: none !important; background: white !important; padding: 0 !important; width: 100%; max-width: 100%; border: none !important; overflow: visible; }
+            table { font-size: 13px; width: 100%; border-collapse: collapse; }
+            table, th, td { border: 1px solid #000 !important; padding: 6px !important; }
+            th { background-color: #e0e0e0 !important; -webkit-print-color-adjust: exact; }
+            #print-header-layout { display: flex !important; border-bottom: 2px solid #000 !important; padding: 10px 0 !important; margin-bottom: 10px !important; }
+            .record-group { border-bottom: 2px solid #000 !important; page-break-inside: avoid; }
+            thead { display: table-header-group; }
+            @page { margin: 10mm; size: landscape; } 
+        }
+    </style>
+</head>
+<body>
+    <div class="app-bar no-print">
+        <button class="settings-btn" onclick="toggleSettings()"><span class="material-icons">menu</span></button>
+        <h1><span class="material-icons" style="font-size:22px;">library_books</span> দলিল সংরক্ষণ</h1>
+        <div id="settings-menu" class="settings-menu">
+            <h4>ডেটা ও অ্যাপ সেটিং</h4>
+            <ul>
+                <li><label style="display:flex; align-items:center; gap:12px; cursor:pointer; width:100%; margin:0;"><input type="checkbox" id="toggle-mother-name" onchange="toggleMotherSettings(this.checked)" style="width:18px; height:18px; margin:0;"><span>মাতার নাম যুক্ত করুন</span></label></li>
+                <li onclick="exportData()"><span class="material-icons">cloud_download</span> ব্যাকআপ নিন</li>
+                <li onclick="document.getElementById('importFile').click()"><span class="material-icons">cloud_upload</span> রিস্টোর করুন</li>
+            </ul>
+        </div>
+        <input type="file" id="importFile" style="display:none;" accept=".json" onchange="importData(event)">
+    </div>
+
+<div class="container">
+    <div class="no-print">
+        <div class="global-header-box">
+            <button class="global-header-toggle" onclick="toggleHeaderContent()">
+                <div class="left-content"><span class="material-icons" style="font-size:20px;">account_balance</span> প্রিন্ট পেজের হেডার তথ্য</div>
+                <span id="header-toggle-icon" class="material-icons">expand_more</span>
+            </button>
+            <div id="global-header-content" class="global-header-content">
+                <div class="header-inputs">
+                    <input type="text" id="g_zila" placeholder="জেলা (যেমন: বাগেরহাট)">
+                    <input type="text" id="g_upazila" placeholder="উপজেলা (যেমন: মোড়েলগঞ্জ)">
+                    <input type="text" id="g_mouza" placeholder="মৌজা (যেমন: ৯৩ পাঠামারা)">
+                    <input type="text" id="g_creator" placeholder="প্রস্তুতকারক (যেমন: মোঃ আব্দুল আল রাহাত)">
+                    <div style="display:flex; gap:10px; align-items:center; width:100%;">
+                        <input type="text" id="g_date" placeholder="তারিখ (যেমন: ২৪/০৮/২০২৬)" style="flex:1;">
+                        <button type="button" class="action-btn" style="background:#1a73e8; padding:12px 15px; border-radius:8px; width:auto; font-size:13px;" onclick="setTodayHeaderDate()"><span class="material-icons" style="font-size:16px; margin-right:4px;">today</span> আজ</button>
+                    </div>
+                </div>
+                <div class="header-btns">
+                    <button class="action-btn" style="background:#34a853; border-radius:8px; font-size:13px; padding:10px;" onclick="saveGlobalHeader()"><span class="material-icons" style="font-size:16px;">save</span> সেভ করুন</button>
+                    <button class="action-btn" style="background:#ea4335; border-radius:8px; font-size:13px; padding:10px;" onclick="clearGlobalHeader()"><span class="material-icons" style="font-size:16px;">delete</span> মুছুন</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="form-grid">
+                <div class="form-group"><label>১. নং (সিরিয়াল)</label><div id="display_sl_no" class="auto-number-display">১</div></div>
+                <div class="form-group"><label>২. দলিলের নম্বর</label><input type="text" id="dalil_no" placeholder="দলিল নং লিখুন"></div>
+                <div class="form-group"><label>৩. তারিখ</label><div class="date-container"><input type="text" id="date_text" placeholder="যেমন: ১৫/০৮/২০২৬"><div class="date-icon-wrapper"><span class="material-icons">calendar_today</span><input type="date" id="date_picker" onchange="syncDate()"></div></div></div>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;"><label>৪. গ্রহীতার বিবরণ</label><div id="receivers-container"></div><button class="action-btn add-more-btn" onclick="addReceiverField()"><span class="material-icons" style="font-size: 18px;">add</span> আরও গ্রহীতা</button></div>
+            <div class="form-group" style="margin-bottom: 20px;"><label>৫. দাতার বিবরণ</label><div id="donors-container"></div><button class="action-btn add-more-btn" onclick="addDonorField()"><span class="material-icons" style="font-size: 18px;">add</span> আরও দাতা</button></div>
+            <div class="form-group" style="margin-bottom: 20px;"><label>৬. মোট জমির পরিমাণ</label><input type="text" id="total_land" placeholder="শুধু সংখ্যা (যেমন: ৫)"></div>
+            <div class="form-group"><label>৭. খতিয়ান ও দাগের বিবরণ</label><div id="khatian-container"></div><button class="action-btn add-more-btn" onclick="addKhatianField()"><span class="material-icons" style="font-size: 18px;">add</span> আরও খতিয়ান</button></div>
+            
+            <div style="margin-top: 30px;">
+                <button id="btn-add-record" class="action-btn btn-add" onclick="addRecord()"><span class="material-icons">save</span> তালিকায় যোগ করুন</button>
+                <div id="edit-action-container" style="display: none; gap: 15px;">
+                     <button class="action-btn" style="background-color: #fbbc04; color: #000;" id="btn-update-record" onclick="updateRecord()"><span class="material-icons">update</span> আপডেট করুন</button>
+                     <button class="action-btn" style="background-color: #5f6368;" id="btn-cancel-edit" onclick="cancelEdit()"><span class="material-icons">close</span> বাতিল</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="output-container" id="pdf-section">
+        <div id="print-header-layout" class="print-header">
+            <div class="header-col-left"><span><strong>জেলা:</strong> <span id="out_zila"></span></span><span><strong>উপজেলা:</strong> <span id="out_upazila"></span></span><span><strong>মৌজা:</strong> <span id="out_mouza"></span></span></div>
+            <div class="header-col-center"><h3>দলিলে জমির হিসাব</h3></div>
+            <div class="header-col-right"><span><strong>প্রস্তুতকারক:</strong></span><span id="out_creator"></span><span style="margin-top:4px;"><strong>তারিখ:</strong></span><span id="out_g_date"></span></div>
+        </div>
+        <h3 id="default-title">দলিলে জমির হিসাব</h3>
+        <div class="table-responsive">
+            <table id="main-table">
+                <thead><tr><th>নং</th><th>দলিল নং</th><th>তারিখ</th><th>গ্রহীতা(গণ)</th><th>দাতা(গণ)</th><th>মোট জমি</th><th>খতিয়ান</th><th>খতিয়ানের জমি</th><th>দাগ নং</th><th class="no-print">অ্যাকশন</th></tr></thead>
+            </table>
+        </div>
+    </div>
+
+    <div class="bottom-bar no-print">
+        <button class="action-btn btn-pdf" onclick="window.print()"><span class="material-icons">print</span> প্রিন্ট</button>
+        <button class="action-btn btn-clear" onclick="clearAllRecords()"><span class="material-icons">delete_sweep</span> মুছুন</button>
+    </div>
+</div>
+
+<div id="toast" class="toast no-print"></div>
+
+<script>
+    let dalilRecords = []; let editIndex = -1; let isMotherNameEnabled = false;
+    const STORAGE_KEY = 'myDalilDataApp1'; const HEADER_KEY = 'myDalilHeaderApp1';
+
+    window.onload = function() {
+        let savedMotherPref = localStorage.getItem('motherNamePref') === 'true';
+        document.getElementById('toggle-mother-name').checked = savedMotherPref;
+        toggleMotherSettings(savedMotherPref);
+        const savedData = localStorage.getItem(STORAGE_KEY); 
+        if (savedData) { try { dalilRecords = JSON.parse(savedData); recalculateSerialNumbers(); renderTable(); } catch(e) {} }
+        loadGlobalHeader(); resetFormFields();
+        
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => console.log('SW Registered'))
+                .catch(err => console.log('SW Failed', err));
+        }
+    };
+
+    function showToast(message) { const toast = document.getElementById("toast"); toast.innerText = message; toast.classList.add("show"); setTimeout(() => { toast.classList.remove("show"); }, 3000); }
+    function toggleSettings() { const menu = document.getElementById('settings-menu'); menu.style.display = menu.style.display === 'block' ? 'none' : 'block'; }
+    window.onclick = function(event) { if (!event.target.closest('.app-bar') && !event.target.closest('.settings-menu')) { document.getElementById('settings-menu').style.display = 'none'; } }
+    function toggleMotherSettings(checked) { isMotherNameEnabled = checked; localStorage.setItem('motherNamePref', checked); if(checked) { document.body.classList.add('show-mother-name'); } else { document.body.classList.remove('show-mother-name'); } }
+    function toggleHeaderContent() { const content = document.getElementById('global-header-content'); const icon = document.getElementById('header-toggle-icon'); if (content.style.display === 'block') { content.style.display = 'none'; icon.innerText = 'expand_more'; } else { content.style.display = 'block'; icon.innerText = 'expand_less'; } }
+    
+    function setTodayHeaderDate() {
+        const today = new Date(); const dd = String(today.getDate()).padStart(2, '0'); const mm = String(today.getMonth() + 1).padStart(2, '0'); const yyyy = today.getFullYear();
+        document.getElementById('g_date').value = toBanglaNum(`${dd}/${mm}/${yyyy}`);
+    }
+
+    function saveGlobalHeader() {
+        const data = { zila: document.getElementById('g_zila').value, upazila: document.getElementById('g_upazila').value, mouza: document.getElementById('g_mouza').value, creator: document.getElementById('g_creator').value, date: document.getElementById('g_date').value };
+        localStorage.setItem(HEADER_KEY, JSON.stringify(data)); applyHeaderToUI(data); showToast("হেডার তথ্য সেভ হয়েছে!"); toggleHeaderContent(); 
+    }
+    
+    function loadGlobalHeader() {
+        const hData = localStorage.getItem(HEADER_KEY);
+        if(hData) { try { const data = JSON.parse(hData); document.getElementById('g_zila').value = data.zila || ''; document.getElementById('g_upazila').value = data.upazila || ''; document.getElementById('g_mouza').value = data.mouza || ''; document.getElementById('g_creator').value = data.creator || ''; document.getElementById('g_date').value = data.date || ''; applyHeaderToUI(data); } catch(e) {} } else { applyHeaderToUI(null); }
+    }
+    
+    function clearGlobalHeader() {
+        if(confirm("প্রিন্ট পেজের ডিফল্ট তথ্য মুছে ফেলতে চান?")) { document.getElementById('g_zila').value = ''; document.getElementById('g_upazila').value = ''; document.getElementById('g_mouza').value = ''; document.getElementById('g_creator').value = ''; document.getElementById('g_date').value = ''; localStorage.removeItem(HEADER_KEY); applyHeaderToUI(null); toggleHeaderContent(); }
+    }
+    
+    function applyHeaderToUI(data) {
+        const headerLayout = document.getElementById('print-header-layout'); const defaultTitle = document.getElementById('default-title');
+        if(data && (data.zila || data.upazila || data.mouza || data.creator || data.date)) {
+            headerLayout.style.display = 'flex'; defaultTitle.style.display = 'none';
+            document.getElementById('out_zila').innerText = data.zila || '-'; document.getElementById('out_upazila').innerText = data.upazila || '-'; document.getElementById('out_mouza').innerText = data.mouza || '-'; document.getElementById('out_creator').innerText = data.creator || '-'; document.getElementById('out_g_date').innerText = data.date || '-';
+        } else { headerLayout.style.display = 'none'; defaultTitle.style.display = 'block'; }
+    }
+
+    const enToBnObj = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+    const bnToEnObj = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+    function toBanglaNum(str) { return str ? str.toString().replace(/[0-9]/g, match => enToBnObj[match]) : ''; }
+    function toEnglishNum(str) { return str ? str.toString().replace(/[০-৯]/g, match => bnToEnObj[match]) : ''; }
+    document.addEventListener('input', function(e) { if(e.target.tagName === 'INPUT' && e.target.type === 'text') { let start = e.target.selectionStart; let end = e.target.selectionEnd; e.target.value = toBanglaNum(e.target.value); e.target.setSelectionRange(start, end); } });
+
+    function syncDate() { const d = document.getElementById('date_picker').value; if(d) { const parts = d.split('-'); document.getElementById('date_text').value = toBanglaNum(`${parts[2]}/${parts[1]}/${parts[0]}`); } }
+    function formatShatak(val) { if(!val) return "উল্লেখ নেই"; val = val.trim(); return /^[\d০-৯.\s]+$/.test(val) ? val + " শতক" : val; }
+    function cleanShatakForEdit(val) { return (!val || val === "উল্লেখ নেই" || val === "-") ? "" : val.replace(' শতক', '').trim(); }
+    
+    function recalculateSerialNumbers() {
+        dalilRecords.forEach((record, index) => { record.sl_no = toBanglaNum(index + 1); });
+        if(editIndex === -1) { let nextNo = dalilRecords.length + 1; document.getElementById('display_sl_no').innerText = toBanglaNum(nextNo); }
+    }
+
+    function moveRecord(index, direction) {
+        if(index + direction < 0 || index + direction >= dalilRecords.length) return;
+        let temp = dalilRecords[index]; dalilRecords[index] = dalilRecords[index + direction]; dalilRecords[index + direction] = temp;
+        recalculateSerialNumbers(); localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); renderTable();
+    }
+
+    function addReceiverField(name='', rel='পিতা', father='', mother='', land='') {
+        const container = document.getElementById('receivers-container'); const count = container.children.length + 1; const div = document.createElement('div'); div.className = 'person-block';
+        div.innerHTML = `<strong>${toBanglaNum(count)}. গ্রহীতা</strong><input type="text" class="rec-name" placeholder="নাম" value="${name}"><div style="display:flex; gap:10px; margin-bottom:5px;"><select class="rec-relation" style="width:100px; margin-bottom:0;"><option value="পিতা" ${rel==='পিতা'?'selected':''}>পিতা</option><option value="স্বামী" ${rel==='স্বামী'?'selected':''}>স্বামী</option></select><input type="text" class="rec-father" placeholder="নাম (ঐচ্ছিক)" value="${father}" style="flex:1; margin-bottom:0;"></div><div class="mother-input-group"><input type="text" class="rec-mother" placeholder="মাতার নাম (ঐচ্ছিক)" value="${mother}"></div><input type="text" class="rec-land" placeholder="জমি (যেমন: ৫)" value="${cleanShatakForEdit(land)}">`;
+        container.appendChild(div);
+    }
+
+    function addDonorField(name='', rel='পিতা', father='', mother='', land='') {
+        const container = document.getElementById('donors-container'); const count = container.children.length + 1; const div = document.createElement('div'); div.className = 'person-block';
+        div.innerHTML = `<strong>${toBanglaNum(count)}. দাতা</strong><input type="text" class="don-name" placeholder="নাম" value="${name}"><div style="display:flex; gap:10px; margin-bottom:5px;"><select class="don-relation" style="width:100px; margin-bottom:0;"><option value="পিতা" ${rel==='পিতা'?'selected':''}>পিতা</option><option value="স্বামী" ${rel==='স্বামী'?'selected':''}>স্বামী</option></select><input type="text" class="don-father" placeholder="নাম (ঐচ্ছিক)" value="${father}" style="flex:1; margin-bottom:0;"></div><div class="mother-input-group"><input type="text" class="don-mother" placeholder="মাতার নাম (ঐচ্ছিক)" value="${mother}"></div><input type="text" class="don-land" placeholder="বিক্রি (যেমন: ৫)" value="${cleanShatakForEdit(land)}">`;
+        container.appendChild(div);
+    }
+
+    function addKhatianField(type='', no='', land='', dag='') {
+        const container = document.getElementById('khatian-container'); const div = document.createElement('div'); div.className = 'person-block khatian-block';
+        div.innerHTML = `<div class="khatian-row"><div class="input-group"><label>ধরন</label><select class="khatian-type"><option value="">বাছাই</option><option value="সি এস" ${type==='সি এস'?'selected':''}>সি এস</option><option value="এস এ" ${type==='এস এ'?'selected':''}>এস এ</option><option value="বি আর এস" ${type==='বি আর এস'?'selected':''}>বি আর এস</option><option value="আর এস" ${type==='আর এস'?'selected':''}>আর এস</option></select></div><div class="input-group"><label>খতিয়ান নং</label><input type="text" class="khatian-no" placeholder="যেমন: ২১৮" value="${no==='-'?'':no}"></div><div class="input-group"><label>জমি (শতক)</label><input type="text" class="khatian-land" placeholder="যেমন: ৩০" value="${cleanShatakForEdit(land)}"></div><div class="input-group"><label>দাগ নং</label><input type="text" class="khatian-dag" placeholder="যেমন: ১৬২০" value="${dag==='-'?'':dag}"></div></div>`;
+        container.appendChild(div);
+    }
+
+    function extractDataFromForm() {
+        const dalil_no = document.getElementById('dalil_no').value; const dateVal = document.getElementById('date_text').value; let total_land = formatShatak(document.getElementById('total_land').value); 
+        if(dalil_no === '') { showToast('দয়া করে "দলিলের নম্বর" পূরণ করুন!'); return null; }
+
+        let receiversData = [], receiversHTML = "";
+        document.querySelectorAll('#receivers-container .person-block').forEach((block, index) => {
+            let name = block.querySelector('.rec-name').value, rel = block.querySelector('.rec-relation').value, father = block.querySelector('.rec-father').value, mother = block.querySelector('.rec-mother').value, land = block.querySelector('.rec-land').value;
+            if(name) { receiversData.push({name, relationType: rel, father, mother, land}); receiversHTML += `<div class="person-data"><b>${toBanglaNum(index + 1)}. ${name}</b><br>` + (father?`${rel}: ${father}<br>`:'') + ((mother && isMotherNameEnabled)?`মাতা: ${mother}<br>`:'') + (land?`<span style="color:#1e8e3e; font-weight:bold;">জমি: ${formatShatak(land)}</span>`:'') + `</div>`; }
+        });
+
+        let donorsData = [], donorsHTML = "";
+        document.querySelectorAll('#donors-container .person-block').forEach((block, index) => {
+            let name = block.querySelector('.don-name').value, rel = block.querySelector('.don-relation').value, father = block.querySelector('.don-father').value, mother = block.querySelector('.don-mother').value, land = block.querySelector('.don-land').value;
+            if(name) { donorsData.push({name, relationType: rel, father, mother, land}); donorsHTML += `<div class="person-data"><b>${toBanglaNum(index + 1)}. ${name}</b><br>` + (father?`${rel}: ${father}<br>`:'') + ((mother && isMotherNameEnabled)?`মাতা: ${mother}<br>`:'') + (land?`<span style="color:#d93025; font-weight:bold;">বিক্রি: ${formatShatak(land)}</span>`:'') + `</div>`; }
+        });
+
+        let khatians = [];
+        document.querySelectorAll('#khatian-container .khatian-block').forEach((block) => {
+            let type = block.querySelector('.khatian-type').value, no = block.querySelector('.khatian-no').value, land = block.querySelector('.khatian-land').value, dag = block.querySelector('.khatian-dag').value;
+            if(type || no || land || dag) khatians.push({ type, no: no||'-', land: land?formatShatak(land):'-', dag: dag||'-' });
+        });
+        if(khatians.length === 0) khatians.push({type: '', no: '-', land: '-', dag: '-'});
+
+        return { sl_no: "", dalil_no, dateVal, receiversHTML, donorsHTML, total_land, khatians, rawReceivers: receiversData, rawDonors: donorsData };
+    }
+
+    function resetFormFields() {
+        document.getElementById('receivers-container').innerHTML = ''; document.getElementById('donors-container').innerHTML = ''; document.getElementById('khatian-container').innerHTML = '';
+        addReceiverField(); addDonorField(); addKhatianField();
+        document.getElementById('date_text').value = ''; document.getElementById('date_picker').value = ''; document.getElementById('total_land').value = ''; document.getElementById('dalil_no').value = '';
+        recalculateSerialNumbers();
+    }
+
+    function addRecord() {
+        const newRecord = extractDataFromForm(); if(!newRecord) return;
+        dalilRecords.push(newRecord); recalculateSerialNumbers(); localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); renderTable(); resetFormFields(); showToast("দলিলে তথ্য যোগ করা হয়েছে!");
+    }
+
+    function editRecord(index) {
+        editIndex = index; const record = dalilRecords[index];
+        document.getElementById('display_sl_no').innerText = record.sl_no; document.getElementById('dalil_no').value = record.dalil_no; document.getElementById('date_text').value = record.dateVal; document.getElementById('total_land').value = cleanShatakForEdit(record.total_land);
+        document.getElementById('receivers-container').innerHTML = ''; if(record.rawReceivers && record.rawReceivers.length > 0) record.rawReceivers.forEach(r => addReceiverField(r.name, r.relationType, r.father, r.mother, r.land)); else addReceiverField(); 
+        document.getElementById('donors-container').innerHTML = ''; if(record.rawDonors && record.rawDonors.length > 0) record.rawDonors.forEach(d => addDonorField(d.name, d.relationType, d.father, d.mother, d.land)); else addDonorField(); 
+        document.getElementById('khatian-container').innerHTML = ''; if(record.khatians && record.khatians.length > 0 && (record.khatians[0].type !== '' || record.khatians[0].no !== '-')) record.khatians.forEach(k => addKhatianField(k.type, k.no, k.land, k.dag)); else addKhatianField(); 
+        document.getElementById('btn-add-record').style.display = 'none'; document.getElementById('edit-action-container').style.display = 'flex'; window.scrollTo(0, 0);
+    }
+
+    function updateRecord() {
+        if(editIndex === -1) return; const updatedRecord = extractDataFromForm(); if(!updatedRecord) return;
+        dalilRecords[editIndex] = updatedRecord; recalculateSerialNumbers(); localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); renderTable(); cancelEdit(); showToast("তথ্য আপডেট করা হয়েছে!");
+    }
+
+    function cancelEdit() {
+        editIndex = -1; document.getElementById('btn-add-record').style.display = 'flex'; document.getElementById('edit-action-container').style.display = 'none'; resetFormFields();
+    }
+
+    function renderTable() {
+        const table = document.getElementById('main-table'); table.querySelectorAll('tbody').forEach(tb => tb.remove());
+        dalilRecords.forEach((record, index) => {
+            const tbody = document.createElement('tbody'); tbody.className = 'record-group'; const kCount = record.khatians.length;
+            const firstRow = document.createElement('tr');
+            firstRow.innerHTML = `<td rowspan="${kCount}" class="align-center">${record.sl_no}</td><td rowspan="${kCount}" class="align-center">${record.dalil_no}</td><td rowspan="${kCount}" class="align-center">${record.dateVal}</td><td rowspan="${kCount}">${record.receiversHTML}</td><td rowspan="${kCount}">${record.donorsHTML}</td><td rowspan="${kCount}" class="align-center">${record.total_land}</td>`;
+            let k0 = record.khatians[0]; let k0Format = (k0.type && k0.no !== '-') ? `<b>${k0.type}:</b> ${k0.no}` : (k0.type ? `<b>${k0.type}</b>` : (k0.no !== '-' ? k0.no : '-'));
+            firstRow.innerHTML += `<td class="align-center">${k0Format}</td><td class="align-center">${k0.land}</td><td class="align-center">${k0.dag}</td><td rowspan="${kCount}" class="no-print align-center"><div class="action-cell-btns"><div style="display:flex; justify-content:center; gap:5px; margin-bottom:5px;"><button class="icon-btn move-btn" onclick="moveRecord(${index}, -1)" title="উপরে নিন" ${index===0?'disabled style="opacity:0.3;"':''}><span class="material-icons" style="font-size:18px;">arrow_upward</span></button><button class="icon-btn move-btn" onclick="moveRecord(${index}, 1)" title="নিচে নিন" ${index===dalilRecords.length-1?'disabled style="opacity:0.3;"':''}><span class="material-icons" style="font-size:18px;">arrow_downward</span></button></div><div style="display:flex; justify-content:center; gap:5px;"><button class="icon-btn edit-btn" onclick="editRecord(${index})" title="এডিট করুন"><span class="material-icons" style="font-size:18px;">edit</span></button><button class="icon-btn delete-btn" onclick="deleteRecord(${index})" title="ডিলিট করুন"><span class="material-icons" style="font-size:18px;">delete</span></button></div></div></td>`;
+            tbody.appendChild(firstRow);
+            for(let i = 1; i < kCount; i++) {
+                let ki = record.khatians[i]; let kiFormat = (ki.type && ki.no !== '-') ? `<b>${ki.type}:</b> ${ki.no}` : (ki.type ? `<b>${ki.type}</b>` : (ki.no !== '-' ? ki.no : '-'));
+                const nextRow = document.createElement('tr'); nextRow.innerHTML = `<td class="align-center">${kiFormat}</td><td class="align-center">${ki.land}</td><td class="align-center">${ki.dag}</td>`; tbody.appendChild(nextRow);
+            }
+            table.appendChild(tbody);
+        });
+    }
+
+    function deleteRecord(index) {
+        if(confirm("আপনি কি নিশ্চিত যে এই দলিলটি মুছতে চান?")) {
+            if(index === editIndex) cancelEdit(); dalilRecords.splice(index, 1); recalculateSerialNumbers(); localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); renderTable(); showToast("দলিলটি মুছে ফেলা হয়েছে!");
+        }
+    }
+
+    function clearAllRecords() {
+        if(dalilRecords.length === 0) { showToast("মোছার মতো কোনো তথ্য নেই!"); return; }
+        if(confirm("সতর্কতা: আপনি কি সম্পূর্ণ তালিকা মুছে ফেলতে চান?")) { dalilRecords = []; localStorage.removeItem(STORAGE_KEY); cancelEdit(); renderTable(); recalculateSerialNumbers(); showToast("সম্পূর্ণ তালিকা মুছে ফেলা হয়েছে!"); }
+    }
+
+    function exportData() {
+        if(dalilRecords.length === 0) { showToast("ব্যাকআপ নেওয়ার মতো কোনো তথ্য নেই!"); return; }
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(dalilRecords)], { type: "application/json" })); a.download = `Dalil_Backup_${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); toggleSettings(); showToast("ব্যাকআপ ডাউনলোড শুরু হয়েছে!");
+    }
+
+    function importData(event) {
+        const file = event.target.files[0]; if (!file) return; const reader = new FileReader();
+        reader.onload = function(e) {
+            try { const importedData = JSON.parse(e.target.result); if (Array.isArray(importedData)) { dalilRecords = importedData; recalculateSerialNumbers(); localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); renderTable(); showToast("ডেটা সফলভাবে রিস্টোর হয়েছে!"); } else alert("ফাইল ফরম্যাটটি সঠিক নয়।"); } catch (err) { alert("ফাইলটি পড়া যাচ্ছে না।"); } event.target.value = ""; 
+        };
+        reader.readAsText(file); toggleSettings(); 
+    }
+</script>
+
+</body>
+</html>

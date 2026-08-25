@@ -1,0 +1,16 @@
+{
+  "name": "দলিল সংরক্ষণ অ্যাপ",
+  "short_name": "দলিল",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f2f2f7",
+  "theme_color": "#1a73e8",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "144x144 192x192 512x512 any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
