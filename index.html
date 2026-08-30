@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>দলিল সংরক্ষণ</title>
+    <title>দলিল সংরক্ষণ (Dalil Record)</title>
     <!-- PWA Link -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1a73e8">
@@ -16,6 +16,7 @@
         .app-bar { background-color: #ffffff; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
         .app-bar h1 { margin: 0; font-size: 18px; font-weight: 500; color: #1a73e8; display: flex; align-items: center; gap: 8px; }
         .settings-btn { position: absolute; left: 15px; background: transparent; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #5f6368; }
+        .settings-btn:active { background: #f1f3f4; }
         .settings-menu { display: none; position: absolute; top: 60px; left: 10px; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 250px; border: 1px solid #dadce0; z-index: 1001; }
         .settings-menu h4 { margin: 0; padding: 15px; background: #f8f9fa; font-size: 14px; color: #3c4043; border-bottom: 1px solid #dadce0; border-radius: 8px 8px 0 0; }
         .settings-menu ul { list-style: none; padding: 0; margin: 0; }
@@ -28,13 +29,11 @@
         .global-header-content { padding: 0 15px 15px 15px; display: none; }
         .header-inputs { display: flex; flex-direction: column; gap: 10px; }
         .header-inputs input { width: 100%; background: white !important; padding: 12px !important; border: 1px solid #dadce0 !important; border-radius: 8px !important; font-size: 14px; }
-        .header-inputs input:focus { border-color: #1a73e8 !important; outline: none; }
         .header-btns { display: flex; gap: 10px; margin-top: 15px; }
         .form-grid { display: grid; gap: 15px; }
         .form-group { display: flex; flex-direction: column; }
         label { font-weight: 500; color: #5f6368; margin-bottom: 6px; font-size: 13px; }
-        input[type="text"], input[type="date"], select { width: 100%; padding: 12px 15px; background: #f8f9fa; border: 1px solid #e8eaed; border-radius: 8px; font-size: 15px; color: #202124; outline: none; transition: all 0.2s; margin-bottom: 5px; }
-        input:focus, select:focus { background: #ffffff; border-color: #1a73e8; box-shadow: 0 0 0 2px rgba(26,115,232,0.1); }
+        input[type="text"], input[type="date"], select { width: 100%; padding: 12px 15px; background: #f8f9fa; border: 1px solid #e8eaed; border-radius: 8px; font-size: 15px; color: #202124; outline: none; margin-bottom: 5px; }
         .auto-number-display { background-color: #e8eaed; border-radius: 8px; padding: 12px 15px; font-size: 16px; color: #3c4043; font-weight: bold; text-align: center; }
         .date-container { position: relative; display: flex; align-items: center; }
         .date-container input[type="text"] { width: 100%; padding-right: 40px; margin-bottom: 0;}
@@ -52,21 +51,19 @@
         .khatian-row label { font-size: 11px; margin-bottom: 2px; }
         .khatian-row input, .khatian-row select { margin-bottom: 0; padding: 10px; }
         .khatian-land, .khatian-dag { text-align: center; }
-        button.action-btn { background: #1a73e8; border: none; border-radius: 24px; padding: 12px 20px; font-size: 15px; font-weight: 500; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; transition: transform 0.1s, background 0.2s; }
-        button.action-btn:active { transform: scale(0.98); }
+        button.action-btn { background: #1a73e8; border: none; border-radius: 24px; padding: 12px 20px; font-size: 15px; font-weight: 500; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; }
         .add-more-btn { background: transparent; color: #1a73e8; border: 1px dashed #1a73e8; border-radius: 8px; padding: 10px; width: 100%; margin-top: 5px; font-size: 14px; }
         .btn-add { background-color: #1e8e3e; margin-top: 10px; }
         .output-container { max-width: 100%; margin: 0 auto 30px auto; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-radius: 12px; overflow: hidden; }
         .print-header { display: none; padding: 20px; background: #fff; border-bottom: 2px solid #3c4043; display: flex; justify-content: space-between; align-items: stretch; }
-        .header-col-left { flex: 1; display: flex; flex-direction: column; justify-content: center; font-size: 13px; line-height: 1.6; color: #202124; }
+        .header-col-left { flex: 1; display: flex; flex-direction: column; justify-content: center; font-size: 13px; color: #202124; }
         .header-col-center { flex: 1.5; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .header-col-center h3 { margin: 0; font-size: 22px; font-weight: 700; color: #000; text-decoration: underline; line-height: 1.2; }
-        .header-col-right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; font-size: 13px; line-height: 1.6; color: #202124; }
+        .header-col-center h3 { margin: 0; font-size: 22px; font-weight: 700; color: #000; text-decoration: underline; }
+        .header-col-right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; font-size: 13px; color: #202124; }
         #default-title { margin: 0; padding: 20px; text-align: center; background: #fff; border-bottom: 1px solid #dadce0; }
-        .table-responsive { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; }
-        th, td { border: 1px solid #bdc1c6; padding: 8px 6px; text-align: left; vertical-align: middle; line-height: 1.5; color: #202124; }
-        th { background: #f1f3f4; color: #202124; font-weight: 600; text-align: center; white-space: nowrap; }
+        th, td { border: 1px solid #bdc1c6; padding: 8px 6px; text-align: left; vertical-align: middle; color: #202124; }
+        th { background: #f1f3f4; font-weight: 600; text-align: center; white-space: nowrap; }
         .align-center { text-align: center !important; }
         .person-data { padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px dotted #9aa0a6; }
         .person-data:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -74,23 +71,23 @@
         .delete-btn { color: #d93025; } .edit-btn { color: #1a73e8; } .move-btn { color: #0f9d58; }
         .bottom-bar { padding: 15px; display: flex; gap: 15px; background: #fff; border-top: 1px solid #e8eaed; }
         .btn-pdf { background-color: #4285f4; } .btn-clear { background-color: #ea4335; }
-        .toast { visibility: hidden; min-width: 250px; background-color: #323232; color: #fff; text-align: center; border-radius: 24px; padding: 12px 24px; position: fixed; z-index: 2000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); opacity: 0; transition: opacity 0.3s, bottom 0.3s, visibility 0.3s; }
+        .toast { visibility: hidden; min-width: 250px; background-color: #323232; color: #fff; text-align: center; border-radius: 24px; padding: 12px 24px; position: fixed; z-index: 2000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 14px; opacity: 0; transition: opacity 0.3s, bottom 0.3s, visibility 0.3s; }
         .toast.show { visibility: visible; opacity: 1; bottom: 50px; }
         @media print {
-            body { background: white !important; padding: 0; margin: 0; color: #000; font-family: 'Times New Roman', serif; }
+            body { background: white !important; padding: 0; margin: 0; color: #000; }
             .no-print, .app-bar, .bottom-bar { display: none !important; }
-            .container, #pdf-section { box-shadow: none !important; background: white !important; padding: 0 !important; width: 100%; max-width: 100%; border: none !important; overflow: visible; }
+            .container, #pdf-section { box-shadow: none !important; padding: 0 !important; width: 100%; max-width: 100%; border: none !important; overflow: visible; }
             table { font-size: 13px; width: 100%; border-collapse: collapse; }
             table, th, td { border: 1px solid #000 !important; padding: 6px !important; }
             th { background-color: #e0e0e0 !important; -webkit-print-color-adjust: exact; }
             #print-header-layout { display: flex !important; border-bottom: 2px solid #000 !important; padding: 10px 0 !important; margin-bottom: 10px !important; }
             .record-group { border-bottom: 2px solid #000 !important; page-break-inside: avoid; }
-            thead { display: table-header-group; }
             @page { margin: 10mm; size: landscape; } 
         }
     </style>
 </head>
 <body>
+
     <div class="app-bar no-print">
         <button class="settings-btn" onclick="toggleSettings()"><span class="material-icons">menu</span></button>
         <h1><span class="material-icons" style="font-size:22px;">library_books</span> দলিল সংরক্ষণ</h1>
@@ -158,7 +155,7 @@
             <div class="header-col-right"><span><strong>প্রস্তুতকারক:</strong></span><span id="out_creator"></span><span style="margin-top:4px;"><strong>তারিখ:</strong></span><span id="out_g_date"></span></div>
         </div>
         <h3 id="default-title">দলিলে জমির হিসাব</h3>
-        <div class="table-responsive">
+        <div style="overflow-x: auto;">
             <table id="main-table">
                 <thead><tr><th>নং</th><th>দলিল নং</th><th>তারিখ</th><th>গ্রহীতা(গণ)</th><th>দাতা(গণ)</th><th>মোট জমি</th><th>খতিয়ান</th><th>খতিয়ানের জমি</th><th>দাগ নং</th><th class="no-print">অ্যাকশন</th></tr></thead>
             </table>
@@ -175,7 +172,7 @@
 
 <script>
     let dalilRecords = []; let editIndex = -1; let isMotherNameEnabled = false;
-    const STORAGE_KEY = 'myDalilDataApp1'; const HEADER_KEY = 'myDalilHeaderApp1';
+    const STORAGE_KEY = 'myDalilDataFinal'; const HEADER_KEY = 'myDalilHeaderFinal';
 
     window.onload = function() {
         let savedMotherPref = localStorage.getItem('motherNamePref') === 'true';
@@ -188,8 +185,8 @@
         // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log('SW Registered'))
-                .catch(err => console.log('SW Failed', err));
+                .then(reg => console.log('Service Worker Registered Successfully!'))
+                .catch(err => console.log('Service Worker Registration Failed:', err));
         }
     };
 

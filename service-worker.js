@@ -1,24 +1,21 @@
-const CACHE_NAME = 'dalil-app-offline-v8';
+const CACHE_NAME = 'dalil-app-offline-v1';
 
-const urlsToCache = [
+// যেসব ফাইল অফলাইনের জন্য সেভ করা হবে
+const ASSETS_TO_CACHE = [
   './',
-  './index.html',
-  './manifest.json',
-  './icon.png'
+  'index.html',
+  'manifest.json',
+  'icon.png'
 ];
 
-// ১. ইনস্টল করার সময় ফাইলগুলো অফলাইনের জন্য সেভ করবে
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
+      .then(cache => cache.addAll(ASSETS_TO_CACHE))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
-// ২. পুরনো ক্যাশ মুছে নতুন ক্যাশ আপডেট করবে
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -34,20 +31,29 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// ৩. ইন্টারনেট না থাকলেও অ্যাপটি রান করানোর ম্যাজিক!
+// ইন্টারনেট না থাকলে ডাইনামিক ক্যাশ থেকে অ্যাপ চালাবে
 self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     caches.match(event.request)
-      .then(response => {
-        // মেমোরিতে সেভ থাকলে ইন্টারনেট ছাড়াই সেটি ওপেন করবে
-        if (response) {
-          return response;
+      .then(cachedResponse => {
+        if (cachedResponse) {
+          return cachedResponse; // মেমোরি থেকে দিচ্ছে
         }
-        // মেমোরিতে না থাকলে ইন্টারনেট থেকে আনার চেষ্টা করবে
-        return fetch(event.request).catch(() => {
-          // ইন্টারনেট না থাকলে এবং অ্যাপটি ওপেন করলে সরাসরি হোমপেজ দেখিয়ে দেবে
-          if (event.request.mode === 'navigate' || event.request.headers.get('accept').includes('text/html')) {
-            return caches.match('./index.html');
+        return fetch(event.request).then(networkResponse => {
+          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+            return networkResponse;
+          }
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+          return networkResponse;
+        }).catch(() => {
+          // ইন্টারনেট না থাকলে হোম পেজ দেখাবে
+          if (event.request.mode === 'navigate') {
+            return caches.match('index.html');
           }
         });
       })
