@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dalil-app-offline-v2';
+const CACHE_NAME = 'dalil-app-offline-v7';
 
 const urlsToCache = [
   './',
