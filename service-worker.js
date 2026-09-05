@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dalil-app-offline-v1';
+const CACHE_NAME = 'dalil-app-offline-v2';
 
 // যেসব ফাইল অফলাইনের জন্য সেভ করা হবে
 const ASSETS_TO_CACHE = [
