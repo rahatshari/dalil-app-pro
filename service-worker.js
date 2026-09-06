@@ -1,55 +1,33 @@
-const CACHE_NAME = 'dalil-app-offline-v10'; // ভার্সন নম্বর
-
-const urlsToCache = [
+const CACHE_NAME = 'dalil-pro-v1';
+const URLS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
   './icon.png'
 ];
 
-// ইনস্টল হওয়ার সাথে সাথে ক্যাশ সেভ করবে
 self.addEventListener('install', event => {
-  self.skipWaiting(); // পুরনো ক্যাশ বাদ দিয়ে সাথে সাথে নতুনটা চালু করবে
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
-  );
+  self.skipWaiting();
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE)));
 });
 
-// পুরনো ফাইল ডিলিট করে নতুন ফাইল আপডেট করবে
 self.addEventListener('activate', event => {
+  self.clients.claim();
   event.waitUntil(
     caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cache => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
-          }
-        })
-      );
+      return Promise.all(cacheNames.filter(name => name !== CACHE_NAME).map(name => caches.delete(name)));
     })
   );
-  self.clients.claim(); // সাথে সাথে পেজ কন্ট্রোল করবে
 });
 
-// অফলাইনে চালানোর কমান্ড
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // মেমোরিতে থাকলে ইন্টারনেট ছাড়াই লোড করবে
-        if (response) {
-          return response;
+    caches.match(event.request, { ignoreSearch: true }).then(response => {
+      return response || fetch(event.request).catch(() => {
+        if (event.request.url.includes('index.html') || event.request.mode === 'navigate') {
+          return caches.match('./index.html');
         }
-        // না থাকলে ইন্টারনেট থেকে আনবে
-        return fetch(event.request).catch(() => {
-          // ইন্টারনেট না থাকলে সরাসরি index.html দেখাবে
-          if (event.request.mode === 'navigate') {
-            return caches.match('./index.html');
-          }
-        });
-      })
+      });
+    })
   );
 });
