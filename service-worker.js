@@ -1,21 +1,24 @@
-const CACHE_NAME = 'dalil-app-offline-v2';
+const CACHE_NAME = 'dalil-app-offline-v10'; // ভার্সন নম্বর
 
-// যেসব ফাইল অফলাইনের জন্য সেভ করা হবে
-const ASSETS_TO_CACHE = [
+const urlsToCache = [
   './',
-  'index.html',
-  'manifest.json',
-  'icon.png'
+  './index.html',
+  './manifest.json',
+  './icon.png'
 ];
 
+// ইনস্টল হওয়ার সাথে সাথে ক্যাশ সেভ করবে
 self.addEventListener('install', event => {
+  self.skipWaiting(); // পুরনো ক্যাশ বাদ দিয়ে সাথে সাথে নতুনটা চালু করবে
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS_TO_CACHE))
-      .then(() => self.skipWaiting())
+      .then(cache => {
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
+// পুরনো ফাইল ডিলিট করে নতুন ফাইল আপডেট করবে
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -28,32 +31,23 @@ self.addEventListener('activate', event => {
       );
     })
   );
-  self.clients.claim();
+  self.clients.claim(); // সাথে সাথে পেজ কন্ট্রোল করবে
 });
 
-// ইন্টারনেট না থাকলে ডাইনামিক ক্যাশ থেকে অ্যাপ চালাবে
+// অফলাইনে চালানোর কমান্ড
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-
   event.respondWith(
     caches.match(event.request)
-      .then(cachedResponse => {
-        if (cachedResponse) {
-          return cachedResponse; // মেমোরি থেকে দিচ্ছে
+      .then(response => {
+        // মেমোরিতে থাকলে ইন্টারনেট ছাড়াই লোড করবে
+        if (response) {
+          return response;
         }
-        return fetch(event.request).then(networkResponse => {
-          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-            return networkResponse;
-          }
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, responseToCache);
-          });
-          return networkResponse;
-        }).catch(() => {
-          // ইন্টারনেট না থাকলে হোম পেজ দেখাবে
+        // না থাকলে ইন্টারনেট থেকে আনবে
+        return fetch(event.request).catch(() => {
+          // ইন্টারনেট না থাকলে সরাসরি index.html দেখাবে
           if (event.request.mode === 'navigate') {
-            return caches.match('index.html');
+            return caches.match('./index.html');
           }
         });
       })
