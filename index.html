@@ -1039,8 +1039,30 @@
     function importData(event) {
         const file = event.target.files[0]; if (!file) return; const reader = new FileReader();
         reader.onload = function(e) {
-            try { const importedData = JSON.parse(e.target.result); if (Array.isArray(importedData)) { dalilRecords = importedData; recalculateSerialNumbers(); localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); renderTable(); showToast("ডেটা সফলভাবে রিস্টোর হয়েছে!"); } else alert("ফাইল ফরম্যাটটি সঠিক নয়।"); } catch (err) { alert("ফাইলটি পড়া যাচ্ছে শকছে না।"); } event.target.value = ""; 
-        }; reader.readAsText(file); toggleSettings(); 
+            try { 
+                const importedData = JSON.parse(e.target.result); 
+                if (Array.isArray(importedData)) { 
+                    if(dalilRecords.length > 0) {
+                        let mergeConfirm = confirm("আপনি কি বর্তমান তালিকার সাথে ব্যাকআপের তথ্যগুলো যুক্ত করতে চান?\n\n'OK' চাপলে বর্তমান তালিকার সাথে যুক্ত হবে।\n'Cancel' চাপলে বর্তমান তালিকা মুছে গিয়ে শুধু ব্যাকআপের তথ্য বসবে।");
+                        if(mergeConfirm) {
+                            dalilRecords = dalilRecords.concat(importedData);
+                        } else {
+                            dalilRecords = importedData;
+                        }
+                    } else {
+                        dalilRecords = importedData;
+                    }
+                    recalculateSerialNumbers(); 
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); 
+                    renderTable(); 
+                    showToast("ডেটা সফলভাবে রিস্টোর হয়েছে!"); 
+                } else alert("ফাইল ফরম্যাটটি সঠিক নয়।"); 
+            } catch (err) { 
+                alert("ফাইলটি পড়া যাচ্ছে না।"); 
+            } 
+            event.target.value = ""; 
+        }; 
+        reader.readAsText(file); toggleSettings(); 
     }
 </script>
 </body>
