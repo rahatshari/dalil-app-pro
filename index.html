@@ -9,16 +9,16 @@
     <meta property="og:description" content="দলিল সংরক্ষণ ও প্রিন্ট প্রস্তুতকারী অ্যাপ্লিকেশন - জমি জমা সংক্রান্ত দলিল সংরক্ষণ ও প্রিন্ট পেজ জেনারেটর">
     <meta property="og:type" content="website">
     <!-- PWA Link & Icons -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#1a73e8">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="দলিল রেকর্ড">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512x512.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/pwa-512x512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -744,7 +744,7 @@
                     <input type="text" id="g_creator" placeholder="প্রস্তুতকারক (ডিফল্ট: মোঃ আব্দুল্লাহ আল রাহাত)">
                     
                     <div style="display:flex; gap:10px; align-items:center; width:100%;">
-                        <input type="text" id="g_date" placeholder="তারিখ (ডিফল্ট: আজকের তারিখ)" style="flex:1;">
+                        <input type="text" id="g_date" placeholder="তারিখ (যেমন: ২৩/১২/২০০১)" style="flex:1;">
                         <button type="button" class="action-btn" style="background:#1a73e8; padding:12px 15px; border-radius:8px; width:auto; font-size:13px;" onclick="setTodayHeaderDate()" title="আজকের তারিখ বসান">
                             <span class="material-icons" style="font-size:16px; margin-right:4px;">today</span> আজ
                         </button>
@@ -773,9 +773,14 @@
                     <input type="text" id="dalil_no" placeholder="দলিল নং লিখুন">
                 </div>
                 <div class="form-group">
-                    <label>৩. তারিখ</label>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                        <label style="margin-bottom:0;">৩. তারিখ</label>
+                        <button type="button" onclick="setTodayRecordDate()" style="background:#e8f0fe; color:#1a73e8; border:1px solid #c2e7ff; border-radius:12px; font-size:12px; font-weight:500; padding:2px 8px; cursor:pointer; display:inline-flex; align-items:center; gap:3px;" title="আজকের তারিখ বসান">
+                            <span class="material-icons" style="font-size:14px;">today</span> আজ
+                        </button>
+                    </div>
                     <div class="date-container">
-                        <input type="text" id="date_text" placeholder="যেমন: ১৫/০৮/২০২৬">
+                        <input type="text" id="date_text" placeholder="যেমন: ২৩/১২/২০০১">
                         <div class="date-icon-wrapper">
                              <span class="material-icons">calendar_today</span>
                              <input type="date" id="date_picker" onchange="syncDate()">
@@ -1063,9 +1068,10 @@
         
         initPWAInstall();
         initOfflineDetection();
+        setupDateInputs();
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
+            navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
                 .then(reg => {
                     console.log('PWA Service Worker active:', reg.scope);
                 })
@@ -1209,13 +1215,111 @@
     }
 
     const enToBnObj = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
-    const bnToEnObj = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'৭','৮':'8','৯':'9'};
+    const bnToEnObj = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
 
     function toBanglaNum(str) { return str ? str.toString().replace(/[0-9]/g, match => enToBnObj[match]) : ''; }
     function toEnglishNum(str) { return str ? str.toString().replace(/[০-৯]/g, match => bnToEnObj[match]) : ''; }
 
+    // Automatic Slash Formatting for Date Inputs (e.g. 23122001 -> ২৩/১২/২০০১)
+    function formatAutoDate(val) {
+        if (!val) return '';
+        let bn = toBanglaNum(val.toString());
+        let digits = bn.replace(/[^\d০-৯]/g, '');
+        if (digits.length > 8) digits = digits.slice(0, 8);
+        if (!digits) return '';
+        if (digits.length < 2) return digits;
+        if (digits.length === 2) return digits + '/';
+        if (digits.length < 4) return digits.slice(0, 2) + '/' + digits.slice(2);
+        if (digits.length === 4) return digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/';
+        return digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/' + digits.slice(4, 8);
+    }
+
+    function attachDateAutoSlash(inputEl) {
+        if (!inputEl) return;
+
+        inputEl.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace') {
+                const val = this.value;
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                // If user is backspacing right after '/', delete both slash and preceding digit cleanly
+                if (start === end && start > 0 && val[start - 1] === '/') {
+                    e.preventDefault();
+                    const newVal = val.slice(0, start - 2) + val.slice(start);
+                    this.value = newVal;
+                    const newPos = Math.max(0, start - 2);
+                    this.setSelectionRange(newPos, newPos);
+                    if (this.id === 'date_text') syncPickerFromText();
+                    if (!isLoadingDraft) saveFormDraft();
+                }
+            }
+        });
+
+        inputEl.addEventListener('input', function(e) {
+            if (e.inputType && e.inputType.startsWith('delete')) {
+                return;
+            }
+
+            const prevPos = this.selectionStart || 0;
+            const prevLen = this.value.length;
+            const formatted = formatAutoDate(this.value);
+
+            if (this.value !== formatted) {
+                this.value = formatted;
+                const diff = formatted.length - prevLen;
+                const newPos = Math.max(0, Math.min(formatted.length, prevPos + diff));
+                try {
+                    this.setSelectionRange(newPos, newPos);
+                } catch(err) {}
+            }
+            if (this.id === 'date_text') {
+                syncPickerFromText();
+            }
+            if (!isLoadingDraft) saveFormDraft();
+        });
+    }
+
+    function setupDateInputs() {
+        attachDateAutoSlash(document.getElementById('date_text'));
+        attachDateAutoSlash(document.getElementById('g_date'));
+    }
+
+    function setTodayRecordDate() {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+        const bnDate = toBanglaNum(`${dd}/${mm}/${yyyy}`);
+        const dateInput = document.getElementById('date_text');
+        if (dateInput) dateInput.value = bnDate;
+        const picker = document.getElementById('date_picker');
+        if (picker) picker.value = `${yyyy}-${mm}-${dd}`;
+        if (!isLoadingDraft) saveFormDraft();
+    }
+
+    function syncPickerFromText() {
+        const textVal = document.getElementById('date_text')?.value;
+        if (!textVal) return;
+        const parts = textVal.split('/');
+        if (parts.length === 3 && parts[0].length === 2 && parts[1].length === 2 && parts[2].length === 4) {
+            const enDay = toEnglishNum(parts[0]).padStart(2, '0');
+            const enMonth = toEnglishNum(parts[1]).padStart(2, '0');
+            const enYear = toEnglishNum(parts[2]);
+            const iso = `${enYear}-${enMonth}-${enDay}`;
+            const d = new Date(iso);
+            if (!isNaN(d.getTime())) {
+                const picker = document.getElementById('date_picker');
+                if (picker) picker.value = iso;
+            }
+        }
+    }
+
     document.addEventListener('input', function(e) {
         if(e.target.tagName === 'INPUT' && e.target.type === 'text') {
+            // Date inputs are specially handled by attachDateAutoSlash
+            if(e.target.id === 'date_text' || e.target.id === 'g_date') {
+                return;
+            }
             const originalValue = e.target.value;
             const banglaValue = toBanglaNum(originalValue);
             if (originalValue !== banglaValue) {
@@ -1312,9 +1416,19 @@
     }
 
     function moveRecord(index, direction) {
-        if(index + direction < 0 || index + direction >= dalilRecords.length) return;
-        let temp = dalilRecords[index]; dalilRecords[index] = dalilRecords[index + direction]; dalilRecords[index + direction] = temp;
-        recalculateSerialNumbers(); localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); renderTable();
+        const targetIndex = index + direction;
+        if(targetIndex < 0 || targetIndex >= dalilRecords.length) return;
+        let temp = dalilRecords[index]; 
+        dalilRecords[index] = dalilRecords[targetIndex]; 
+        dalilRecords[targetIndex] = temp;
+        if (editIndex === index) {
+            editIndex = targetIndex;
+        } else if (editIndex === targetIndex) {
+            editIndex = index;
+        }
+        recalculateSerialNumbers(); 
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); 
+        renderTable();
     }
 
     function addReceiverField(name = '', rel = 'পিতা', father = '', mother = '', land = '') {
@@ -1389,7 +1503,7 @@
 
     function editRecord(index) {
         editIndex = index; const record = dalilRecords[index]; isLoadingDraft = true;
-        document.getElementById('display_sl_no').innerText = record.sl_no; document.getElementById('dalil_no').value = record.dalil_no; document.getElementById('date_text').value = record.dateVal; document.getElementById('total_land').value = cleanShatakForEdit(record.total_land);
+        document.getElementById('display_sl_no').innerText = record.sl_no; document.getElementById('dalil_no').value = record.dalil_no; document.getElementById('date_text').value = record.dateVal; syncPickerFromText(); document.getElementById('total_land').value = cleanShatakForEdit(record.total_land);
         document.getElementById('receivers-container').innerHTML = ''; if(record.rawReceivers && record.rawReceivers.length > 0) record.rawReceivers.forEach(r => addReceiverField(r.name, r.relationType, r.father, r.mother, r.land)); else addReceiverField(); 
         document.getElementById('donors-container').innerHTML = ''; if(record.rawDonors && record.rawDonors.length > 0) record.rawDonors.forEach(d => addDonorField(d.name, d.relationType, d.father, d.mother, d.land)); else addDonorField(); 
         document.getElementById('khatian-container').innerHTML = ''; if(record.khatians && record.khatians.length > 0 && (record.khatians[0].type !== '' || record.khatians[0].no !== '-')) record.khatians.forEach(k => addKhatianField(k.type, k.no, k.land, k.dag)); else addKhatianField(); 
@@ -1436,7 +1550,16 @@
 
     function deleteRecord(index) {
         if(confirm("আপনি কি নিশ্চিত যে এই দলিলটি মুছতে চান?")) {
-            if(index === editIndex) cancelEdit(); dalilRecords.splice(index, 1); recalculateSerialNumbers(); localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); renderTable(); showToast("দলিলটি মুছে ফেলা হয়েছে!"); 
+            if(index === editIndex) {
+                cancelEdit();
+            } else if (editIndex > index) {
+                editIndex--;
+            }
+            dalilRecords.splice(index, 1);
+            recalculateSerialNumbers();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords));
+            renderTable();
+            showToast("দলিলটি মুছে ফেলা হয়েছে!"); 
         }
     }
 

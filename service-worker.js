@@ -1,21 +1,21 @@
-const CACHE_NAME = 'dalil-record-cache-v5';
+const CACHE_NAME = 'dalil-record-cache-v6';
 
 const STATIC_ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon.png',
-  './icon-192x192.png',
-  './icon-512x512.png',
-  './icon-maskable-192x192.png',
-  './icon-maskable-512x512.png',
-  './icons/icon-192x192.png',
-  './icons/icon-512x512.png',
-  './pwa-192x192.png',
-  './pwa-512x512.png',
-  './apple-touch-icon.png',
-  './favicon-32x32.png',
-  './favicon.ico'
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icon.png',
+  '/icon-192x192.png',
+  '/icon-512x512.png',
+  '/icon-maskable-192x192.png',
+  '/icon-maskable-512x512.png',
+  '/pwa-192x192.png',
+  '/pwa-512x512.png',
+  '/pwa-maskable-192x192.png',
+  '/pwa-maskable-512x512.png',
+  '/apple-touch-icon.png',
+  '/favicon-32x32.png',
+  '/favicon.ico'
 ];
 
 self.addEventListener('install', event => {
@@ -55,7 +55,7 @@ self.addEventListener('fetch', event => {
           return networkResponse;
         })
         .catch(() => {
-          return caches.match('./index.html') || caches.match('/index.html') || caches.match('./') || caches.match('/');
+          return caches.match('/index.html') || caches.match('/');
         })
     );
     return;
@@ -101,7 +101,7 @@ self.addEventListener('fetch', event => {
         return networkResponse;
       }).catch(() => {
         if (request.destination === 'document' || request.mode === 'navigate') {
-          return caches.match('./index.html') || caches.match('/index.html');
+          return caches.match('/index.html');
         }
       });
     })

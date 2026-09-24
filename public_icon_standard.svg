@@ -1,0 +1,194 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background Gradients -->
+    <radialGradient id="bgGrad" cx="50%" cy="35%" r="75%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="45%" stop-color="#112250"/>
+      <stop offset="100%" stop-color="#0a1430"/>
+    </radialGradient>
+
+    <!-- Book Cover Leather Gradient -->
+    <linearGradient id="leatherGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#143166"/>
+      <stop offset="30%" stop-color="#0e234a"/>
+      <stop offset="70%" stop-color="#091836"/>
+      <stop offset="100%" stop-color="#050e20"/>
+    </linearGradient>
+
+    <!-- Spine Gradient -->
+    <linearGradient id="spineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#071329"/>
+      <stop offset="40%" stop-color="#17356e"/>
+      <stop offset="70%" stop-color="#1f438a"/>
+      <stop offset="100%" stop-color="#0a1a38"/>
+    </linearGradient>
+
+    <!-- Gold Gradients -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff1b8"/>
+      <stop offset="25%" stop-color="#f59e0b"/>
+      <stop offset="50%" stop-color="#fbbf24"/>
+      <stop offset="75%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#92400e"/>
+    </linearGradient>
+
+    <linearGradient id="goldRibbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#dc2626"/>
+      <stop offset="35%" stop-color="#ef4444"/>
+      <stop offset="70%" stop-color="#f87171"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </linearGradient>
+
+    <linearGradient id="goldFringe" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </linearGradient>
+
+    <!-- Page Edges Gradient -->
+    <linearGradient id="pagesGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fefefe"/>
+      <stop offset="50%" stop-color="#f5efe0"/>
+      <stop offset="100%" stop-color="#e2d7c0"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="shadowFilter" x="-20%" y="-20%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="24" stdDeviation="32" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <filter id="ribbonShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="4" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1024" height="1024" rx="220" fill="url(#bgGrad)"/>
+
+  <!-- Subtle Ambient Glow -->
+  <circle cx="512" cy="460" r="380" fill="#3b82f6" opacity="0.12" filter="blur(60px)"/>
+
+  <!-- Main Transform Group for Book Center -->
+  <g transform="translate(512, 512) scale(0.88) translate(-512, -512)">
+
+    <!-- Drop Shadow under Book -->
+    <rect x="220" y="150" width="575" height="715" rx="36" fill="#000" opacity="0.38" filter="blur(24px)"/>
+
+    <!-- Bottom/Back Cover Thickness -->
+    <rect x="238" y="168" width="550" height="714" rx="28" fill="#0a1936"/>
+
+    <!-- Page Layers (Stack on Right & Bottom) -->
+    <rect x="250" y="154" width="530" height="714" rx="24" fill="url(#pagesGrad)"/>
+    
+    <!-- Page Lines on Right Edge -->
+    <line x1="772" y1="180" x2="772" y2="850" stroke="#d5c8ad" stroke-width="2"/>
+    <line x1="765" y1="185" x2="765" y2="845" stroke="#e6dbc4" stroke-width="1.5"/>
+    <line x1="758" y1="190" x2="758" y2="840" stroke="#d5c8ad" stroke-width="1.5"/>
+    
+    <!-- Page Lines on Bottom Edge -->
+    <line x1="280" y1="860" x2="765" y2="860" stroke="#d5c8ad" stroke-width="2"/>
+    <line x1="290" y1="854" x2="760" y2="854" stroke="#e6dbc4" stroke-width="1.5"/>
+
+    <!-- Front Book Cover -->
+    <rect x="210" y="140" width="535" height="712" rx="30" fill="url(#leatherGrad)" stroke="#091b3d" stroke-width="4"/>
+
+    <!-- Spine on Left -->
+    <path d="M 210,140 Q 200,140 196,170 L 196,822 Q 200,852 210,852 L 270,852 L 270,140 Z" fill="url(#spineGrad)" stroke="#071329" stroke-width="2"/>
+
+    <!-- Golden Spine Ribs / Bands -->
+    <rect x="194" y="240" width="76" height="12" rx="3" fill="url(#goldGrad)"/>
+    <rect x="194" y="380" width="76" height="12" rx="3" fill="url(#goldGrad)"/>
+    <rect x="194" y="580" width="76" height="12" rx="3" fill="url(#goldGrad)"/>
+    <rect x="194" y="720" width="76" height="12" rx="3" fill="url(#goldGrad)"/>
+
+    <!-- Golden Embossed Front Frame -->
+    <rect x="290" y="170" width="430" height="650" rx="18" fill="none" stroke="url(#goldGrad)" stroke-width="5" stroke-dasharray="none"/>
+    <rect x="304" y="184" width="402" height="622" rx="12" fill="none" stroke="url(#goldGrad)" stroke-width="2" opacity="0.8"/>
+
+    <!-- Golden Filigree Corner Ornaments -->
+    <!-- Top-Left Corner -->
+    <path d="M 304,214 L 304,184 L 334,184" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
+    <circle cx="338" cy="218" r="4" fill="url(#goldGrad)"/>
+    <!-- Top-Right Corner -->
+    <path d="M 676,184 L 706,184 L 706,214" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
+    <circle cx="672" cy="218" r="4" fill="url(#goldGrad)"/>
+    <!-- Bottom-Left Corner -->
+    <path d="M 304,776 L 304,806 L 334,806" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
+    <circle cx="338" cy="772" r="4" fill="url(#goldGrad)"/>
+    <!-- Bottom-Right Corner -->
+    <path d="M 676,806 L 706,806 L 706,776" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
+    <circle cx="672" cy="772" r="4" fill="url(#goldGrad)"/>
+
+    <!-- Luxurious Bookmark Ribbon Flowing Out -->
+    <g filter="url(#ribbonShadow)">
+      <!-- Top ribbon inside book -->
+      <path d="M 520,135 L 565,135 L 565,220 L 520,220 Z" fill="url(#goldRibbonGrad)"/>
+      <!-- Bottom hanging ribbon past bottom edge -->
+      <path d="M 515,800 L 570,800 L 570,910 L 542,880 L 515,910 Z" fill="url(#goldRibbonGrad)"/>
+      <!-- Golden ribbon trim fringe -->
+      <path d="M 515,905 L 542,875 L 570,905 L 570,912 L 542,882 L 515,912 Z" fill="url(#goldFringe)"/>
+    </g>
+
+    <!-- Center Golden Emblem & Seal -->
+    <g transform="translate(505, 460)">
+      <!-- Outer Radiant Ring -->
+      <circle cx="0" cy="0" r="135" fill="#091b3a" stroke="url(#goldGrad)" stroke-width="6"/>
+      <circle cx="0" cy="0" r="122" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-dasharray="5,4" opacity="0.9"/>
+      
+      <!-- Inner Ring -->
+      <circle cx="0" cy="0" r="110" fill="url(#leatherGrad)" stroke="url(#goldGrad)" stroke-width="3"/>
+
+      <!-- Government/Legal Water Lily (Shapla) Crest & Scales of Justice -->
+      <!-- Center Scales of Justice -->
+      <!-- Central Pillar -->
+      <rect x="-3" y="-62" width="6" height="84" rx="2" fill="url(#goldGrad)"/>
+      <circle cx="0" cy="-66" r="7" fill="url(#goldGrad)"/>
+      <path d="M -16,22 L 16,22 L 22,28 L -22,28 Z" fill="url(#goldGrad)"/>
+
+      <!-- Cross Beam -->
+      <path d="M -54,-45 C -25,-55 25,-55 54,-45" fill="none" stroke="url(#goldGrad)" stroke-width="4.5" stroke-linecap="round"/>
+      
+      <!-- Left Pan -->
+      <line x1="-50" y1="-43" x2="-68" y2="-12" stroke="url(#goldGrad)" stroke-width="1.8"/>
+      <line x1="-50" y1="-43" x2="-32" y2="-12" stroke="url(#goldGrad)" stroke-width="1.8"/>
+      <path d="M -72,-12 C -72,2 -28,2 -28,-12 Z" fill="url(#goldGrad)"/>
+
+      <!-- Right Pan -->
+      <line x1="50" y1="-43" x2="32" y2="-12" stroke="url(#goldGrad)" stroke-width="1.8"/>
+      <line x1="50" y1="-43" x2="68" y2="-12" stroke="url(#goldGrad)" stroke-width="1.8"/>
+      <path d="M 28,-12 C 28,2 72,2 72,-12 Z" fill="url(#goldGrad)"/>
+
+      <!-- Paddy Sheaves / Olive Branch Wreath (left & right arc) -->
+      <path d="M -85,15 C -95,-25 -80,-65 -55,-85" fill="none" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="-88" cy="-5" r="4" fill="url(#goldGrad)"/>
+      <circle cx="-92" cy="-28" r="4" fill="url(#goldGrad)"/>
+      <circle cx="-84" cy="-52" r="4" fill="url(#goldGrad)"/>
+      <circle cx="-68" cy="-72" r="4" fill="url(#goldGrad)"/>
+
+      <path d="M 85,15 C 95,-25 80,-65 55,-85" fill="none" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="88" cy="-5" r="4" fill="url(#goldGrad)"/>
+      <circle cx="92" cy="-28" r="4" fill="url(#goldGrad)"/>
+      <circle cx="84" cy="-52" r="4" fill="url(#goldGrad)"/>
+      <circle cx="68" cy="-72" r="4" fill="url(#goldGrad)"/>
+
+      <!-- Stars in Banner -->
+      <circle cx="-38" cy="50" r="3.5" fill="url(#goldGrad)"/>
+      <circle cx="38" cy="50" r="3.5" fill="url(#goldGrad)"/>
+      <circle cx="0" cy="54" r="4.5" fill="url(#goldGrad)"/>
+    </g>
+
+    <!-- Bangla Title 'দলিল রেজিস্ট্রি' Ribbon Plate Below Emblem -->
+    <g transform="translate(505, 665)">
+      <!-- Golden Plaque Background -->
+      <path d="M -130,-22 L 130,-22 Q 145,0 130,22 L -130,22 Q -145,0 -130,-22 Z" fill="url(#goldGrad)" stroke="#78350f" stroke-width="2"/>
+      <rect x="-115" y="-15" width="230" height="30" rx="4" fill="#0d1b38"/>
+      
+      <!-- Text inside plate -->
+      <text x="0" y="7" text-anchor="middle" font-family="'SolaimanLipi', 'Noto Sans Bengali', 'Segoe UI', 'Roboto', sans-serif" font-size="21" font-weight="bold" fill="url(#goldGrad)" letter-spacing="1">দলিল রেকর্ড</text>
+    </g>
+
+    <!-- Subtle Diagonal Leather Sheen Highlight across Cover -->
+    <path d="M 270,140 L 460,140 L 270,720 Z" fill="#ffffff" opacity="0.04"/>
+  </g>
+</svg>
