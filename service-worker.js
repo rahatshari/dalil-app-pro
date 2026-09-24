@@ -1,21 +1,21 @@
-const CACHE_NAME = 'dalil-record-cache-v6';
+const CACHE_NAME = 'dalil-record-cache-v7';
 
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon.png',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
-  '/icon-maskable-192x192.png',
-  '/icon-maskable-512x512.png',
-  '/pwa-192x192.png',
-  '/pwa-512x512.png',
-  '/pwa-maskable-192x192.png',
-  '/pwa-maskable-512x512.png',
-  '/apple-touch-icon.png',
-  '/favicon-32x32.png',
-  '/favicon.ico'
+  './',
+  './index.html',
+  './manifest.json',
+  './icon.png',
+  './icon-192x192.png',
+  './icon-512x512.png',
+  './icon-maskable-192x192.png',
+  './icon-maskable-512x512.png',
+  './pwa-192x192.png',
+  './pwa-512x512.png',
+  './pwa-maskable-192x192.png',
+  './pwa-maskable-512x512.png',
+  './apple-touch-icon.png',
+  './favicon-32x32.png',
+  './favicon.ico'
 ];
 
 self.addEventListener('install', event => {
