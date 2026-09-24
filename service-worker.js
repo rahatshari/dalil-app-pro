@@ -1,16 +1,21 @@
-const CACHE_NAME = 'dalil-record-cache-v4';
+const CACHE_NAME = 'dalil-record-cache-v5';
 
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon.png',
-  '/pwa-192x192.png',
-  '/pwa-512x512.png',
-  '/pwa-maskable-192x192.png',
-  '/pwa-maskable-512x512.png',
-  '/apple-touch-icon.png',
-  '/favicon-32x32.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './icon.png',
+  './icon-192x192.png',
+  './icon-512x512.png',
+  './icon-maskable-192x192.png',
+  './icon-maskable-512x512.png',
+  './icons/icon-192x192.png',
+  './icons/icon-512x512.png',
+  './pwa-192x192.png',
+  './pwa-512x512.png',
+  './apple-touch-icon.png',
+  './favicon-32x32.png',
+  './favicon.ico'
 ];
 
 self.addEventListener('install', event => {
@@ -50,7 +55,7 @@ self.addEventListener('fetch', event => {
           return networkResponse;
         })
         .catch(() => {
-          return caches.match('/index.html') || caches.match('/');
+          return caches.match('./index.html') || caches.match('/index.html') || caches.match('./') || caches.match('/');
         })
     );
     return;
@@ -70,7 +75,6 @@ self.addEventListener('fetch', event => {
           }
           return networkResponse;
         }).catch(() => {
-          // Offline and not yet in cache: graceful fallback
           return new Response('', { status: 408, statusText: 'Offline font unavailable' });
         });
       })
@@ -82,7 +86,6 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(request, { ignoreSearch: true }).then(cachedResponse => {
       if (cachedResponse) {
-        // Return cached and background-update if connected
         fetch(request).then(networkResponse => {
           if (networkResponse && networkResponse.status === 200) {
             caches.open(CACHE_NAME).then(cache => cache.put(request, networkResponse));
@@ -98,7 +101,7 @@ self.addEventListener('fetch', event => {
         return networkResponse;
       }).catch(() => {
         if (request.destination === 'document' || request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match('./index.html') || caches.match('/index.html');
         }
       });
     })
