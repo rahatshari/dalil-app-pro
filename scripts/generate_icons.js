@@ -201,7 +201,7 @@ function createBookSvg(isMaskable = false) {
       <rect x="-115" y="-15" width="230" height="30" rx="4" fill="#0d1b38"/>
       
       <!-- Text inside plate -->
-      <text x="0" y="7" text-anchor="middle" font-family="'SolaimanLipi', 'Noto Sans Bengali', 'Segoe UI', 'Roboto', sans-serif" font-size="21" font-weight="bold" fill="url(#goldGrad)" letter-spacing="1">দলিল রেকর্ড</text>
+      <text x="0" y="7" text-anchor="middle" font-family="'SolaimanLipi', 'Noto Sans Bengali', 'Segoe UI', 'Roboto', sans-serif" font-size="21" font-weight="bold" fill="url(#goldGrad)" letter-spacing="1">দলিল ফিগার</text>
     </g>
 
     <!-- Subtle Diagonal Leather Sheen Highlight across Cover -->

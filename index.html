@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>দলিল সংরক্ষণ (Dalil Record)</title>
-    <meta name="description" content="দলিল সংরক্ষণ ও প্রিন্ট প্রস্তুতকারী অ্যাপ্লিকেশন - জমি জমা সংক্রান্ত দলিল সংরক্ষণ ও প্রিন্ট পেজ জেনারেটর">
-    <meta property="og:title" content="দলিল সংরক্ষণ (Dalil Record)">
-    <meta property="og:description" content="দলিল সংরক্ষণ ও প্রিন্ট প্রস্তুতকারী অ্যাপ্লিকেশন - জমি জমা সংক্রান্ত দলিল সংরক্ষণ ও প্রিন্ট পেজ জেনারেটর">
+    <title>দলিল ফিগার (Dalil Figure)</title>
+    <meta name="description" content="দলিল ফিগার ও প্রিন্ট প্রস্তুতকারী অ্যাপ্লিকেশন - জমি জমা সংক্রান্ত দলিল সংরক্ষণ ও প্রিন্ট পেজ জেনারেটর">
+    <meta property="og:title" content="দলিল ফিগার (Dalil Figure)">
+    <meta property="og:description" content="দলিল ফিগার ও প্রিন্ট প্রস্তুতকারী অ্যাপ্লিকেশন - জমি জমা সংক্রান্ত দলিল সংরক্ষণ ও প্রিন্ট পেজ জেনারেটর">
     <meta property="og:type" content="website">
     <!-- PWA Link & Icons (Relative paths for GitHub Pages & Root domain compatibility) -->
     <link rel="manifest" href="manifest.json">
@@ -14,7 +14,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="দলিল রেকর্ড">
+    <meta name="apple-mobile-web-app-title" content="দলিল ফিগার">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -117,48 +117,22 @@
         .pwa-install-btn:hover { background: #1557b0; }
         .pwa-install-btn:active { transform: scale(0.97); }
 
-        /* Offline connectivity badge */
-        .network-status-badge {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 2000;
-            background: #202124;
-            color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 500;
-            display: flex;
+        /* Top bar offline indicator badge */
+        .header-offline-badge {
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-            animation: fadeInStatus 0.3s ease-in-out;
-        }
-        .network-status-badge.offline {
-            background: #d93025;
-        }
-        .network-status-badge.online {
-            background: #1e8e3e;
-        }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ffffff;
-            display: inline-block;
-        }
-        .network-status-badge.offline .status-dot {
-            animation: pulseStatusDot 1.5s infinite;
-        }
-        @keyframes pulseStatusDot {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(1.4); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        @keyframes fadeInStatus {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            gap: 4px;
+            background: #fef7e0;
+            color: #b06000;
+            border: 1px solid #f9ab00;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 7px;
+            border-radius: 12px;
+            margin-left: 6px;
+            vertical-align: middle;
+            user-select: none;
+            cursor: default;
         }
 
         /* Custom Modal Styles */
@@ -613,7 +587,7 @@
                 color: #000; 
                 font-family: 'Times New Roman', serif; 
             }
-            .no-print, .app-bar, .bottom-bar { display: none !important; }
+            .no-print, .app-bar, .bottom-bar, .header-offline-badge { display: none !important; }
             
             .container, #pdf-section, .table-responsive { 
                 box-shadow: none !important; 
@@ -681,7 +655,11 @@
         </button>
         <h1>
             <img src="icon-192.png" alt="দলিল লোগো" style="width:26px; height:26px; border-radius:6px; object-fit:cover; vertical-align:middle; box-shadow:0 1px 3px rgba(0,0,0,0.12);">
-            দলিল সংরক্ষণ
+            <span>দলিল ফিগার</span>
+            <span id="header-offline-badge" class="header-offline-badge" style="display: none;" title="অফলাইনে কাজ করছে — সমস্ত ডেটা আপনার ফোনেই সংরক্ষিত">
+                <span class="material-icons" style="font-size:13px;">cloud_off</span>
+                <span>অফলাইন</span>
+            </span>
         </h1>
         
         <div class="app-bar-actions">
@@ -789,7 +767,7 @@
             </div>
 
             <!-- 4. গ্রহীতা -->
-            <div class="form-group" style="margin-bottom: 20px;">
+            <div class="form-group" style="margin-top: 20px; margin-bottom: 20px;">
                 <label>৪. গ্রহীতার বিবরণ</label>
                 <div id="receivers-container"></div>
                 <button class="action-btn add-more-btn" onclick="addReceiverField()">
@@ -890,12 +868,6 @@
 <!-- Toast Notification Element -->
 <div id="toast" class="toast no-print"></div>
 
-<!-- Network Status Offline/Online Badge -->
-<div id="network-status-badge" class="network-status-badge no-print" style="display: none;">
-    <span class="status-dot"></span>
-    <span id="network-status-text">অফলাইন মোড — ডেটা ডিভাইসে সুরক্ষিত আছে</span>
-</div>
-
 <!-- Multi-file Backup Import Modal -->
 <div id="import-modal" class="custom-modal-overlay no-print" style="display: none;">
     <div class="custom-modal-card">
@@ -974,7 +946,7 @@
             <div style="display:flex; align-items:center; gap:14px; background:#e8f0fe; border:1px solid #d2e3fc; padding:12px 14px; border-radius:12px; margin-bottom:16px;">
                 <img src="icon-192.png" alt="লোগো" style="width:48px; height:48px; border-radius:10px; object-fit:cover; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
                 <div>
-                    <div style="font-weight:700; font-size:15px; color:#1a73e8;">দলিল সংরক্ষণ (Dalil Record)</div>
+                    <div style="font-weight:700; font-size:15px; color:#1a73e8;">দলিল ফিগার (Dalil Figure)</div>
                     <div style="font-size:12px; color:#5f6368; margin-top:2px;">ইন্টারনেট সংযোগ ছাড়াই ১০০% অফলাইনে কাজ করবে</div>
                 </div>
             </div>
@@ -1588,7 +1560,7 @@
             deferredInstallPrompt = null;
             updateInstallUI(false);
             closeInstallModal();
-            showToast("দলিল সংরক্ষণ অ্যাপটি সফলভাবে ডিভাইসে ইনস্টল হয়েছে!");
+            showToast("দলিল ফিগার অ্যাপটি সফলভাবে ডিভাইসে ইনস্টল হয়েছে!");
         });
 
         // Always show install triggers in browser tabs if not running standalone
@@ -1668,27 +1640,16 @@
         if (modal) modal.style.display = 'none';
     }
 
-    // --- Offline Connectivity State Handler ---
+    // --- Offline Connectivity State Handler (Header Indicator) ---
     function initOfflineDetection() {
-        function checkStatus() {
-            const badge = document.getElementById('network-status-badge');
-            const badgeText = document.getElementById('network-status-text');
-            if (!badge || !badgeText) return;
+        const badge = document.getElementById('header-offline-badge');
+        if (!badge) return;
 
+        function checkStatus() {
             if (!navigator.onLine) {
-                badge.className = 'network-status-badge offline';
-                badgeText.innerText = 'অফলাইন মোড — ইন্টারনেট ছাড়াই ডেটা সংরক্ষিত আছে';
-                badge.style.display = 'flex';
+                badge.style.display = 'inline-flex';
             } else {
-                if (badge.classList.contains('offline')) {
-                    badge.className = 'network-status-badge online';
-                    badgeText.innerText = 'পুনরায় অনলাইনে সংযুক্ত হয়েছে';
-                    setTimeout(() => {
-                        if (navigator.onLine) badge.style.display = 'none';
-                    }, 3000);
-                } else {
-                    badge.style.display = 'none';
-                }
+                badge.style.display = 'none';
             }
         }
 
