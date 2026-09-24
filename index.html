@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>দলিল সংরক্ষণ (Dalil Record)</title>
+    <meta name="description" content="দলিল সংরক্ষণ ও প্রিন্ট প্রস্তুতকারী অ্যাপ্লিকেশন - জমি জমা সংক্রান্ত দলিল সংরক্ষণ ও প্রিন্ট পেজ জেনারেটর">
+    <meta property="og:title" content="দলিল সংরক্ষণ (Dalil Record)">
+    <meta property="og:description" content="দলিল সংরক্ষণ ও প্রিন্ট প্রস্তুতকারী অ্যাপ্লিকেশন - জমি জমা সংক্রান্ত দলিল সংরক্ষণ ও প্রিন্ট পেজ জেনারেটর">
+    <meta property="og:type" content="website">
     <!-- PWA Link -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#1a73e8">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="দলিল রেকর্ড">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png">
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -23,7 +33,7 @@
             -webkit-tap-highlight-color: transparent;
         }
         html, body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Noto Sans Bengali', 'SolaimanLipi', 'Kalpurush', sans-serif;
             background-color: #f2f2f7; 
             color: #1c1e21;
             margin: 0;
@@ -79,6 +89,245 @@
             color: #5f6368;
         }
         .settings-btn:active { background: #f1f3f4; }
+
+        /* Top bar actions & PWA Install Button */
+        .app-bar-actions {
+            position: absolute;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pwa-install-btn {
+            background: #1a73e8;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(26,115,232,0.3);
+            transition: all 0.2s;
+        }
+        .pwa-install-btn:hover { background: #1557b0; }
+        .pwa-install-btn:active { transform: scale(0.97); }
+
+        /* Offline connectivity badge */
+        .network-status-badge {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 2000;
+            background: #202124;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+            animation: fadeInStatus 0.3s ease-in-out;
+        }
+        .network-status-badge.offline {
+            background: #d93025;
+        }
+        .network-status-badge.online {
+            background: #1e8e3e;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: inline-block;
+        }
+        .network-status-badge.offline .status-dot {
+            animation: pulseStatusDot 1.5s infinite;
+        }
+        @keyframes pulseStatusDot {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.4); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fadeInStatus {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Modal Styles */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 16px;
+        }
+        .custom-modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            animation: popModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes popModal {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .custom-modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #dadce0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8f9fa;
+            border-radius: 16px 16px 0 0;
+        }
+        .custom-modal-header h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #202124;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .custom-modal-close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #5f6368;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+        .custom-modal-close-btn:hover { background: #e8eaed; }
+        .custom-modal-body {
+            padding: 20px;
+            font-size: 14px;
+            color: #3c4043;
+        }
+        .custom-modal-footer {
+            padding: 12px 20px;
+            border-top: 1px solid #e8eaed;
+            background: #f8f9fa;
+            border-radius: 0 0 16px 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .import-stat-banner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .import-stat-card {
+            background: #e8f0fe;
+            border: 1px solid #d2e3fc;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .import-stat-val {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a73e8;
+        }
+        .import-stat-lbl {
+            font-size: 12px;
+            color: #5f6368;
+            margin-top: 2px;
+        }
+        .files-summary-list {
+            background: #f8f9fa;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            max-height: 140px;
+            overflow-y: auto;
+            padding: 8px 12px;
+            margin: 10px 0 15px 0;
+        }
+        .file-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 13px;
+            border-bottom: 1px dashed #e8eaed;
+        }
+        .file-summary-row:last-child { border-bottom: none; }
+        .file-name-text {
+            color: #202124;
+            font-weight: 500;
+            max-width: 260px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .file-count-badge {
+            background: #e8eaed;
+            color: #3c4043;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .import-strategy-box {
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .strategy-radio-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #202124;
+        }
+        .strategy-radio-label input[type="radio"] {
+            margin-top: 3px;
+            accent-color: #1a73e8;
+        }
+        .dedup-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 26px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #5f6368;
+        }
+        .dedup-checkbox-label input[type="checkbox"] {
+            accent-color: #1a73e8;
+        }
         
         .settings-menu {
             display: none;
@@ -426,15 +675,26 @@
 
     <!-- App Top Bar -->
     <div class="app-bar no-print">
-        <button class="settings-btn" onclick="toggleSettings()">
+        <button class="settings-btn" onclick="toggleSettings()" title="মেনু ও সেটিংস">
             <span class="material-icons">menu</span>
         </button>
         <h1><span class="material-icons" style="font-size:22px;">library_books</span> দলিল সংরক্ষণ</h1>
         
+        <div class="app-bar-actions">
+            <button id="pwa-install-btn" class="pwa-install-btn" onclick="triggerPWAInstall()" style="display: none;" title="অ্যাপ ইনস্টল করুন">
+                <span class="material-icons" style="font-size:18px;">get_app</span>
+                <span class="install-text">ইনস্টল</span>
+            </button>
+        </div>
+
         <!-- Settings Menu -->
         <div id="settings-menu" class="settings-menu">
             <h4>ডেটা ও অ্যাপ সেটিং</h4>
             <ul>
+                <li id="menu-install-item" onclick="triggerPWAInstall()" style="display: none;">
+                    <span class="material-icons" style="color:#1a73e8;">install_mobile</span>
+                    <span style="color:#1a73e8; font-weight: 500;">অ্যাপ ইনস্টল করুন (Offline)</span>
+                </li>
                 <li>
                     <label style="display:flex; align-items:center; gap:12px; cursor:pointer; width:100%; margin:0;">
                         <input type="checkbox" id="toggle-mother-name" onchange="toggleMotherSettings(this.checked)" style="width:18px; height:18px; margin:0;">
@@ -451,11 +711,11 @@
                         </select>
                     </div>
                 </li>
-                <li onclick="exportData()"><span class="material-icons">cloud_download</span> ব্যাকআপ নিন</li>
-                <li onclick="document.getElementById('importFile').click()"><span class="material-icons">cloud_upload</span> রিস্টোর করুন</li>
+                <li onclick="exportData()"><span class="material-icons">cloud_download</span> ব্যাকআপ নিন (ডাউনলোড)</li>
+                <li onclick="openMultiFileInput()"><span class="material-icons">cloud_upload</span> ব্যাকআপ রিস্টোর (এক বা একাধিক ফাইল)</li>
             </ul>
         </div>
-        <input type="file" id="importFile" style="display:none;" accept=".json" onchange="importData(event)">
+        <input type="file" id="importFile" style="display:none;" accept=".json" multiple onchange="handleBackupFileSelect(event)">
     </div>
 
 <div class="container">
@@ -621,6 +881,96 @@
 <!-- Toast Notification Element -->
 <div id="toast" class="toast no-print"></div>
 
+<!-- Network Status Offline/Online Badge -->
+<div id="network-status-badge" class="network-status-badge no-print" style="display: none;">
+    <span class="status-dot"></span>
+    <span id="network-status-text">অফলাইন মোড — ডেটা ডিভাইসে সুরক্ষিত আছে</span>
+</div>
+
+<!-- Multi-file Backup Import Modal -->
+<div id="import-modal" class="custom-modal-overlay no-print" style="display: none;">
+    <div class="custom-modal-card">
+        <div class="custom-modal-header">
+            <h3><span class="material-icons" style="color:#1a73e8;">cloud_upload</span> ব্যাকআপ ফাইল ইমপোর্ট</h3>
+            <button class="custom-modal-close-btn" onclick="closeImportModal()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="custom-modal-body">
+            <div class="import-stat-banner">
+                <div class="import-stat-card">
+                    <div class="import-stat-val" id="modal-file-count">০</div>
+                    <div class="import-stat-lbl">নির্বাচিত ফাইল</div>
+                </div>
+                <div class="import-stat-card">
+                    <div class="import-stat-val" id="modal-record-count">০</div>
+                    <div class="import-stat-lbl">প্রাপ্ত দলিল রেকর্ড</div>
+                </div>
+            </div>
+
+            <div style="font-weight: 500; margin-bottom: 5px; color: #202124;">ফাইলসমূহের তালিকা:</div>
+            <div id="modal-files-list" class="files-summary-list"></div>
+
+            <div style="margin: 10px 0 12px 0; font-size: 13px; color: #5f6368;">
+                বর্তমান অ্যাপ তালিকায় সংরক্ষিত দলিল: <b id="modal-current-count" style="color:#202124;">০</b> টি
+            </div>
+
+            <div class="import-strategy-box">
+                <label class="strategy-radio-label">
+                    <input type="radio" name="import-strategy" id="strategy-merge" value="merge" checked onchange="toggleDedupCheckbox(true)">
+                    <div>
+                        <b>বর্তমান তালিকার সাথে যুক্ত করুন (Merge)</b>
+                        <div style="font-size: 12px; color: #5f6368; margin-top: 2px;">বর্তমান তথ্য অক্ষুণ্ণ রেখে নতুন তথ্যগুলো তালিকায় যোগ করা হবে।</div>
+                    </div>
+                </label>
+                <label class="dedup-checkbox-label" id="dedup-option-container">
+                    <input type="checkbox" id="import-skip-duplicates" checked>
+                    <span>একই দলিল নং থাকলে ডুপ্লিকেট এড়িয়ে চলুন</span>
+                </label>
+
+                <hr style="border:none; border-top:1px solid #dadce0; margin: 4px 0;">
+
+                <label class="strategy-radio-label">
+                    <input type="radio" name="import-strategy" id="strategy-replace" value="replace" onchange="toggleDedupCheckbox(false)">
+                    <div>
+                        <b>বর্তমান তালিকা মুছে নতুনভাবে বসান (Replace)</b>
+                        <div style="font-size: 12px; color: #d93025; margin-top: 2px;">বর্তমান সব দলিল মুছে শুধু এই ব্যাকআপের তথ্যগুলো বসবে।</div>
+                    </div>
+                </label>
+            </div>
+        </div>
+        <div class="custom-modal-footer">
+            <button class="action-btn" style="background:#dadce0; color:#3c4043; border-radius:8px; padding:10px 18px; font-size:14px;" onclick="closeImportModal()">বাতিল</button>
+            <button class="action-btn" style="background:#1a73e8; border-radius:8px; padding:10px 20px; font-size:14px;" onclick="confirmMultiImport()">
+                <span class="material-icons" style="font-size: 18px; margin-right: 4px;">check_circle</span> ইমপোর্ট সম্পন্ন করুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- iOS Install Guide Modal -->
+<div id="ios-install-modal" class="custom-modal-overlay no-print" style="display: none;">
+    <div class="custom-modal-card" style="max-width: 420px;">
+        <div class="custom-modal-header">
+            <h3><span class="material-icons" style="color:#1a73e8;">apple</span> iPhone / iPad-এ ইনস্টল করুন</h3>
+            <button class="custom-modal-close-btn" onclick="closeIOSModal()">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="custom-modal-body" style="font-size: 14px; line-height: 1.6;">
+            <p style="margin-top:0;">এই অ্যাপটি ইন্টারনেট ছাড়াই অফলাইনে ব্যবহার করতে হোম স্ক্রিনে যুক্ত করুন:</p>
+            <ol style="padding-left: 20px; margin-bottom: 0;">
+                <li style="margin-bottom: 10px;">সাফারি (Safari) ব্রাউজারের নিচে শেয়ার বোতামে (<span class="material-icons" style="font-size:16px; vertical-align:middle; color:#1a73e8;">ios_share</span>) চাপুন।</li>
+                <li style="margin-bottom: 10px;">নিচের দিকে স্ক্রল করে <b>'Add to Home Screen'</b> (হোম স্ক্রিনে যোগ করুন) বাছাই করুন।</li>
+                <li>উপরে ডানে <b>'Add'</b> চাপলে অ্যাপটি হোম স্ক্রিনে ইনস্টল হয়ে যাবে।</li>
+            </ol>
+        </div>
+        <div class="custom-modal-footer">
+            <button class="action-btn" style="background:#1a73e8; border-radius:8px; padding:8px 18px; font-size:14px;" onclick="closeIOSModal()">ঠিক আছে</button>
+        </div>
+    </div>
+</div>
+
 <script>
     let dalilRecords = [];
     let editIndex = -1; 
@@ -654,8 +1004,15 @@
         loadGlobalHeader();
         loadFormDraft();
         
+        initPWAInstall();
+        initOfflineDetection();
+
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js').catch(err => console.log('SW Failed:', err));
+            navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+                .then(reg => {
+                    console.log('PWA Service Worker active:', reg.scope);
+                })
+                .catch(err => console.log('SW Registration Failed:', err));
         }
     };
 
@@ -1036,33 +1393,283 @@
         const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(dalilRecords)], { type: "application/json" })); a.download = `Dalil_Backup_${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); toggleSettings(); showToast("ব্যাকআপ ডাউনলোড শুরু হয়েছে!");
     }
 
-    function importData(event) {
-        const file = event.target.files[0]; if (!file) return; const reader = new FileReader();
-        reader.onload = function(e) {
-            try { 
-                const importedData = JSON.parse(e.target.result); 
-                if (Array.isArray(importedData)) { 
-                    if(dalilRecords.length > 0) {
-                        let mergeConfirm = confirm("আপনি কি বর্তমান তালিকার সাথে ব্যাকআপের তথ্যগুলো যুক্ত করতে চান?\n\n'OK' চাপলে বর্তমান তালিকার সাথে যুক্ত হবে।\n'Cancel' চাপলে বর্তমান তালিকা মুছে গিয়ে শুধু ব্যাকআপের তথ্য বসবে।");
-                        if(mergeConfirm) {
-                            dalilRecords = dalilRecords.concat(importedData);
-                        } else {
-                            dalilRecords = importedData;
+    // --- PWA Installation & Device Integration ---
+    let deferredInstallPrompt = null;
+
+    function initPWAInstall() {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            updateInstallUI(true);
+        });
+
+        window.addEventListener('appinstalled', () => {
+            deferredInstallPrompt = null;
+            updateInstallUI(false);
+            showToast("দলিল সংরক্ষণ অ্যাপটি সফলভাবে ডিভাইসে ইনস্টল হয়েছে!");
+        });
+
+        if (!isAppRunningStandalone()) {
+            const isIOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+            if (isIOS) {
+                updateInstallUI(true);
+            }
+        }
+    }
+
+    function isAppRunningStandalone() {
+        return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+
+    function updateInstallUI(visible) {
+        if (isAppRunningStandalone()) {
+            visible = false;
+        }
+        const installBtn = document.getElementById('pwa-install-btn');
+        const menuInstallItem = document.getElementById('menu-install-item');
+        if (installBtn) installBtn.style.display = visible ? 'inline-flex' : 'none';
+        if (menuInstallItem) menuInstallItem.style.display = visible ? 'flex' : 'none';
+    }
+
+    function triggerPWAInstall() {
+        if (isAppRunningStandalone()) {
+            showToast("অ্যাপটি ইতিমধ্যে আপনার ডিভাইসে ইনস্টল করা আছে!");
+            return;
+        }
+
+        if (deferredInstallPrompt) {
+            deferredInstallPrompt.prompt();
+            deferredInstallPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    showToast("অ্যাপ ইনস্টলেশন শুরু হয়েছে...");
+                }
+                deferredInstallPrompt = null;
+            });
+        } else {
+            const isIOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+            if (isIOS) {
+                document.getElementById('ios-install-modal').style.display = 'flex';
+            } else {
+                showToast("ব্রাউজার মেনু (⋮) থেকে 'Add to Home Screen' বা 'Install App' নির্বাচন করুন।");
+            }
+        }
+        const menu = document.getElementById('settings-menu');
+        if (menu) menu.style.display = 'none';
+    }
+
+    function closeIOSModal() {
+        document.getElementById('ios-install-modal').style.display = 'none';
+    }
+
+    // --- Offline Connectivity State Handler ---
+    function initOfflineDetection() {
+        function checkStatus() {
+            const badge = document.getElementById('network-status-badge');
+            const badgeText = document.getElementById('network-status-text');
+            if (!badge || !badgeText) return;
+
+            if (!navigator.onLine) {
+                badge.className = 'network-status-badge offline';
+                badgeText.innerText = 'অফলাইন মোড — ইন্টারনেট ছাড়াই ডেটা সংরক্ষিত আছে';
+                badge.style.display = 'flex';
+            } else {
+                if (badge.classList.contains('offline')) {
+                    badge.className = 'network-status-badge online';
+                    badgeText.innerText = 'পুনরায় অনলাইনে সংযুক্ত হয়েছে';
+                    setTimeout(() => {
+                        if (navigator.onLine) badge.style.display = 'none';
+                    }, 3000);
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        window.addEventListener('online', checkStatus);
+        window.addEventListener('offline', checkStatus);
+        checkStatus();
+    }
+
+    // --- Multi-File Backup Import & Export Engine ---
+    let stagedImportData = null;
+
+    function openMultiFileInput() {
+        const menu = document.getElementById('settings-menu');
+        if (menu) menu.style.display = 'none';
+        document.getElementById('importFile').click();
+    }
+
+    function readFileAsText(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve({ name: file.name, content: e.target.result });
+            reader.onerror = () => reject(new Error(`${file.name} ফাইলটি পড়তে ব্যর্থ হয়েছে`));
+            reader.readAsText(file);
+        });
+    }
+
+    async function handleBackupFileSelect(event) {
+        const fileList = event.target.files;
+        if (!fileList || fileList.length === 0) return;
+
+        const files = Array.from(fileList);
+        let allExtractedRecords = [];
+        let fileSummaries = [];
+
+        for (const file of files) {
+            try {
+                const res = await readFileAsText(file);
+                const parsed = JSON.parse(res.content);
+                let records = [];
+
+                if (Array.isArray(parsed)) {
+                    records = parsed;
+                } else if (parsed && Array.isArray(parsed.dalilRecords)) {
+                    records = parsed.dalilRecords;
+                } else if (parsed && typeof parsed === 'object' && (parsed.dalil_no || parsed.khatians)) {
+                    records = [parsed];
+                }
+
+                // Filter & normalize valid records
+                const validRecords = records.filter(r => r && typeof r === 'object' && (r.dalil_no || r.receiversHTML || r.khatians || r.dateVal));
+
+                if (validRecords.length > 0) {
+                    validRecords.forEach(r => {
+                        if (!r.khatians || !Array.isArray(r.khatians) || r.khatians.length === 0) {
+                            r.khatians = [{ type: '', no: '-', land: '-', dag: '-' }];
                         }
+                        if (!r.rawReceivers) r.rawReceivers = [];
+                        if (!r.rawDonors) r.rawDonors = [];
+                        if (!r.total_land) r.total_land = '-';
+                        if (!r.dateVal) r.dateVal = '-';
+                        if (!r.dalil_no) r.dalil_no = '-';
+                    });
+                    allExtractedRecords.push(...validRecords);
+                    fileSummaries.push({ name: file.name, count: validRecords.length, valid: true });
+                } else {
+                    fileSummaries.push({ name: file.name, count: 0, valid: false, reason: 'কোনো বৈধ দলিল তথ্য নেই' });
+                }
+            } catch (err) {
+                fileSummaries.push({ name: file.name, count: 0, valid: false, reason: 'ভুল JSON ফরম্যাট' });
+            }
+        }
+
+        event.target.value = ""; // Clear file input so same files can be re-selected if needed
+
+        if (allExtractedRecords.length === 0) {
+            showToast("নির্বাচিত ফাইলে কোনো সঠিক দলিল রেকর্ড পাওয়া যায়নি!");
+            return;
+        }
+
+        // Stage data and open modal
+        stagedImportData = {
+            records: allExtractedRecords,
+            summaries: fileSummaries,
+            totalFiles: files.length
+        };
+
+        showImportModal();
+    }
+
+    function showImportModal() {
+        if (!stagedImportData) return;
+
+        document.getElementById('modal-file-count').innerText = toBanglaNum(stagedImportData.totalFiles);
+        document.getElementById('modal-record-count').innerText = toBanglaNum(stagedImportData.records.length);
+        document.getElementById('modal-current-count').innerText = toBanglaNum(dalilRecords.length);
+
+        const listContainer = document.getElementById('modal-files-list');
+        listContainer.innerHTML = '';
+
+        stagedImportData.summaries.forEach(f => {
+            const row = document.createElement('div');
+            row.className = 'file-summary-row';
+            row.innerHTML = `
+                <span class="file-name-text" title="${f.name}">
+                    <span class="material-icons" style="font-size:16px; color:${f.valid ? '#1a73e8' : '#d93025'};">description</span>
+                    ${f.name}
+                </span>
+                <span class="file-count-badge" style="${!f.valid ? 'background:#fce8e6; color:#c5221f;' : ''}">
+                    ${f.valid ? `${toBanglaNum(f.count)}টি দলিল` : 'অকার্যকর'}
+                </span>
+            `;
+            listContainer.appendChild(row);
+        });
+
+        // Default to merge option
+        document.getElementById('strategy-merge').checked = true;
+        document.getElementById('import-skip-duplicates').checked = true;
+        toggleDedupCheckbox(true);
+
+        document.getElementById('import-modal').style.display = 'flex';
+    }
+
+    function closeImportModal() {
+        document.getElementById('import-modal').style.display = 'none';
+        stagedImportData = null;
+    }
+
+    function toggleDedupCheckbox(enable) {
+        const container = document.getElementById('dedup-option-container');
+        if (container) {
+            container.style.opacity = enable ? '1' : '0.4';
+            container.style.pointerEvents = enable ? 'auto' : 'none';
+        }
+    }
+
+    function confirmMultiImport() {
+        if (!stagedImportData || !stagedImportData.records.length) {
+            closeImportModal();
+            return;
+        }
+
+        const isMerge = document.getElementById('strategy-merge').checked;
+        const skipDuplicates = document.getElementById('import-skip-duplicates').checked;
+        let importedCount = 0;
+        let duplicateSkippedCount = 0;
+
+        if (isMerge) {
+            if (skipDuplicates) {
+                // Avoid duplicate দলিল নং
+                const existingNos = new Set(dalilRecords.map(r => String(r.dalil_no || '').trim().toLowerCase()).filter(Boolean));
+                const itemsToAdd = [];
+
+                stagedImportData.records.forEach(r => {
+                    const dNo = String(r.dalil_no || '').trim().toLowerCase();
+                    if (dNo && dNo !== '-' && existingNos.has(dNo)) {
+                        duplicateSkippedCount++;
                     } else {
-                        dalilRecords = importedData;
+                        if (dNo && dNo !== '-') existingNos.add(dNo);
+                        itemsToAdd.push(r);
                     }
-                    recalculateSerialNumbers(); 
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords)); 
-                    renderTable(); 
-                    showToast("ডেটা সফলভাবে রিস্টোর হয়েছে!"); 
-                } else alert("ফাইল ফরম্যাটটি সঠিক নয়।"); 
-            } catch (err) { 
-                alert("ফাইলটি পড়া যাচ্ছে না।"); 
-            } 
-            event.target.value = ""; 
-        }; 
-        reader.readAsText(file); toggleSettings(); 
+                });
+
+                dalilRecords = dalilRecords.concat(itemsToAdd);
+                importedCount = itemsToAdd.length;
+            } else {
+                dalilRecords = dalilRecords.concat(stagedImportData.records);
+                importedCount = stagedImportData.records.length;
+            }
+        } else {
+            // Replace all
+            dalilRecords = stagedImportData.records;
+            importedCount = stagedImportData.records.length;
+        }
+
+        recalculateSerialNumbers();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords));
+        renderTable();
+        closeImportModal();
+
+        if (duplicateSkippedCount > 0) {
+            showToast(`${toBanglaNum(importedCount)}টি দলিল যোগ হয়েছে (${toBanglaNum(duplicateSkippedCount)}টি ডুপ্লিকেট বাদ দেওয়া হয়েছে)!`);
+        } else {
+            showToast(`সফলভাবে ${toBanglaNum(importedCount)}টি দলিল রেকর্ড সংরক্ষিত হয়েছে!`);
+        }
+    }
+
+    function importData(event) {
+        handleBackupFileSelect(event);
     }
 </script>
 </body>

@@ -1,16 +1,32 @@
 {
-  "name": "দলিল সংরক্ষণ",
-  "short_name": "দলিল",
-  "start_url": "index.html",
+  "id": "/",
+  "name": "দলিল সংরক্ষণ (Dalil Record)",
+  "short_name": "দলিল রেকর্ড",
+  "description": "দলিল সংরক্ষণ ও প্রিন্ট প্রস্তুতকারী অফলাইন অ্যাপ্লিকেশন",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#f2f2f7",
+  "background_color": "#ffffff",
   "theme_color": "#1a73e8",
+  "orientation": "any",
   "icons": [
     {
-      "src": "icon.png",
-      "sizes": "144x144 192x192 512x512 any",
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
