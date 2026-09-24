@@ -1,22 +1,24 @@
-const CACHE_NAME = 'dalil-record-v9';
+const CACHE_NAME = 'dalil-record-cache-v11';
 
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
+  './apple-touch-icon.png',
+  './favicon.ico'
 ];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(async cache => {
-      // Cache each asset individually to prevent any single asset from failing SW installation
       for (const asset of STATIC_ASSETS) {
         try {
           await cache.add(asset);
-        } catch (e) {
-          console.warn('Pre-cache skip for:', asset, e);
+        } catch (err) {
+          console.warn('Pre-cache skip:', asset, err);
         }
       }
     })
@@ -39,61 +41,57 @@ self.addEventListener('fetch', event => {
   const request = event.request;
   const url = new URL(request.url);
 
-  // For HTML navigation requests, try network first, fallback to cached index.html
+  // 1. Navigation (HTML pages)
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .then(networkResponse => {
           if (networkResponse && networkResponse.status === 200) {
-            const clonedResponse = networkResponse.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(request, clonedResponse));
+            const cloned = networkResponse.clone();
+            caches.open(CACHE_NAME).then(c => c.put(request, cloned));
           }
           return networkResponse;
         })
-        .catch(() => {
-          return caches.match('/index.html') || caches.match('/');
+        .catch(async () => {
+          return (await caches.match('./index.html')) || 
+                 (await caches.match('index.html')) || 
+                 (await caches.match('./')) || 
+                 (await caches.match('/'));
         })
     );
     return;
   }
 
-  // Handle Google Fonts (cache-first)
+  // 2. Google Fonts
   if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com') {
     event.respondWith(
-      caches.match(request).then(cachedResponse => {
-        if (cachedResponse) return cachedResponse;
+      caches.match(request).then(cached => {
+        if (cached) return cached;
         return fetch(request).then(networkResponse => {
           if (networkResponse && (networkResponse.status === 200 || networkResponse.type === 'opaque')) {
-            const clonedResponse = networkResponse.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(request, clonedResponse));
+            const cloned = networkResponse.clone();
+            caches.open(CACHE_NAME).then(c => c.put(request, cloned));
           }
           return networkResponse;
-        }).catch(() => {
-          return new Response('', { status: 408, statusText: 'Offline font unavailable' });
-        });
+        }).catch(() => new Response('', { status: 408, statusText: 'Offline font' }));
       })
     );
     return;
   }
 
-  // For single icon and other local assets: Cache first, fallback to network
+  // 3. Static assets: Cache First, fallback to Network
   event.respondWith(
-    caches.match(request, { ignoreSearch: true }).then(cachedResponse => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+    caches.match(request, { ignoreSearch: true }).then(cached => {
+      if (cached) return cached;
       return fetch(request).then(networkResponse => {
         if (networkResponse && networkResponse.status === 200) {
-          const clonedResponse = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, clonedResponse));
+          const cloned = networkResponse.clone();
+          caches.open(CACHE_NAME).then(c => c.put(request, cloned));
         }
         return networkResponse;
-      }).catch(() => {
-        if (request.destination === 'image' && url.pathname.includes('icon')) {
-          return caches.match('/icon.png');
-        }
-        if (request.destination === 'document' || request.mode === 'navigate') {
-          return caches.match('/index.html');
+      }).catch(async () => {
+        if (request.destination === 'image' && (url.pathname.endsWith('.png') || url.pathname.endsWith('.ico'))) {
+          return (await caches.match('./icon-192.png')) || (await caches.match('./icon-512.png'));
         }
       });
     })

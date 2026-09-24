@@ -211,20 +211,40 @@ function createBookSvg(isMaskable = false) {
 }
 
 async function generateSingleIcon() {
-  console.log('Generating single book ledger icon...');
+  console.log('Generating book ledger icon in all standard PWA formats...');
   const svgMaskable = createBookSvg(true);
+  const svgBuffer = Buffer.from(svgMaskable);
 
-  // Generate single icon.png (512x512 Truecolor RGBA, no palette)
-  const dest = path.join(rootDir, 'icon.png');
-  const buf = await sharp(Buffer.from(svgMaskable))
+  // 1. icon-512.png (512x512 32-bit RGBA)
+  const buf512 = await sharp(svgBuffer)
     .resize(512, 512)
     .png({ palette: false, quality: 100 })
     .toBuffer();
-  fs.writeFileSync(dest, buf);
-  console.log('Successfully generated single icon.png (512x512 RGBA)!');
+  fs.writeFileSync(path.join(rootDir, 'icon-512.png'), buf512);
+  fs.writeFileSync(path.join(rootDir, 'icon.png'), buf512);
 
-  // Also sync favicon.ico with the same icon
-  fs.writeFileSync(path.join(rootDir, 'favicon.ico'), buf);
+  // 2. icon-192.png (192x192 32-bit RGBA)
+  const buf192 = await sharp(svgBuffer)
+    .resize(192, 192)
+    .png({ palette: false, quality: 100 })
+    .toBuffer();
+  fs.writeFileSync(path.join(rootDir, 'icon-192.png'), buf192);
+
+  // 3. apple-touch-icon.png (180x180 32-bit RGBA)
+  const buf180 = await sharp(svgBuffer)
+    .resize(180, 180)
+    .png({ palette: false, quality: 100 })
+    .toBuffer();
+  fs.writeFileSync(path.join(rootDir, 'apple-touch-icon.png'), buf180);
+
+  // 4. favicon.ico (32x32)
+  const buf32 = await sharp(svgBuffer)
+    .resize(32, 32)
+    .png({ palette: false, quality: 100 })
+    .toBuffer();
+  fs.writeFileSync(path.join(rootDir, 'favicon.ico'), buf32);
+
+  console.log('Successfully generated icon-192.png, icon-512.png, icon.png, apple-touch-icon.png, favicon.ico!');
 }
 
 generateSingleIcon().catch(err => {
