@@ -8,17 +8,15 @@
     <meta property="og:title" content="দলিল সংরক্ষণ (Dalil Record)">
     <meta property="og:description" content="দলিল সংরক্ষণ ও প্রিন্ট প্রস্তুতকারী অ্যাপ্লিকেশন - জমি জমা সংক্রান্ত দলিল সংরক্ষণ ও প্রিন্ট পেজ জেনারেটর">
     <meta property="og:type" content="website">
-    <!-- PWA Link & Icons -->
-    <link rel="manifest" href="./manifest.json">
+    <!-- PWA Link & Single Icon -->
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#1a73e8">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="দলিল রেকর্ড">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="./pwa-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="./pwa-512x512.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+    <link rel="apple-touch-icon" href="/icon.png">
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -681,7 +679,7 @@
             <span class="material-icons">menu</span>
         </button>
         <h1>
-            <img src="/pwa-192x192.png" alt="দলিল লোগো" style="width:26px; height:26px; border-radius:6px; object-fit:cover; vertical-align:middle; box-shadow:0 1px 3px rgba(0,0,0,0.12);">
+            <img src="/icon.png" alt="দলিল লোগো" style="width:26px; height:26px; border-radius:6px; object-fit:cover; vertical-align:middle; box-shadow:0 1px 3px rgba(0,0,0,0.12);">
             দলিল সংরক্ষণ
         </h1>
         
@@ -963,7 +961,7 @@
     <div class="custom-modal-card" style="max-width: 480px;">
         <div class="custom-modal-header" style="background:#f8f9fa;">
             <div style="display:flex; align-items:center; gap:10px;">
-                <img src="/pwa-192x192.png" alt="দলিল লোগো" style="width:32px; height:32px; border-radius:8px; object-fit:cover;">
+                <img src="/icon.png" alt="দলিল লোগো" style="width:32px; height:32px; border-radius:8px; object-fit:cover;">
                 <h3 style="margin:0; font-size:16px;">অ্যাপ ইনস্টলেশন গাইড</h3>
             </div>
             <button class="custom-modal-close-btn" onclick="closeInstallModal()" title="বন্ধ করুন">
@@ -973,7 +971,7 @@
         <div class="custom-modal-body" style="padding:18px 20px; font-size:14px; line-height:1.6;">
             <!-- Brand Banner -->
             <div style="display:flex; align-items:center; gap:14px; background:#e8f0fe; border:1px solid #d2e3fc; padding:12px 14px; border-radius:12px; margin-bottom:16px;">
-                <img src="/pwa-192x192.png" alt="লোগো" style="width:48px; height:48px; border-radius:10px; object-fit:cover; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
+                <img src="/icon.png" alt="লোগো" style="width:48px; height:48px; border-radius:10px; object-fit:cover; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
                 <div>
                     <div style="font-weight:700; font-size:15px; color:#1a73e8;">দলিল সংরক্ষণ (Dalil Record)</div>
                     <div style="font-size:12px; color:#5f6368; margin-top:2px;">ইন্টারনেট সংযোগ ছাড়াই ১০০% অফলাইনে কাজ করবে</div>
@@ -1071,7 +1069,7 @@
         setupDateInputs();
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./service-worker.js')
+            navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
                 .then(reg => {
                     console.log('PWA Service Worker active:', reg.scope);
                 })

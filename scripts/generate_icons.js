@@ -210,67 +210,24 @@ function createBookSvg(isMaskable = false) {
 </svg>`;
 }
 
-async function generateAllIcons() {
-  console.log('Generating book ledger icon SVGs...');
-  const svgStandard = createBookSvg(false);
+async function generateSingleIcon() {
+  console.log('Generating single book ledger icon...');
   const svgMaskable = createBookSvg(true);
 
-  // Write SVGs for reference
-  fs.writeFileSync(path.join(rootDir, 'public_icon_standard.svg'), svgStandard);
-  fs.writeFileSync(path.join(rootDir, 'public_icon_maskable.svg'), svgMaskable);
-
-  const targets = [
-    // Standard Any Icons
-    { file: 'icon.png', size: 1024, svg: svgStandard },
-    { file: 'icon-512x512.png', size: 512, svg: svgStandard },
-    { file: 'icon-512.png', size: 512, svg: svgStandard },
-    { file: 'icon-192x192.png', size: 192, svg: svgStandard },
-    { file: 'icon-192.png', size: 192, svg: svgStandard },
-    { file: 'pwa-512x512.png', size: 512, svg: svgStandard },
-    { file: 'pwa-192x192.png', size: 192, svg: svgStandard },
-    { file: 'apple-touch-icon.png', size: 180, svg: svgStandard },
-    { file: 'favicon-32x32.png', size: 32, svg: svgStandard },
-    
-    // Maskable Icons (full bleed, safe margin)
-    { file: 'icon-maskable-512x512.png', size: 512, svg: svgMaskable },
-    { file: 'icon-maskable-192x192.png', size: 192, svg: svgMaskable },
-    { file: 'pwa-maskable-512x512.png', size: 512, svg: svgMaskable },
-    { file: 'pwa-maskable-192x192.png', size: 192, svg: svgMaskable },
-
-    // Subdirectory 'icons/'
-    { file: 'icons/icon-512x512.png', size: 512, svg: svgStandard },
-    { file: 'icons/icon-192x192.png', size: 192, svg: svgStandard },
-    { file: 'icons/icon-512.png', size: 512, svg: svgStandard },
-    { file: 'icons/icon-192.png', size: 192, svg: svgStandard },
-    { file: 'icons/icon-maskable-512x512.png', size: 512, svg: svgMaskable },
-    { file: 'icons/icon-maskable-192x192.png', size: 192, svg: svgMaskable },
-    { file: 'icons/icon.png', size: 1024, svg: svgStandard },
-  ];
-
-  fs.mkdirSync(path.join(rootDir, 'icons'), { recursive: true });
-
-  for (const t of targets) {
-    const dest = path.join(rootDir, t.file);
-    const buf = await sharp(Buffer.from(t.svg))
-      .resize(t.size, t.size)
-      .png({ quality: 100, compressionLevel: 9 })
-      .toBuffer();
-    fs.writeFileSync(dest, buf);
-    console.log(`Generated: ${t.file} (${t.size}x${t.size})`);
-  }
-
-  // Generate favicon.ico (using 32x32 PNG)
-  const fav32 = await sharp(Buffer.from(svgStandard))
-    .resize(32, 32)
-    .png()
+  // Generate single icon.png (512x512 Truecolor RGBA, no palette)
+  const dest = path.join(rootDir, 'icon.png');
+  const buf = await sharp(Buffer.from(svgMaskable))
+    .resize(512, 512)
+    .png({ palette: false, quality: 100 })
     .toBuffer();
-  fs.writeFileSync(path.join(rootDir, 'favicon.ico'), fav32);
-  console.log('Generated favicon.ico (32x32)');
+  fs.writeFileSync(dest, buf);
+  console.log('Successfully generated single icon.png (512x512 RGBA)!');
 
-  console.log('All icons successfully created!');
+  // Also sync favicon.ico with the same icon
+  fs.writeFileSync(path.join(rootDir, 'favicon.ico'), buf);
 }
 
-generateAllIcons().catch(err => {
+generateSingleIcon().catch(err => {
   console.error('Icon generation failed:', err);
   process.exit(1);
 });

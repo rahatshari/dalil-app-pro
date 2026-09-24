@@ -1,30 +1,24 @@
-const CACHE_NAME = 'dalil-record-cache-v7';
+const CACHE_NAME = 'dalil-record-v9';
 
 const STATIC_ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon.png',
-  './icon-192x192.png',
-  './icon-512x512.png',
-  './icon-maskable-192x192.png',
-  './icon-maskable-512x512.png',
-  './pwa-192x192.png',
-  './pwa-512x512.png',
-  './pwa-maskable-192x192.png',
-  './pwa-maskable-512x512.png',
-  './apple-touch-icon.png',
-  './favicon-32x32.png',
-  './favicon.ico'
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icon.png'
 ];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(STATIC_ASSETS);
-    }).catch(err => {
-      console.warn('Pre-cache error:', err);
+    caches.open(CACHE_NAME).then(async cache => {
+      // Cache each asset individually to prevent any single asset from failing SW installation
+      for (const asset of STATIC_ASSETS) {
+        try {
+          await cache.add(asset);
+        } catch (e) {
+          console.warn('Pre-cache skip for:', asset, e);
+        }
+      }
     })
   );
 });
@@ -45,13 +39,15 @@ self.addEventListener('fetch', event => {
   const request = event.request;
   const url = new URL(request.url);
 
-  // For navigation requests, try network first, then fallback to cached index.html
+  // For HTML navigation requests, try network first, fallback to cached index.html
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .then(networkResponse => {
-          const clonedResponse = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(request, clonedResponse));
+          if (networkResponse && networkResponse.status === 200) {
+            const clonedResponse = networkResponse.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(request, clonedResponse));
+          }
           return networkResponse;
         })
         .catch(() => {
@@ -61,13 +57,11 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Handle Google Fonts stylesheets and font files (cache first, then network & cache)
+  // Handle Google Fonts (cache-first)
   if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com') {
     event.respondWith(
       caches.match(request).then(cachedResponse => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
+        if (cachedResponse) return cachedResponse;
         return fetch(request).then(networkResponse => {
           if (networkResponse && (networkResponse.status === 200 || networkResponse.type === 'opaque')) {
             const clonedResponse = networkResponse.clone();
@@ -82,15 +76,10 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // For all other local requests: Cache First, fallback to Network
+  // For single icon and other local assets: Cache first, fallback to network
   event.respondWith(
     caches.match(request, { ignoreSearch: true }).then(cachedResponse => {
       if (cachedResponse) {
-        fetch(request).then(networkResponse => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then(cache => cache.put(request, networkResponse));
-          }
-        }).catch(() => {});
         return cachedResponse;
       }
       return fetch(request).then(networkResponse => {
@@ -100,6 +89,9 @@ self.addEventListener('fetch', event => {
         }
         return networkResponse;
       }).catch(() => {
+        if (request.destination === 'image' && url.pathname.includes('icon')) {
+          return caches.match('/icon.png');
+        }
         if (request.destination === 'document' || request.mode === 'navigate') {
           return caches.match('/index.html');
         }
