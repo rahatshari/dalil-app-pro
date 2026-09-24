@@ -8,15 +8,17 @@
     <meta property="og:title" content="দলিল সংরক্ষণ (Dalil Record)">
     <meta property="og:description" content="দলিল সংরক্ষণ ও প্রিন্ট প্রস্তুতকারী অ্যাপ্লিকেশন - জমি জমা সংক্রান্ত দলিল সংরক্ষণ ও প্রিন্ট পেজ জেনারেটর">
     <meta property="og:type" content="website">
-    <!-- PWA Link -->
+    <!-- PWA Link & Icons -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#1a73e8">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="দলিল রেকর্ড">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/pwa-512x512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -678,10 +680,13 @@
         <button class="settings-btn" onclick="toggleSettings()" title="মেনু ও সেটিংস">
             <span class="material-icons">menu</span>
         </button>
-        <h1><span class="material-icons" style="font-size:22px;">library_books</span> দলিল সংরক্ষণ</h1>
+        <h1>
+            <img src="/pwa-192x192.png" alt="দলিল লোগো" style="width:26px; height:26px; border-radius:6px; object-fit:cover; vertical-align:middle; box-shadow:0 1px 3px rgba(0,0,0,0.12);">
+            দলিল সংরক্ষণ
+        </h1>
         
         <div class="app-bar-actions">
-            <button id="pwa-install-btn" class="pwa-install-btn" onclick="triggerPWAInstall()" style="display: none;" title="অ্যাপ ইনস্টল করুন">
+            <button id="pwa-install-btn" class="pwa-install-btn" onclick="triggerPWAInstall()" title="অ্যাপ ডিভাইসে ইনস্টল করুন">
                 <span class="material-icons" style="font-size:18px;">get_app</span>
                 <span class="install-text">ইনস্টল</span>
             </button>
@@ -691,7 +696,7 @@
         <div id="settings-menu" class="settings-menu">
             <h4>ডেটা ও অ্যাপ সেটিং</h4>
             <ul>
-                <li id="menu-install-item" onclick="triggerPWAInstall()" style="display: none;">
+                <li id="menu-install-item" onclick="triggerPWAInstall()">
                     <span class="material-icons" style="color:#1a73e8;">install_mobile</span>
                     <span style="color:#1a73e8; font-weight: 500;">অ্যাপ ইনস্টল করুন (Offline)</span>
                 </li>
@@ -948,25 +953,77 @@
     </div>
 </div>
 
-<!-- iOS Install Guide Modal -->
-<div id="ios-install-modal" class="custom-modal-overlay no-print" style="display: none;">
-    <div class="custom-modal-card" style="max-width: 420px;">
-        <div class="custom-modal-header">
-            <h3><span class="material-icons" style="color:#1a73e8;">apple</span> iPhone / iPad-এ ইনস্টল করুন</h3>
-            <button class="custom-modal-close-btn" onclick="closeIOSModal()">
+<!-- Universal PWA Install Guide Modal -->
+<div id="pwa-install-modal" class="custom-modal-overlay no-print" style="display: none;">
+    <div class="custom-modal-card" style="max-width: 480px;">
+        <div class="custom-modal-header" style="background:#f8f9fa;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <img src="/pwa-192x192.png" alt="দলিল লোগো" style="width:32px; height:32px; border-radius:8px; object-fit:cover;">
+                <h3 style="margin:0; font-size:16px;">অ্যাপ ইনস্টলেশন গাইড</h3>
+            </div>
+            <button class="custom-modal-close-btn" onclick="closeInstallModal()" title="বন্ধ করুন">
                 <span class="material-icons">close</span>
             </button>
         </div>
-        <div class="custom-modal-body" style="font-size: 14px; line-height: 1.6;">
-            <p style="margin-top:0;">এই অ্যাপটি ইন্টারনেট ছাড়াই অফলাইনে ব্যবহার করতে হোম স্ক্রিনে যুক্ত করুন:</p>
-            <ol style="padding-left: 20px; margin-bottom: 0;">
-                <li style="margin-bottom: 10px;">সাফারি (Safari) ব্রাউজারের নিচে শেয়ার বোতামে (<span class="material-icons" style="font-size:16px; vertical-align:middle; color:#1a73e8;">ios_share</span>) চাপুন।</li>
-                <li style="margin-bottom: 10px;">নিচের দিকে স্ক্রল করে <b>'Add to Home Screen'</b> (হোম স্ক্রিনে যোগ করুন) বাছাই করুন।</li>
-                <li>উপরে ডানে <b>'Add'</b> চাপলে অ্যাপটি হোম স্ক্রিনে ইনস্টল হয়ে যাবে।</li>
-            </ol>
+        <div class="custom-modal-body" style="padding:18px 20px; font-size:14px; line-height:1.6;">
+            <!-- Brand Banner -->
+            <div style="display:flex; align-items:center; gap:14px; background:#e8f0fe; border:1px solid #d2e3fc; padding:12px 14px; border-radius:12px; margin-bottom:16px;">
+                <img src="/pwa-192x192.png" alt="লোগো" style="width:48px; height:48px; border-radius:10px; object-fit:cover; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
+                <div>
+                    <div style="font-weight:700; font-size:15px; color:#1a73e8;">দলিল সংরক্ষণ (Dalil Record)</div>
+                    <div style="font-size:12px; color:#5f6368; margin-top:2px;">ইন্টারনেট সংযোগ ছাড়াই ১০০% অফলাইনে কাজ করবে</div>
+                </div>
+            </div>
+
+            <!-- Direct Install Button (Visible when beforeinstallprompt is ready) -->
+            <div id="modal-direct-install-box" style="display:none; margin-bottom:16px; background:#e6f4ea; border:1px solid #ceead6; padding:12px; border-radius:10px; text-align:center;">
+                <div style="font-size:13px; font-weight:600; color:#137333; margin-bottom:8px;">
+                    <span class="material-icons" style="font-size:16px; vertical-align:middle;">check_circle</span> আপনার ব্রাউজারে সরাসরি ইনস্টল প্রস্তুত!
+                </div>
+                <button type="button" class="action-btn" style="background:#1e8e3e; color:#fff; width:100%; justify-content:center; padding:10px 14px; font-size:14px; border-radius:8px;" onclick="executeDeferredPrompt()">
+                    <span class="material-icons" style="font-size:18px;">get_app</span> এখনই ডিভাইসে ইনস্টল করুন
+                </button>
+            </div>
+
+            <div style="font-weight:600; color:#202124; margin-bottom:10px; font-size:13px; text-transform:uppercase; letter-spacing:0.5px;">
+                ব্রাউজার অনুযায়ী ইনস্টল করার নিয়ম:
+            </div>
+
+            <!-- Chrome Desktop Guide -->
+            <div style="background:#f8f9fa; border:1px solid #e8eaed; border-radius:10px; padding:12px; margin-bottom:10px;">
+                <div style="font-weight:600; color:#1a73e8; display:flex; align-items:center; gap:6px; margin-bottom:6px; font-size:13px;">
+                    <span class="material-icons" style="font-size:18px;">laptop</span> গুগল ক্রোম (কম্পিউটার বা ল্যাপটপ)
+                </div>
+                <div style="font-size:13px; color:#3c4043; line-height:1.5;">
+                    ১. ক্রোম ব্রাউজারের অ্যাড্রেস বারের (URL bar) একদম ডানে থাকা <b>'ইনস্টল'</b> (<span class="material-icons" style="font-size:15px; vertical-align:middle; color:#1a73e8;">install_desktop</span>) আইকনে ক্লিক করুন।<br>
+                    ২. অথবা উপরের ডানে ক্রোম মেনু (⋮) &gt; <b>'Cast, save, and share'</b> বা <b>'Save and share'</b> &gt; <b>'Install Dalil Record'</b> চাপুন।
+                </div>
+            </div>
+
+            <!-- Chrome Mobile Guide -->
+            <div style="background:#f8f9fa; border:1px solid #e8eaed; border-radius:10px; padding:12px; margin-bottom:10px;">
+                <div style="font-weight:600; color:#1e8e3e; display:flex; align-items:center; gap:6px; margin-bottom:6px; font-size:13px;">
+                    <span class="material-icons" style="font-size:18px;">phone_android</span> গুগল ক্রোম (অ্যান্ড্রয়েড ফোন)
+                </div>
+                <div style="font-size:13px; color:#3c4043; line-height:1.5;">
+                    ১. উপরে ডানে ৩-ডট মেনু (⋮) চাপুন।<br>
+                    ২. <b>'Install app' (অ্যাপ ইনস্টল করুন)</b> অথবা <b>'Add to Home screen' (হোম স্ক্রিনে যোগ করুন)</b> অপশনটি বেছে নিন।
+                </div>
+            </div>
+
+            <!-- iOS Safari Guide -->
+            <div style="background:#f8f9fa; border:1px solid #e8eaed; border-radius:10px; padding:12px;">
+                <div style="font-weight:600; color:#5f6368; display:flex; align-items:center; gap:6px; margin-bottom:6px; font-size:13px;">
+                    <span class="material-icons" style="font-size:18px;">apple</span> iPhone / iPad (Safari ব্রাউজার)
+                </div>
+                <div style="font-size:13px; color:#3c4043; line-height:1.5;">
+                    ১. নিচে শেয়ার বোতামে (<span class="material-icons" style="font-size:15px; vertical-align:middle; color:#1a73e8;">ios_share</span>) চাপুন।<br>
+                    ২. <b>'Add to Home Screen'</b> নির্বাচন করে উপরে <b>'Add'</b> চাপুন।
+                </div>
+            </div>
         </div>
         <div class="custom-modal-footer">
-            <button class="action-btn" style="background:#1a73e8; border-radius:8px; padding:8px 18px; font-size:14px;" onclick="closeIOSModal()">ঠিক আছে</button>
+            <button class="action-btn" style="background:#dadce0; color:#3c4043; border-radius:8px; padding:8px 18px; font-size:14px;" onclick="closeInstallModal()">বন্ধ করুন</button>
         </div>
     </div>
 </div>
@@ -1401,24 +1458,29 @@
             e.preventDefault();
             deferredInstallPrompt = e;
             updateInstallUI(true);
+            const directBox = document.getElementById('modal-direct-install-box');
+            if (directBox) directBox.style.display = 'block';
         });
 
         window.addEventListener('appinstalled', () => {
             deferredInstallPrompt = null;
             updateInstallUI(false);
+            closeInstallModal();
             showToast("দলিল সংরক্ষণ অ্যাপটি সফলভাবে ডিভাইসে ইনস্টল হয়েছে!");
         });
 
-        if (!isAppRunningStandalone()) {
-            const isIOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-            if (isIOS) {
-                updateInstallUI(true);
-            }
+        // Always show install triggers in browser tabs if not running standalone
+        if (isAppRunningStandalone()) {
+            updateInstallUI(false);
+        } else {
+            updateInstallUI(true);
         }
     }
 
     function isAppRunningStandalone() {
-        return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        return window.matchMedia('(display-mode: standalone)').matches || 
+               window.navigator.standalone === true || 
+               document.referrer.includes('android-app://');
     }
 
     function updateInstallUI(visible) {
@@ -1437,28 +1499,51 @@
             return;
         }
 
+        const menu = document.getElementById('settings-menu');
+        if (menu) menu.style.display = 'none';
+
         if (deferredInstallPrompt) {
             deferredInstallPrompt.prompt();
             deferredInstallPrompt.userChoice.then((choiceResult) => {
                 if (choiceResult.outcome === 'accepted') {
-                    showToast("অ্যাপ ইনস্টলেশন শুরু হয়েছে...");
+                    showToast("অ্যাপ ইনস্টলেশন সফলভাবে শুরু হয়েছে...");
+                }
+                deferredInstallPrompt = null;
+            }).catch(() => {
+                openInstallModal();
+            });
+        } else {
+            openInstallModal();
+        }
+    }
+
+    function executeDeferredPrompt() {
+        if (deferredInstallPrompt) {
+            deferredInstallPrompt.prompt();
+            deferredInstallPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    showToast("অ্যাপ ইনস্টলেশন সম্পন্ন হয়েছে!");
+                    closeInstallModal();
                 }
                 deferredInstallPrompt = null;
             });
         } else {
-            const isIOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-            if (isIOS) {
-                document.getElementById('ios-install-modal').style.display = 'flex';
-            } else {
-                showToast("ব্রাউজার মেনু (⋮) থেকে 'Add to Home Screen' বা 'Install App' নির্বাচন করুন।");
-            }
+            showToast("ব্রাউজারের ৩-ডট (⋮) মেনু থেকে 'Install app' বা 'Add to Home screen' নির্বাচন করুন।");
         }
-        const menu = document.getElementById('settings-menu');
-        if (menu) menu.style.display = 'none';
     }
 
-    function closeIOSModal() {
-        document.getElementById('ios-install-modal').style.display = 'none';
+    function openInstallModal() {
+        const modal = document.getElementById('pwa-install-modal');
+        const directBox = document.getElementById('modal-direct-install-box');
+        if (directBox) {
+            directBox.style.display = deferredInstallPrompt ? 'block' : 'none';
+        }
+        if (modal) modal.style.display = 'flex';
+    }
+
+    function closeInstallModal() {
+        const modal = document.getElementById('pwa-install-modal');
+        if (modal) modal.style.display = 'none';
     }
 
     // --- Offline Connectivity State Handler ---

@@ -15,6 +15,9 @@ app.use(express.static(__dirname, {
     if (filePath.endsWith('service-worker.js')) {
       res.setHeader('Service-Worker-Allowed', '/');
       res.setHeader('Cache-Control', 'no-cache');
+    } else if (filePath.endsWith('manifest.json')) {
+      res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
+      res.setHeader('Cache-Control', 'no-cache');
     }
   }
 }));

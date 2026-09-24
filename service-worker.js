@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dalil-record-cache-v3';
+const CACHE_NAME = 'dalil-record-cache-v4';
 
 const STATIC_ASSETS = [
   '/',
@@ -7,7 +7,10 @@ const STATIC_ASSETS = [
   '/icon.png',
   '/pwa-192x192.png',
   '/pwa-512x512.png',
-  '/apple-touch-icon.png'
+  '/pwa-maskable-192x192.png',
+  '/pwa-maskable-512x512.png',
+  '/apple-touch-icon.png',
+  '/favicon-32x32.png'
 ];
 
 self.addEventListener('install', event => {
