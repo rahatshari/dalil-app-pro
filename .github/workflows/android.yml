@@ -1,0 +1,44 @@
+name: Build Android APK from PWA
+
+on:
+  push:
+    branches:
+      - main # অথবা আপনার ব্রাঞ্চের নাম যদি 'master' হয়, তবে 'master' দিন
+
+jobs:
+  build:
+    name: Build APK using Bubblewrap
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Bubblewrap-এর জন্য লেটেস্ট নোড ভার্সন
+
+      - name: Install Bubblewrap
+        run: npm install -g @GoogleChromeLabs/bubblewrap
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17' # অ্যান্ড্রয়েড বিল্ডের জন্য জাভা ১৭
+
+      - name: Initialize Bubblewrap Project
+        run: |
+          # এটি আপনার PWA-এর manifest.json থেকে কনফিগারেশন তৈরি করবে
+          # নিশ্চিত করুন যে আপনার প্রজেক্টে একটি সঠিক manifest.json আছে
+          bubblewrap init --manifest https://rahatshari.github.io/dalil-app-pro/manifest.json
+
+      - name: Build the APK
+        run: bubblewrap build
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dalil-app-pro-apk
+          path: app-release-unsigned.apk # তৈরি হওয়া APK ফাইলের নাম
