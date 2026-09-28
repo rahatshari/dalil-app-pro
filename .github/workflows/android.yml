@@ -38,7 +38,7 @@ jobs:
         run: bubblewrap build
 
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dalil-app-pro-apk
           path: app-release-unsigned.apk # তৈরি হওয়া APK ফাইলের নাম
