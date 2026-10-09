@@ -491,6 +491,197 @@
 
         .btn-add { background-color: #1e8e3e; margin-top: 10px; }
         
+        /* --- Middle Save & Projects Archive Section --- */
+        .middle-save-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            border: 1px solid #e8eaed;
+            margin-bottom: 22px;
+            transition: all 0.2s;
+        }
+        .middle-save-card:hover {
+            border-color: #d2e3fc;
+            box-shadow: 0 3px 10px rgba(26,115,232,0.12);
+        }
+        .middle-save-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .middle-save-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .middle-status-badges {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .count-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 16px;
+            user-select: none;
+        }
+        .current-pill {
+            background: #e8f0fe;
+            color: #1a73e8;
+            border: 1px solid #d2e3fc;
+        }
+        .saved-pill {
+            background: #fef7e0;
+            color: #b06000;
+            border: 1px solid #f9ab00;
+            transition: background 0.15s;
+        }
+        .saved-pill:hover { background: #feefc3; }
+        .middle-save-actions {
+            display: grid;
+            grid-template-columns: 1.35fr 1.35fr 1.1fr;
+            gap: 10px;
+        }
+        @media (max-width: 650px) {
+            .middle-save-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+        .btn-middle-save {
+            background-color: #1e8e3e;
+            color: #ffffff;
+            font-size: 14px;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-middle-save:hover { background-color: #187532; }
+        .btn-middle-load {
+            background-color: #1a73e8;
+            color: #ffffff;
+            font-size: 14px;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-middle-load:hover { background-color: #1557b0; }
+        .btn-middle-file {
+            background-color: #5f6368;
+            color: #ffffff;
+            font-size: 14px;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-middle-file:hover { background-color: #494c50; }
+        .quick-collection-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: thin;
+        }
+        .collection-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
+            padding: 5px 11px;
+            border-radius: 18px;
+            font-size: 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.15s;
+            color: #202124;
+        }
+        .collection-chip:hover {
+            background: #e8f0fe;
+            border-color: #1a73e8;
+            color: #1a73e8;
+        }
+        .collection-chip .chip-count {
+            background: #1a73e8;
+            color: #fff;
+            border-radius: 10px;
+            padding: 1px 6px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .saved-project-card {
+            background: #ffffff;
+            border: 1px solid #dadce0;
+            border-radius: 10px;
+            padding: 14px;
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .saved-project-card:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .saved-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .saved-card-meta {
+            font-size: 12px;
+            color: #5f6368;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        .saved-card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+        .btn-card-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: background 0.15s;
+        }
+        .btn-card-load { background: #1a73e8; color: #fff; }
+        .btn-card-load:hover { background: #1557b0; }
+        .btn-card-download { background: #f1f3f4; color: #3c4043; border: 1px solid #dadce0; }
+        .btn-card-download:hover { background: #e8eaed; }
+        .btn-card-delete { background: #fce8e6; color: #d93025; }
+        .btn-card-delete:hover { background: #fad2cf; }
+        
         /* Table / Output Container */
         .output-container {
             max-width: 100%;
@@ -654,7 +845,7 @@
             <span class="material-icons">menu</span>
         </button>
         <h1>
-            <img src="icon-192.png" alt="দলিল লোগো" style="width:26px; height:26px; border-radius:6px; object-fit:cover; vertical-align:middle; box-shadow:0 1px 3px rgba(0,0,0,0.12);">
+            <img src="icon-192.png" alt="দলিল লোগো" style="width:28px; height:28px; border-radius:6px; object-fit:cover; vertical-align:middle; box-shadow:0 1px 4px rgba(0,0,0,0.2); border:1px solid #374151;">
             <span>দলিল ফিগার</span>
             <span id="header-offline-badge" class="header-offline-badge" style="display: none;" title="অফলাইনে কাজ করছে — সমস্ত ডেটা আপনার ফোনেই সংরক্ষিত">
                 <span class="material-icons" style="font-size:13px;">cloud_off</span>
@@ -815,6 +1006,65 @@
         </div>
     </div>
 
+    <!-- অ্যাপের মাঝখানে দলিল সংরক্ষণাগার ও প্রজেক্ট ম্যানেজার (Save & Restore Deeds in Middle) -->
+    <div class="middle-save-card no-print">
+        <div class="middle-save-header">
+            <div class="middle-save-title">
+                <span class="material-icons" style="color:#1a73e8; font-size:26px;">inventory_2</span>
+                <div>
+                    <h3 style="margin:0; font-size:15px; font-weight:600; color:#202124;">দলিল সংরক্ষণাগার (প্রজেক্ট সেভ ও লোড)</h3>
+                    <p style="margin:2px 0 0; font-size:12px; color:#5f6368;">
+                        বর্তমান দলিলসমূহ সেভ করে রাখুন, পরবর্তীতে এক ক্লিকেই টেবিলে ফিরিয়ে আনুন
+                    </p>
+                </div>
+            </div>
+            <div class="middle-status-badges">
+                <span class="count-pill current-pill" id="middle-current-count-pill" title="বর্তমানে টেবিলে থাকা দলিলের সংখ্যা">
+                    <span class="material-icons" style="font-size:14px;">description</span>
+                    টেবিলে: <b id="middle-current-count-text">০</b> টি
+                </span>
+                <span class="count-pill saved-pill" id="middle-saved-count-pill" onclick="openSavedCollectionsModal()" style="cursor:pointer;" title="সংরক্ষিত প্রজেক্টের তালিকা দেখুন">
+                    <span class="material-icons" style="font-size:14px;">folder_special</span>
+                    সংরক্ষিত: <b id="middle-saved-count-text">০</b> টি
+                </span>
+            </div>
+        </div>
+
+        <div class="middle-save-actions">
+            <!-- Save Button -->
+            <button type="button" class="action-btn btn-middle-save" onclick="openSaveCurrentCollectionModal()" title="বর্তমানে টেবিলে থাকা সব দলিল সেভ করুন">
+                <span class="material-icons">bookmark_add</span>
+                <span>বর্তমান দলিলগুলো সেভ করুন</span>
+            </button>
+
+            <!-- Load Saved Projects Button -->
+            <button type="button" class="action-btn btn-middle-load" onclick="openSavedCollectionsModal()" title="পূর্বে সেভ করা দলিলসমূহ দেখুন ও টেবিলে আনুন">
+                <span class="material-icons">folder_open</span>
+                <span>সংরক্ষিত দলিল আনুন (<span id="btn-saved-count-badge">০</span>)</span>
+            </button>
+
+            <!-- Load from JSON File Button -->
+            <button type="button" class="action-btn btn-middle-file" onclick="openDirectFileInput()" title="কম্পিউটার বা ফোন থেকে পূর্বে সেভ করা ব্যাকআপ ফাইল আনুন">
+                <span class="material-icons">upload_file</span>
+                <span>ফাইল থেকে আনুন</span>
+            </button>
+        </div>
+
+        <!-- Quick Access Saved Collections Strip -->
+        <div id="middle-quick-saved-container" style="display: none; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #dadce0;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-size:12px; font-weight:600; color:#5f6368; display:flex; align-items:center; gap:4px;">
+                    <span class="material-icons" style="font-size:15px; color:#f2994a;">history</span>
+                    সর্বশেষ সংরক্ষিত প্রজেক্টসমূহ (এক ক্লিকে টেবিলে আনুন):
+                </span>
+                <a href="javascript:void(0)" onclick="openSavedCollectionsModal()" style="font-size:12px; color:#1a73e8; text-decoration:none; font-weight:500;">
+                    সবগুলো দেখুন (<span id="quick-total-count">০</span>) &raquo;
+                </a>
+            </div>
+            <div id="middle-quick-chips" class="quick-collection-chips"></div>
+        </div>
+    </div>
+
     <!-- আউটপুট / পিডিএফ সেকশন -->
     <div class="output-container" id="pdf-section">
         <!-- Always display layout because defaults are set -->
@@ -929,6 +1179,124 @@
     </div>
 </div>
 
+<!-- Save Current Collection Modal -->
+<div id="save-collection-modal" class="custom-modal-overlay no-print" style="display: none;">
+    <div class="custom-modal-card" style="max-width: 500px;">
+        <div class="custom-modal-header" style="background:#f8f9fa;">
+            <h3><span class="material-icons" style="color:#1e8e3e; font-size:22px;">bookmark_add</span> দলিলসমূহ সংরক্ষণ করুন</h3>
+            <button class="custom-modal-close-btn" onclick="closeSaveCollectionModal()" title="বন্ধ করুন">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="custom-modal-body" style="padding:18px 20px;">
+            <div style="background:#e6f4ea; border:1px solid #ceead6; padding:12px 14px; border-radius:10px; margin-bottom:15px; display:flex; align-items:center; gap:12px;">
+                <span class="material-icons" style="color:#137333; font-size:28px;">task_alt</span>
+                <div>
+                    <div style="font-weight:600; font-size:14px; color:#137333;">বর্তমানে টেবিলে <span id="save-modal-record-count">০</span> টি দলিল রয়েছে</div>
+                    <div style="font-size:12px; color:#5f6368; margin-top:2px;">এই দলিলগুলো সেভ করে রাখলে পরবর্তীতে যেকোনো সময় ১-ক্লিকেই ফিরিয়ে আনতে পারবেন।</div>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+                <label for="save-collection-name" style="font-weight:600; color:#202124;">সংরক্ষণের নাম বা টাইটেল *</label>
+                <input type="text" id="save-collection-name" placeholder="যেমন: ৯৩ পাঠামারা - ৫টি দলিল">
+                <div style="font-size:11px; color:#5f6368; margin-top:2px;">সহজে মনে রাখার মতো একটি নাম দিন (মৌজার নাম, দাগ নম্বর বা ক্লায়েন্টের নাম)।</div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 14px;">
+                <label for="save-collection-note" style="font-weight:500; color:#5f6368;">সংক্ষিপ্ত নোট / মন্তব্য (ঐচ্ছিক)</label>
+                <input type="text" id="save-collection-note" placeholder="যেমন: রহমত উল্লাহ সাহেবের জমির হিসাব">
+            </div>
+
+            <div style="background:#f8f9fa; border:1px solid #dadce0; border-radius:8px; padding:10px 14px; font-size:12px; color:#3c4043; line-height:1.7;">
+                <div><strong>হেডার মৌজা:</strong> <span id="save-modal-mouza-info">-</span></div>
+                <div><strong>প্রস্তুতকারক:</strong> <span id="save-modal-creator-info">-</span></div>
+                <div><strong>তারিখ:</strong> <span id="save-modal-date-info">-</span></div>
+            </div>
+        </div>
+        <div class="custom-modal-footer" style="padding:14px 20px; border-top:1px solid #dadce0; display:flex; gap:10px; justify-content:flex-end; background:#f8f9fa; border-radius:0 0 16px 16px; flex-wrap:wrap;">
+            <button type="button" class="action-btn" style="background:#dadce0; color:#3c4043; border-radius:8px; padding:9px 15px; font-size:13px; width:auto;" onclick="closeSaveCollectionModal()">বাতিল</button>
+            <button type="button" class="action-btn" style="background:#5f6368; color:#fff; border-radius:8px; padding:9px 14px; font-size:13px; width:auto;" onclick="saveCurrentCollection(true)" title="অ্যাপেও সেভ থাকবে এবং ফাইলে ডাউনলোডও হবে">
+                <span class="material-icons" style="font-size:16px; margin-right:4px;">download</span> ফাইল ডাউনলোডসহ সেভ
+            </button>
+            <button type="button" class="action-btn" style="background:#1e8e3e; color:#fff; border-radius:8px; padding:9px 18px; font-size:13px; width:auto;" onclick="saveCurrentCollection(false)">
+                <span class="material-icons" style="font-size:16px; margin-right:4px;">save</span> সেভ করুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Saved Collections Archive Modal -->
+<div id="saved-collections-modal" class="custom-modal-overlay no-print" style="display: none;">
+    <div class="custom-modal-card" style="max-width: 600px;">
+        <div class="custom-modal-header" style="background:#f8f9fa;">
+            <h3><span class="material-icons" style="color:#1a73e8; font-size:22px;">folder_special</span> সংরক্ষিত দলিল প্রজেক্টসমূহ</h3>
+            <button class="custom-modal-close-btn" onclick="closeSavedCollectionsModal()" title="বন্ধ করুন">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="custom-modal-body" style="padding:16px 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:10px;">
+                <input type="text" id="saved-collection-search" oninput="filterSavedCollections()" placeholder="নাম বা মৌজা দিয়ে খুঁজুন..." style="margin-bottom:0; font-size:13px; padding:9px 12px; flex:1;">
+                <button type="button" class="action-btn" style="background:#1e8e3e; color:#fff; width:auto; white-space:nowrap; padding:9px 13px; font-size:13px; border-radius:8px;" onclick="closeSavedCollectionsModal(); openSaveCurrentCollectionModal();" title="বর্তমান তালিকা সেভ করুন">
+                    <span class="material-icons" style="font-size:16px; margin-right:4px;">add</span> নতুন সেভ
+                </button>
+            </div>
+
+            <div id="saved-collections-list" style="max-height: 55vh; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
+                <!-- Dynamically rendered list -->
+            </div>
+        </div>
+        <div class="custom-modal-footer" style="padding:12px 20px; border-top:1px solid #dadce0; display:flex; justify-content:space-between; align-items:center; background:#f8f9fa; border-radius:0 0 16px 16px;">
+            <div style="font-size:12px; color:#5f6368;">
+                মোট সংরক্ষিত প্রজেক্ট: <b id="modal-saved-total-count" style="color:#202124;">০</b> টি
+            </div>
+            <button type="button" class="action-btn" style="background:#dadce0; color:#3c4043; border-radius:8px; padding:8px 18px; font-size:13px; width:auto;" onclick="closeSavedCollectionsModal()">বন্ধ করুন</button>
+        </div>
+    </div>
+</div>
+
+<!-- Load Strategy Confirm Modal (When current table already has records) -->
+<div id="load-strategy-modal" class="custom-modal-overlay no-print" style="display: none;">
+    <div class="custom-modal-card" style="max-width: 460px;">
+        <div class="custom-modal-header" style="background:#f8f9fa;">
+            <h3><span class="material-icons" style="color:#f2994a; font-size:22px;">help_outline</span> কীভাবে আনতে চান?</h3>
+            <button class="custom-modal-close-btn" onclick="closeLoadStrategyModal()" title="বন্ধ করুন">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+        <div class="custom-modal-body" style="padding:18px 20px; font-size:14px;">
+            <div style="margin-bottom:14px; color:#202124;">
+                বর্তমানে টেবিলে <b id="load-strategy-current-count">০</b> টি দলিল রয়েছে। আপনি কি সংরক্ষিত দলিলগুলো <b>বর্তমান টেবিলের স্থানে নতুনভাবে বসাতে</b> চান, নাকি <b>বর্তমান দলিলের সাথে যোগ</b> করতে চান?
+            </div>
+            <div style="background:#f1f3f4; border-radius:8px; padding:10px 12px; font-size:13px; margin-bottom:14px;">
+                নির্বাচিত প্রজেক্ট: <b id="load-strategy-target-name" style="color:#1a73e8;">-</b> (<span id="load-strategy-target-count">০</span> টি দলিল)
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <button type="button" class="action-btn" style="background:#1a73e8; color:#fff; border-radius:8px; padding:11px; font-size:13px; justify-content:flex-start;" onclick="confirmExecuteLoadStrategy('replace')">
+                    <span class="material-icons" style="margin-right:6px;">find_replace</span>
+                    <div>
+                        <div style="font-weight:600;">নতুনভাবে বসান (Replace)</div>
+                        <div style="font-size:11px; opacity:0.85; font-weight:normal;">বর্তমান সব দলিল সরিয়ে শুধু এই প্রজেক্টের দলিলগুলো বসবে</div>
+                    </div>
+                </button>
+                <button type="button" class="action-btn" style="background:#34a853; color:#fff; border-radius:8px; padding:11px; font-size:13px; justify-content:flex-start;" onclick="confirmExecuteLoadStrategy('merge')">
+                    <span class="material-icons" style="margin-right:6px;">add_circle_outline</span>
+                    <div>
+                        <div style="font-weight:600;">বর্তমান তালিকার সাথে যোগ করুন (Merge)</div>
+                        <div style="font-size:11px; opacity:0.85; font-weight:normal;">বর্তমান দলিলগুলো থাকবে এবং তার নিচে নতুন দলিলগুলো যোগ হবে</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div class="custom-modal-footer" style="padding:12px 20px; border-top:1px solid #dadce0; display:flex; justify-content:flex-end; background:#f8f9fa; border-radius:0 0 16px 16px;">
+            <button type="button" class="action-btn" style="background:#dadce0; color:#3c4043; border-radius:8px; padding:8px 16px; font-size:13px; width:auto;" onclick="closeLoadStrategyModal()">বাতিল</button>
+        </div>
+    </div>
+</div>
+
+<input type="file" id="directImportFile" style="display:none;" accept=".json" multiple onchange="handleBackupFileSelect(event)">
+
 <!-- Universal PWA Install Guide Modal -->
 <div id="pwa-install-modal" class="custom-modal-overlay no-print" style="display: none;">
     <div class="custom-modal-card" style="max-width: 480px;">
@@ -1040,6 +1408,7 @@
         initPWAInstall();
         initOfflineDetection();
         setupDateInputs();
+        updateMiddleSectionUI();
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./service-worker.js')
@@ -1416,9 +1785,10 @@
         container.appendChild(div); if(!isLoadingDraft) saveFormDraft();
     }
 
-    function addKhatianField(type = '', no = '', land = '', dag = '') {
+    function addKhatianField(type = 'এস এ', no = '', land = '', dag = '') {
+        const selectedType = (type && type !== '') ? type : 'এস এ';
         const container = document.getElementById('khatian-container'); const div = document.createElement('div'); div.className = 'person-block khatian-block';
-        div.innerHTML = `<div class="khatian-row"><div class="input-group"><label>ধরন</label><select class="khatian-type"><option value="">বাছাই</option><option value="সি এস" ${type==='সি এস'?'selected':''}>সি এস</option><option value="এস এ" ${type==='এস এ'?'selected':''}>এস এ</option><option value="বি আর এস" ${type==='বি আর এস'?'selected':''}>বি আর এস</option><option value="আর এস" ${type==='আর এস'?'selected':''}>আর এস</option></select></div><div class="input-group"><label>খতিয়ান নং</label><input type="text" class="khatian-no" placeholder="যেমন: ২১৮" value="${no==='-'?'':no}"></div><div class="input-group"><label>জমি (শতক)</label><input type="text" class="khatian-land" placeholder="যেমন: ৩০" value="${cleanShatakForEdit(land)}"></div><div class="input-group"><label>দাগ নং</label><input type="text" class="khatian-dag" placeholder="যেমন: ১৬২০" value="${dag==='-'?'':dag}"></div></div>`;
+        div.innerHTML = `<div class="khatian-row"><div class="input-group"><label>ধরন</label><select class="khatian-type"><option value="এস এ" ${selectedType==='এস এ'?'selected':''}>এস এ</option><option value="সি এস" ${selectedType==='সি এস'?'selected':''}>সি এস</option><option value="বি আর এস" ${selectedType==='বি আর এস'?'selected':''}>বি আর এস</option><option value="আর এস" ${selectedType==='আর এস'?'selected':''}>আর এস</option><option value="" ${selectedType===''?'selected':''}>বাছাই</option></select></div><div class="input-group"><label>খতিয়ান নং</label><input type="text" class="khatian-no" placeholder="যেমন: ২১৮" value="${no==='-'?'':no}"></div><div class="input-group"><label>জমি (শতক)</label><input type="text" class="khatian-land" placeholder="যেমন: ৩০" value="${cleanShatakForEdit(land)}"></div><div class="input-group"><label>দাগ নং</label><input type="text" class="khatian-dag" placeholder="যেমন: ১৬২০" value="${dag==='-'?'':dag}"></div></div>`;
         container.appendChild(div); if(!isLoadingDraft) saveFormDraft();
     }
 
@@ -1517,6 +1887,7 @@
             }
             table.appendChild(tbody);
         });
+        updateMiddleSectionUI();
     }
 
     function deleteRecord(index) {
@@ -1838,6 +2209,424 @@
 
     function importData(event) {
         handleBackupFileSelect(event);
+    }
+
+    // --- Saved Deed Collections & Projects Archive Manager ---
+    const SAVED_PROJECTS_KEY = 'mySavedDeedProjects';
+    let targetLoadProjectId = null;
+
+    function getSavedCollections() {
+        try {
+            const raw = localStorage.getItem(SAVED_PROJECTS_KEY);
+            return raw ? JSON.parse(raw) : [];
+        } catch(e) {
+            console.error("Error reading saved deed projects", e);
+            return [];
+        }
+    }
+
+    function saveCollectionsList(list) {
+        try {
+            localStorage.setItem(SAVED_PROJECTS_KEY, JSON.stringify(list));
+        } catch(e) {
+            console.error("Error saving deed projects", e);
+        }
+        updateMiddleSectionUI();
+    }
+
+    function updateMiddleSectionUI() {
+        const countText = document.getElementById('middle-current-count-text');
+        if (countText) countText.innerText = toBanglaNum(dalilRecords.length);
+
+        const savedProjects = getSavedCollections();
+        const savedCountText = document.getElementById('middle-saved-count-text');
+        if (savedCountText) savedCountText.innerText = toBanglaNum(savedProjects.length);
+
+        const badgeText = document.getElementById('btn-saved-count-badge');
+        if (badgeText) badgeText.innerText = toBanglaNum(savedProjects.length);
+
+        const quickContainer = document.getElementById('middle-quick-saved-container');
+        const quickChips = document.getElementById('middle-quick-chips');
+        const quickTotal = document.getElementById('quick-total-count');
+
+        if (quickContainer && quickChips) {
+            if (savedProjects.length > 0) {
+                quickContainer.style.display = 'block';
+                if (quickTotal) quickTotal.innerText = toBanglaNum(savedProjects.length);
+                quickChips.innerHTML = '';
+                
+                // Show up to 4 most recent saved projects
+                const recents = savedProjects.slice(0, 4);
+                recents.forEach(proj => {
+                    const chip = document.createElement('div');
+                    chip.className = 'collection-chip';
+                    chip.title = `${proj.name} (${proj.recordsCount}টি দলিল) - টেবিলে আনতে ক্লিক করুন`;
+                    chip.onclick = () => promptLoadCollection(proj.id);
+                    chip.innerHTML = `
+                        <span class="material-icons" style="font-size:15px; color:#1a73e8;">folder</span>
+                        <span style="font-weight:500;">${escapeHTML(proj.name)}</span>
+                        <span class="chip-count">${toBanglaNum(proj.recordsCount)}টি</span>
+                        <span class="material-icons" style="font-size:14px; color:#5f6368;" title="আনুন">file_download</span>
+                    `;
+                    quickChips.appendChild(chip);
+                });
+            } else {
+                quickContainer.style.display = 'none';
+            }
+        }
+    }
+
+    function escapeHTML(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function openSaveCurrentCollectionModal() {
+        if (!dalilRecords || dalilRecords.length === 0) {
+            showToast("সংরক্ষণ করার মতো কোনো দলিল তথ্য নেই! আগে তালিকায় দলিল যোগ করুন।");
+            return;
+        }
+
+        const countEl = document.getElementById('save-modal-record-count');
+        if (countEl) countEl.innerText = toBanglaNum(dalilRecords.length);
+
+        const mouzaVal = document.getElementById('g_mouza')?.value?.trim() || 'মৌজা';
+        const zilaVal = document.getElementById('g_zila')?.value?.trim() || '';
+        const creatorVal = document.getElementById('g_creator')?.value?.trim() || 'প্রস্তুতকারক';
+        const dateVal = document.getElementById('g_date')?.value?.trim() || new Date().toLocaleDateString('bn-BD');
+
+        const mouzaDisplay = document.getElementById('save-modal-mouza-info');
+        if (mouzaDisplay) mouzaDisplay.innerText = `${mouzaVal} ${zilaVal ? '(' + zilaVal + ')' : ''}`;
+        
+        const creatorDisplay = document.getElementById('save-modal-creator-info');
+        if (creatorDisplay) creatorDisplay.innerText = creatorVal;
+
+        const dateDisplay = document.getElementById('save-modal-date-info');
+        if (dateDisplay) dateDisplay.innerText = dateVal;
+
+        // Auto-suggest a smart default project name
+        const suggestedName = `${mouzaVal} - ${toBanglaNum(dalilRecords.length)}টি দলিল (${dateVal})`;
+        const nameInput = document.getElementById('save-collection-name');
+        nameInput.value = suggestedName;
+        document.getElementById('save-collection-note').value = '';
+
+        const modal = document.getElementById('save-collection-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                nameInput.focus();
+                nameInput.select();
+            }, 100);
+        }
+    }
+
+    function closeSaveCollectionModal() {
+        const modal = document.getElementById('save-collection-modal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function saveCurrentCollection(andDownload = false) {
+        if (!dalilRecords || dalilRecords.length === 0) {
+            showToast("সংরক্ষণ করার মতো কোনো দলিল তথ্য নেই!");
+            return;
+        }
+
+        const nameInput = document.getElementById('save-collection-name');
+        const title = nameInput.value.trim();
+        if (!title) {
+            alert("অনুগ্রহ করে একটি নাম বা টাইটেল লিখুন!");
+            nameInput.focus();
+            return;
+        }
+
+        const note = document.getElementById('save-collection-note').value.trim();
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('bn-BD') + ' ' + now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+
+        // Capture current header snapshot
+        const headerSnapshot = {
+            main_title: document.getElementById('g_main_title')?.value || '',
+            zila: document.getElementById('g_zila')?.value || '',
+            upazila: document.getElementById('g_upazila')?.value || '',
+            mouza: document.getElementById('g_mouza')?.value || '',
+            creator: document.getElementById('g_creator')?.value || '',
+            date: document.getElementById('g_date')?.value || ''
+        };
+
+        const newProject = {
+            id: 'proj_' + Date.now(),
+            name: title,
+            note: note,
+            createdAt: now.toISOString(),
+            dateDisplay: dateStr,
+            recordsCount: dalilRecords.length,
+            header: headerSnapshot,
+            records: JSON.parse(JSON.stringify(dalilRecords))
+        };
+
+        const list = getSavedCollections();
+        // Insert at beginning (newest first)
+        list.unshift(newProject);
+        saveCollectionsList(list);
+
+        closeSaveCollectionModal();
+
+        if (andDownload) {
+            downloadProjectJSON(newProject);
+            showToast(`"${title}" অ্যাপে সেভ হয়েছে এবং ফাইল ডাউনলোড শুরু হয়েছে!`);
+        } else {
+            showToast(`"${title}" সফলভাবে অ্যাপের মেমোরিতে সেভ হয়েছে!`);
+        }
+    }
+
+    function downloadProjectJSON(proj) {
+        const payload = {
+            projectName: proj.name,
+            savedAt: proj.createdAt,
+            totalRecords: proj.records.length,
+            header: proj.header,
+            dalilRecords: proj.records
+        };
+        const safeName = proj.name.replace(/[/\\?%*:|"<>]/g, '_').replace(/\s+/g, '_');
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${safeName}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(a.href);
+    }
+
+    function openSavedCollectionsModal() {
+        const modal = document.getElementById('saved-collections-modal');
+        if (!modal) return;
+        modal.style.display = 'flex';
+        const searchInput = document.getElementById('saved-collection-search');
+        if (searchInput) searchInput.value = '';
+        renderSavedCollectionsList();
+    }
+
+    function closeSavedCollectionsModal() {
+        const modal = document.getElementById('saved-collections-modal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function filterSavedCollections() {
+        const q = document.getElementById('saved-collection-search')?.value?.trim().toLowerCase() || '';
+        renderSavedCollectionsList(q);
+    }
+
+    function renderSavedCollectionsList(query = '') {
+        const listContainer = document.getElementById('saved-collections-list');
+        const totalCountEl = document.getElementById('modal-saved-total-count');
+        if (!listContainer) return;
+
+        const allProjects = getSavedCollections();
+        if (totalCountEl) totalCountEl.innerText = toBanglaNum(allProjects.length);
+
+        const filtered = query
+            ? allProjects.filter(p => (p.name && p.name.toLowerCase().includes(query)) || 
+                                     (p.note && p.note.toLowerCase().includes(query)) ||
+                                     (p.header?.mouza && p.header.mouza.toLowerCase().includes(query)))
+            : allProjects;
+
+        if (filtered.length === 0) {
+            if (allProjects.length === 0) {
+                listContainer.innerHTML = `
+                    <div style="text-align:center; padding:35px 20px; background:#f8f9fa; border-radius:12px; border:1px dashed #dadce0;">
+                        <span class="material-icons" style="font-size:48px; color:#9aa0a6;">inventory_2</span>
+                        <div style="font-weight:600; font-size:15px; color:#3c4043; margin-top:8px;">এখনও কোনো দলিল প্রজেক্ট সেভ করা নেই</div>
+                        <div style="font-size:13px; color:#5f6368; margin-top:4px; max-width:320px; margin-left:auto; margin-right:auto;">
+                            আপনি বর্তমানে যে দলিলগুলো এন্ট্রি করেছেন, তা "বর্তমান দলিলগুলো সেভ করুন" বাটনে ক্লিক করে সেভ করে রাখুন।
+                        </div>
+                        <button type="button" class="action-btn" style="background:#1e8e3e; color:#fff; width:auto; margin:14px auto 0 auto; padding:8px 16px; border-radius:8px; font-size:13px;" onclick="closeSavedCollectionsModal(); openSaveCurrentCollectionModal();">
+                            <span class="material-icons" style="font-size:16px; margin-right:4px;">bookmark_add</span> বর্তমান তালিকা সেভ করুন
+                        </button>
+                    </div>
+                `;
+            } else {
+                listContainer.innerHTML = `
+                    <div style="text-align:center; padding:25px; color:#5f6368; font-size:13px;">
+                        "${escapeHTML(query)}" এর সাথে মিলে এমন কোনো সংরক্ষিত প্রজেক্ট পাওয়া যায়নি।
+                    </div>
+                `;
+            }
+            return;
+        }
+
+        listContainer.innerHTML = '';
+        filtered.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'saved-project-card';
+            
+            const mouzaTag = p.header?.mouza ? `মৌজা: ${p.header.mouza}` : '';
+            const noteTag = p.note ? `<div style="font-size:12px; color:#1e8e3e; background:#e6f4ea; display:inline-block; padding:2px 8px; border-radius:4px; margin-top:2px;">নোট: ${escapeHTML(p.note)}</div>` : '';
+
+            card.innerHTML = `
+                <div class="saved-card-top">
+                    <div>
+                        <div style="font-weight:600; font-size:15px; color:#202124; display:flex; align-items:center; gap:6px;">
+                            <span class="material-icons" style="font-size:18px; color:#1a73e8;">folder</span>
+                            ${escapeHTML(p.name)}
+                        </div>
+                        <div class="saved-card-meta" style="margin-top:4px;">
+                            <span><span class="material-icons" style="font-size:13px; vertical-align:middle;">schedule</span> ${p.dateDisplay || ''}</span>
+                            <span style="font-weight:600; color:#1a73e8;"><span class="material-icons" style="font-size:13px; vertical-align:middle;">description</span> ${toBanglaNum(p.recordsCount || (p.records ? p.records.length : 0))} টি দলিল</span>
+                            ${mouzaTag ? `<span>${escapeHTML(mouzaTag)}</span>` : ''}
+                        </div>
+                        ${noteTag}
+                    </div>
+                </div>
+                <div class="saved-card-actions">
+                    <button type="button" class="btn-card-action btn-card-load" onclick="promptLoadCollection('${p.id}')" title="এই দলিলগুলো মূল টেবিলে লোড করুন">
+                        <span class="material-icons" style="font-size:15px;">file_download</span>
+                        <span>টেবিলে আনুন</span>
+                    </button>
+                    <button type="button" class="btn-card-action btn-card-download" onclick="downloadSavedCollectionById('${p.id}')" title="ব্যাকআপ ফাইল হিসেবে ডাউনলোড করুন">
+                        <span class="material-icons" style="font-size:15px;">download</span>
+                        <span>ডাউনলোড</span>
+                    </button>
+                    <button type="button" class="btn-card-action btn-card-download" onclick="renameSavedCollection('${p.id}')" title="নাম পরিবর্তন করুন">
+                        <span class="material-icons" style="font-size:15px;">edit</span>
+                        <span>রিনেম</span>
+                    </button>
+                    <button type="button" class="btn-card-action btn-card-delete" onclick="deleteSavedCollection('${p.id}')" title="প্রজেক্টটি মুছে ফেলুন">
+                        <span class="material-icons" style="font-size:15px;">delete</span>
+                        <span>মুছুন</span>
+                    </button>
+                </div>
+            `;
+            listContainer.appendChild(card);
+        });
+    }
+
+    function promptLoadCollection(id) {
+        const list = getSavedCollections();
+        const target = list.find(p => p.id === id);
+        if (!target) {
+            showToast("প্রজেক্টটি খুঁজে পাওয়া যায়নি!");
+            return;
+        }
+
+        targetLoadProjectId = id;
+
+        // If table is currently empty, load directly with 'replace'
+        if (!dalilRecords || dalilRecords.length === 0) {
+            executeLoadCollection(id, 'replace');
+            return;
+        }
+
+        // Table has existing records -> show load strategy modal
+        document.getElementById('load-strategy-current-count').innerText = toBanglaNum(dalilRecords.length);
+        document.getElementById('load-strategy-target-name').innerText = target.name;
+        document.getElementById('load-strategy-target-count').innerText = toBanglaNum(target.recordsCount || (target.records ? target.records.length : 0));
+
+        const stratModal = document.getElementById('load-strategy-modal');
+        if (stratModal) stratModal.style.display = 'flex';
+    }
+
+    function closeLoadStrategyModal() {
+        const stratModal = document.getElementById('load-strategy-modal');
+        if (stratModal) stratModal.style.display = 'none';
+        targetLoadProjectId = null;
+    }
+
+    function confirmExecuteLoadStrategy(strategy) {
+        if (!targetLoadProjectId) return;
+        const id = targetLoadProjectId;
+        closeLoadStrategyModal();
+        executeLoadCollection(id, strategy);
+    }
+
+    function executeLoadCollection(id, strategy = 'replace') {
+        const list = getSavedCollections();
+        const target = list.find(p => p.id === id);
+        if (!target) {
+            showToast("প্রজেক্টটি পাওয়া যায়নি!");
+            return;
+        }
+
+        const newRecords = JSON.parse(JSON.stringify(target.records || []));
+        if (newRecords.length === 0) {
+            showToast("এই প্রজেক্টে কোনো দলিল তথ্য নেই!");
+            return;
+        }
+
+        if (strategy === 'replace') {
+            dalilRecords = newRecords;
+            // Optionally restore header if available and replace strategy used
+            if (target.header && typeof target.header === 'object') {
+                if (target.header.main_title !== undefined) document.getElementById('g_main_title').value = target.header.main_title;
+                if (target.header.zila !== undefined) document.getElementById('g_zila').value = target.header.zila;
+                if (target.header.upazila !== undefined) document.getElementById('g_upazila').value = target.header.upazila;
+                if (target.header.mouza !== undefined) document.getElementById('g_mouza').value = target.header.mouza;
+                if (target.header.creator !== undefined) document.getElementById('g_creator').value = target.header.creator;
+                if (target.header.date !== undefined) document.getElementById('g_date').value = target.header.date;
+                saveGlobalHeader();
+            }
+        } else {
+            // Merge strategy
+            dalilRecords = dalilRecords.concat(newRecords);
+        }
+
+        recalculateSerialNumbers();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords));
+        renderTable();
+        closeSavedCollectionsModal();
+
+        // Scroll to table smoothly
+        const tableSec = document.getElementById('pdf-section');
+        if (tableSec) {
+            tableSec.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        showToast(`"${target.name}" সফলভাবে টেবিলে আনা হয়েছে (${toBanglaNum(newRecords.length)}টি দলিল)!`);
+    }
+
+    function downloadSavedCollectionById(id) {
+        const list = getSavedCollections();
+        const target = list.find(p => p.id === id);
+        if (target) {
+            downloadProjectJSON(target);
+            showToast(`"${target.name}" ডাউনলোড শুরু হয়েছে...`);
+        }
+    }
+
+    function renameSavedCollection(id) {
+        const list = getSavedCollections();
+        const target = list.find(p => p.id === id);
+        if (!target) return;
+
+        const newName = prompt("প্রজেক্টটির নতুন নাম লিখুন:", target.name);
+        if (newName && newName.trim() && newName.trim() !== target.name) {
+            target.name = newName.trim();
+            saveCollectionsList(list);
+            renderSavedCollectionsList(document.getElementById('saved-collection-search')?.value?.trim().toLowerCase() || '');
+            showToast("নাম পরিবর্তন করা হয়েছে!");
+        }
+    }
+
+    function deleteSavedCollection(id) {
+        const list = getSavedCollections();
+        const target = list.find(p => p.id === id);
+        if (!target) return;
+
+        if (confirm(`আপনি কি নিশ্চিত যে "${target.name}" প্রজেক্টটি মুছে ফেলতে চান?`)) {
+            const updated = list.filter(p => p.id !== id);
+            saveCollectionsList(updated);
+            renderSavedCollectionsList(document.getElementById('saved-collection-search')?.value?.trim().toLowerCase() || '');
+            showToast("প্রজেক্টটি মুছে ফেলা হয়েছে!");
+        }
+    }
+
+    function openDirectFileInput() {
+        const input = document.getElementById('directImportFile');
+        if (input) input.click();
     }
 </script>
 </body>

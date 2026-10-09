@@ -7,9 +7,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
-// High-fidelity SVG of a prestigious Deed Registry Ledger Book (দলিল রেজিস্ট্রি রেকর্ড খাতা)
+// High-fidelity SVG of an authentic Black & White Legal Deed (দলিল) & Registry Ledger Book
 function createBookSvg(isMaskable = false) {
-  // Safe zone for maskable icons: content inside 80% circle (radius ~410 from 512,512)
   const scale = isMaskable ? 0.82 : 0.88;
   const cx = 512;
   const cy = 512;
@@ -17,195 +16,237 @@ function createBookSvg(isMaskable = false) {
   return `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
   <defs>
-    <!-- Background Gradients -->
-    <radialGradient id="bgGrad" cx="50%" cy="35%" r="75%">
-      <stop offset="0%" stop-color="#1e3a8a"/>
-      <stop offset="45%" stop-color="#112250"/>
-      <stop offset="100%" stop-color="#0a1430"/>
+    <!-- Monochrome Background Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="40%" r="75%">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="60%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#030712"/>
     </radialGradient>
 
-    <!-- Book Cover Leather Gradient -->
-    <linearGradient id="leatherGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#143166"/>
-      <stop offset="30%" stop-color="#0e234a"/>
-      <stop offset="70%" stop-color="#091836"/>
-      <stop offset="100%" stop-color="#050e20"/>
+    <!-- Deep Leather Cover Gradients (Black & Charcoal) -->
+    <linearGradient id="blackCoverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#262626"/>
+      <stop offset="40%" stop-color="#171717"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
     </linearGradient>
 
-    <!-- Spine Gradient -->
     <linearGradient id="spineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#071329"/>
-      <stop offset="40%" stop-color="#17356e"/>
-      <stop offset="70%" stop-color="#1f438a"/>
-      <stop offset="100%" stop-color="#0a1a38"/>
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="45%" stop-color="#262626"/>
+      <stop offset="70%" stop-color="#404040"/>
+      <stop offset="100%" stop-color="#171717"/>
     </linearGradient>
 
-    <!-- Gold Gradients -->
-    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fff1b8"/>
-      <stop offset="25%" stop-color="#f59e0b"/>
-      <stop offset="50%" stop-color="#fbbf24"/>
-      <stop offset="75%" stop-color="#d97706"/>
-      <stop offset="100%" stop-color="#92400e"/>
+    <!-- Pure White / Parchment Page Gradients -->
+    <linearGradient id="pageLeftGrad" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#d1d5db"/>
+      <stop offset="12%" stop-color="#f3f4f6"/>
+      <stop offset="100%" stop-color="#ffffff"/>
     </linearGradient>
 
-    <linearGradient id="goldRibbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#dc2626"/>
-      <stop offset="35%" stop-color="#ef4444"/>
-      <stop offset="70%" stop-color="#f87171"/>
-      <stop offset="100%" stop-color="#b91c1c"/>
+    <linearGradient id="pageRightGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d1d5db"/>
+      <stop offset="12%" stop-color="#f3f4f6"/>
+      <stop offset="100%" stop-color="#ffffff"/>
     </linearGradient>
 
-    <linearGradient id="goldFringe" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fef08a"/>
-      <stop offset="50%" stop-color="#eab308"/>
-      <stop offset="100%" stop-color="#a16207"/>
+    <!-- Silver & Chrome Accent Gradients -->
+    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#e2e8f0"/>
+      <stop offset="70%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#94a3b8"/>
     </linearGradient>
 
-    <!-- Page Edges Gradient -->
-    <linearGradient id="pagesGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fefefe"/>
-      <stop offset="50%" stop-color="#f5efe0"/>
-      <stop offset="100%" stop-color="#e2d7c0"/>
-    </linearGradient>
-
-    <!-- Drop Shadow Filter -->
+    <!-- Deep Drop Shadow -->
     <filter id="shadowFilter" x="-20%" y="-20%" width="150%" height="150%">
-      <feDropShadow dx="0" dy="24" stdDeviation="32" flood-color="#000000" flood-opacity="0.6"/>
+      <feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#000000" flood-opacity="0.8"/>
     </filter>
-
-    <filter id="ribbonShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="4" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.45"/>
+    <filter id="pageShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.45"/>
     </filter>
   </defs>
 
-  <!-- Background Base -->
+  <!-- Background Base (Sleek Dark Canvas) -->
   <rect width="1024" height="1024" rx="${isMaskable ? 0 : 220}" fill="url(#bgGrad)"/>
 
-  <!-- Subtle Ambient Glow -->
-  <circle cx="512" cy="460" r="380" fill="#3b82f6" opacity="0.12" filter="blur(60px)"/>
+  <!-- Subtle Radial Spotlight -->
+  <circle cx="512" cy="480" r="390" fill="#ffffff" opacity="0.04" filter="blur(60px)"/>
 
-  <!-- Main Transform Group for Book Center -->
+  <!-- Main Transform Group -->
   <g transform="translate(${cx}, ${cy}) scale(${scale}) translate(-512, -512)">
 
-    <!-- Drop Shadow under Book -->
-    <rect x="220" y="150" width="575" height="715" rx="36" fill="#000" opacity="0.38" filter="blur(24px)"/>
+    <!-- Underneath Shadow of Open Deed Register Book -->
+    <ellipse cx="512" cy="850" rx="440" ry="65" fill="#000000" opacity="0.75" filter="blur(26px)"/>
 
-    <!-- Bottom/Back Cover Thickness -->
-    <rect x="238" y="168" width="550" height="714" rx="28" fill="#0a1936"/>
+    <!-- Bottom Outer Hard Cover (Black Leather Binding) -->
+    <!-- Left Cover Flap -->
+    <path d="M 60,780 Q 50,780 48,740 L 52,220 Q 56,180 85,180 L 490,195 L 490,810 L 85,785 Q 65,785 60,780 Z" fill="url(#blackCoverGrad)" stroke="#404040" stroke-width="3"/>
+    <!-- Right Cover Flap -->
+    <path d="M 964,780 Q 974,780 976,740 L 972,220 Q 968,180 939,180 L 534,195 L 534,810 L 939,785 Q 959,785 964,780 Z" fill="url(#blackCoverGrad)" stroke="#404040" stroke-width="3"/>
 
-    <!-- Page Layers (Stack on Right & Bottom) -->
-    <rect x="250" y="154" width="530" height="714" rx="24" fill="url(#pagesGrad)"/>
-    
-    <!-- Page Lines on Right Edge -->
-    <line x1="772" y1="180" x2="772" y2="850" stroke="#d5c8ad" stroke-width="2"/>
-    <line x1="765" y1="185" x2="765" y2="845" stroke="#e6dbc4" stroke-width="1.5"/>
-    <line x1="758" y1="190" x2="758" y2="840" stroke="#d5c8ad" stroke-width="1.5"/>
-    
-    <!-- Page Lines on Bottom Edge -->
-    <line x1="280" y1="860" x2="765" y2="860" stroke="#d5c8ad" stroke-width="2"/>
-    <line x1="290" y1="854" x2="760" y2="854" stroke="#e6dbc4" stroke-width="1.5"/>
+    <!-- Stack of Page Edges (Thickness) -->
+    <path d="M 75,765 L 490,795 L 490,808 L 70,780 Z" fill="#9ca3af"/>
+    <path d="M 949,765 L 534,795 L 534,808 L 954,780 Z" fill="#9ca3af"/>
+    <!-- Page Edge Texture Lines -->
+    <line x1="82" y1="772" x2="485" y2="801" stroke="#4b5563" stroke-width="1.5"/>
+    <line x1="86" y1="776" x2="480" y2="804" stroke="#d1d5db" stroke-width="1"/>
+    <line x1="942" y1="772" x2="539" y2="801" stroke="#4b5563" stroke-width="1.5"/>
+    <line x1="938" y1="776" x2="544" y2="804" stroke="#d1d5db" stroke-width="1"/>
 
-    <!-- Front Book Cover -->
-    <rect x="210" y="140" width="535" height="712" rx="30" fill="url(#leatherGrad)" stroke="#091b3d" stroke-width="4"/>
+    <!-- Open Book Center Valley Shadow -->
+    <rect x="495" y="195" width="34" height="615" fill="#050505"/>
 
-    <!-- Spine on Left -->
-    <path d="M 210,140 Q 200,140 196,170 L 196,822 Q 200,852 210,852 L 270,852 L 270,140 Z" fill="url(#spineGrad)" stroke="#071329" stroke-width="2"/>
+    <!-- ==================== LEFT DEED PAGE ==================== -->
+    <g filter="url(#pageShadow)">
+      <!-- Left Page Surface with natural arched curve -->
+      <path d="M 95,200 C 230,185 380,185 496,208 L 496,785 C 380,765 230,765 95,745 Z" fill="url(#pageLeftGrad)" stroke="#1f2937" stroke-width="2.5"/>
 
-    <!-- Golden Spine Ribs / Bands -->
-    <rect x="194" y="240" width="76" height="12" rx="3" fill="url(#goldGrad)"/>
-    <rect x="194" y="380" width="76" height="12" rx="3" fill="url(#goldGrad)"/>
-    <rect x="194" y="580" width="76" height="12" rx="3" fill="url(#goldGrad)"/>
-    <rect x="194" y="720" width="76" height="12" rx="3" fill="url(#goldGrad)"/>
+      <!-- Inner Fine Deed Border (Left Page) -->
+      <path d="M 120,225 C 240,212 370,212 475,230 L 475,760 C 370,742 240,742 120,725 Z" fill="none" stroke="#111827" stroke-width="2"/>
+      <path d="M 128,233 C 245,221 365,221 467,238 L 467,752 C 365,735 245,735 128,718 Z" fill="none" stroke="#6b7280" stroke-width="1" stroke-dasharray="4,3"/>
 
-    <!-- Golden Embossed Front Frame -->
-    <rect x="290" y="170" width="430" height="650" rx="18" fill="none" stroke="url(#goldGrad)" stroke-width="5" stroke-dasharray="none"/>
-    <rect x="304" y="184" width="402" height="622" rx="12" fill="none" stroke="url(#goldGrad)" stroke-width="2" opacity="0.8"/>
+      <!-- Corner Ornaments (Left Page) -->
+      <circle cx="134" cy="240" r="4" fill="#111827"/>
+      <circle cx="461" cy="245" r="4" fill="#111827"/>
+      <circle cx="134" cy="711" r="4" fill="#111827"/>
+      <circle cx="461" cy="745" r="4" fill="#111827"/>
 
-    <!-- Golden Filigree Corner Ornaments -->
-    <!-- Top-Left Corner -->
-    <path d="M 304,214 L 304,184 L 334,184" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
-    <circle cx="338" cy="218" r="4" fill="url(#goldGrad)"/>
-    <!-- Top-Right Corner -->
-    <path d="M 676,184 L 706,184 L 706,214" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
-    <circle cx="672" cy="218" r="4" fill="url(#goldGrad)"/>
-    <!-- Bottom-Left Corner -->
-    <path d="M 304,776 L 304,806 L 334,806" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
-    <circle cx="338" cy="772" r="4" fill="url(#goldGrad)"/>
-    <!-- Bottom-Right Corner -->
-    <path d="M 676,806 L 706,806 L 706,776" fill="none" stroke="url(#goldGrad)" stroke-width="4"/>
-    <circle cx="672" cy="772" r="4" fill="url(#goldGrad)"/>
+      <!-- Official Deed Stamp Arch (Top Left) -->
+      <path d="M 175,320 L 175,260 Q 295,232 415,260 L 415,320 Z" fill="#f8fafc" stroke="#111827" stroke-width="2.5"/>
+      <path d="M 183,314 L 183,266 Q 295,240 407,266 L 407,314 Z" fill="none" stroke="#374151" stroke-width="1"/>
 
-    <!-- Luxurious Bookmark Ribbon Flowing Out -->
-    <g filter="url(#ribbonShadow)">
-      <!-- Top ribbon inside book -->
-      <path d="M 520,135 L 565,135 L 565,220 L 520,220 Z" fill="url(#goldRibbonGrad)"/>
-      <!-- Bottom hanging ribbon past bottom edge -->
-      <path d="M 515,800 L 570,800 L 570,910 L 542,880 L 515,910 Z" fill="url(#goldRibbonGrad)"/>
-      <!-- Golden ribbon trim fringe -->
-      <path d="M 515,905 L 542,875 L 570,905 L 570,912 L 542,882 L 515,912 Z" fill="url(#goldFringe)"/>
+      <!-- Scales of Justice Emblem Inside Stamp -->
+      <g transform="translate(295, 282) scale(0.68)">
+        <!-- Center Beam -->
+        <line x1="0" y1="-28" x2="0" y2="28" stroke="#111827" stroke-width="3"/>
+        <circle cx="0" cy="-30" r="4" fill="#111827"/>
+        <line x1="-12" y1="28" x2="12" y2="28" stroke="#111827" stroke-width="4"/>
+        <!-- Balance Crossbar -->
+        <path d="M -34,-16 Q 0,-24 34,-16" fill="none" stroke="#111827" stroke-width="3.5"/>
+        <!-- Left Pan -->
+        <line x1="-30" y1="-14" x2="-44" y2="8" stroke="#111827" stroke-width="1.8"/>
+        <line x1="-30" y1="-14" x2="-16" y2="8" stroke="#111827" stroke-width="1.8"/>
+        <path d="M -46,8 Q -30,20 -14,8 Z" fill="#111827"/>
+        <!-- Right Pan -->
+        <line x1="30" y1="-14" x2="16" y2="8" stroke="#111827" stroke-width="1.8"/>
+        <line x1="30" y1="-14" x2="44" y2="8" stroke="#111827" stroke-width="1.8"/>
+        <path d="M 14,8 Q 30,20 46,8 Z" fill="#111827"/>
+      </g>
+
+      <!-- Stamp Heading Text -->
+      <text x="295" y="338" text-anchor="middle" font-family="'SolaimanLipi', 'Noto Sans Bengali', serif" font-size="14" font-weight="bold" fill="#111827" letter-spacing="1">বাংলাদেশ দলিল রেকর্ড</text>
+      <line x1="205" y1="344" x2="385" y2="344" stroke="#111827" stroke-width="1"/>
+
+      <!-- Legal Deed Text Lines on Left Page -->
+      <g stroke="#1f2937" stroke-linecap="round">
+        <line x1="145" y1="375" x2="450" y2="375" stroke-width="3"/>
+        <line x1="145" y1="402" x2="440" y2="402" stroke-width="2.2"/>
+        <line x1="145" y1="428" x2="425" y2="428" stroke-width="2.2"/>
+        <line x1="145" y1="454" x2="448" y2="454" stroke-width="2.2"/>
+        <line x1="145" y1="480" x2="390" y2="480" stroke-width="2.2"/>
+        <line x1="145" y1="506" x2="435" y2="506" stroke-width="2.2"/>
+        <line x1="145" y1="532" x2="445" y2="532" stroke-width="2.2"/>
+        <line x1="145" y1="558" x2="370" y2="558" stroke-width="2.2"/>
+        <line x1="145" y1="584" x2="440" y2="584" stroke-width="2.2"/>
+        <line x1="145" y1="610" x2="415" y2="610" stroke-width="2.2"/>
+        <line x1="145" y1="636" x2="450" y2="636" stroke-width="2.2"/>
+      </g>
+
+      <!-- Sub-Registry Circular Seal on Bottom Left -->
+      <g transform="translate(240, 680)">
+        <circle cx="0" cy="0" r="32" fill="none" stroke="#111827" stroke-width="2"/>
+        <circle cx="0" cy="0" r="26" fill="none" stroke="#111827" stroke-width="1" stroke-dasharray="3,2"/>
+        <circle cx="0" cy="0" r="8" fill="#111827"/>
+        <text x="0" y="4" text-anchor="middle" font-family="'SolaimanLipi', sans-serif" font-size="7" font-weight="bold" fill="#ffffff">সিল</text>
+      </g>
     </g>
 
-    <!-- Center Golden Emblem & Seal -->
-    <g transform="translate(505, 460)">
-      <!-- Outer Radiant Ring -->
-      <circle cx="0" cy="0" r="135" fill="#091b3a" stroke="url(#goldGrad)" stroke-width="6"/>
-      <circle cx="0" cy="0" r="122" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-dasharray="5,4" opacity="0.9"/>
-      
-      <!-- Inner Ring -->
-      <circle cx="0" cy="0" r="110" fill="url(#leatherGrad)" stroke="url(#goldGrad)" stroke-width="3"/>
+    <!-- ==================== RIGHT DEED PAGE ==================== -->
+    <g filter="url(#pageShadow)">
+      <!-- Right Page Surface with natural arched curve -->
+      <path d="M 528,208 C 644,185 794,185 929,200 L 929,745 C 794,765 644,765 528,785 Z" fill="url(#pageRightGrad)" stroke="#1f2937" stroke-width="2.5"/>
 
-      <!-- Government/Legal Water Lily (Shapla) Crest & Scales of Justice -->
-      <!-- Center Scales of Justice -->
-      <!-- Central Pillar -->
-      <rect x="-3" y="-62" width="6" height="84" rx="2" fill="url(#goldGrad)"/>
-      <circle cx="0" cy="-66" r="7" fill="url(#goldGrad)"/>
-      <path d="M -16,22 L 16,22 L 22,28 L -22,28 Z" fill="url(#goldGrad)"/>
+      <!-- Inner Fine Deed Border (Right Page) -->
+      <path d="M 549,230 C 654,212 784,212 904,225 L 904,725 C 784,742 654,742 549,760 Z" fill="none" stroke="#111827" stroke-width="2"/>
+      <path d="M 557,238 C 659,221 779,221 896,233 L 896,718 C 779,735 659,735 557,752 Z" fill="none" stroke="#6b7280" stroke-width="1" stroke-dasharray="4,3"/>
 
-      <!-- Cross Beam -->
-      <path d="M -54,-45 C -25,-55 25,-55 54,-45" fill="none" stroke="url(#goldGrad)" stroke-width="4.5" stroke-linecap="round"/>
-      
-      <!-- Left Pan -->
-      <line x1="-50" y1="-43" x2="-68" y2="-12" stroke="url(#goldGrad)" stroke-width="1.8"/>
-      <line x1="-50" y1="-43" x2="-32" y2="-12" stroke="url(#goldGrad)" stroke-width="1.8"/>
-      <path d="M -72,-12 C -72,2 -28,2 -28,-12 Z" fill="url(#goldGrad)"/>
+      <!-- Corner Ornaments (Right Page) -->
+      <circle cx="563" cy="245" r="4" fill="#111827"/>
+      <circle cx="890" cy="240" r="4" fill="#111827"/>
+      <circle cx="563" cy="745" r="4" fill="#111827"/>
+      <circle cx="890" cy="711" r="4" fill="#111827"/>
 
-      <!-- Right Pan -->
-      <line x1="50" y1="-43" x2="32" y2="-12" stroke="url(#goldGrad)" stroke-width="1.8"/>
-      <line x1="50" y1="-43" x2="68" y2="-12" stroke="url(#goldGrad)" stroke-width="1.8"/>
-      <path d="M 28,-12 C 28,2 72,2 72,-12 Z" fill="url(#goldGrad)"/>
+      <!-- Prominent Title Box 'দলিল ফিগার' on Right Page -->
+      <g transform="translate(726, 280)">
+        <!-- Elegant Monochrome Heading Plate -->
+        <rect x="-145" y="-32" width="290" height="64" rx="10" fill="#111827" stroke="#000000" stroke-width="2"/>
+        <rect x="-139" y="-26" width="278" height="52" rx="7" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+        
+        <!-- Deed Title Typography in Pure Crisp White -->
+        <text x="0" y="8" text-anchor="middle" font-family="'SolaimanLipi', 'Noto Sans Bengali', 'Segoe UI', sans-serif" font-size="31" font-weight="900" fill="#ffffff" letter-spacing="2">দলিল ফিগার</text>
+      </g>
 
-      <!-- Paddy Sheaves / Olive Branch Wreath (left & right arc) -->
-      <path d="M -85,15 C -95,-25 -80,-65 -55,-85" fill="none" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="-88" cy="-5" r="4" fill="url(#goldGrad)"/>
-      <circle cx="-92" cy="-28" r="4" fill="url(#goldGrad)"/>
-      <circle cx="-84" cy="-52" r="4" fill="url(#goldGrad)"/>
-      <circle cx="-68" cy="-72" r="4" fill="url(#goldGrad)"/>
+      <!-- Legal Deed Text Lines on Right Page -->
+      <g stroke="#1f2937" stroke-linecap="round">
+        <line x1="575" y1="365" x2="875" y2="365" stroke-width="2.8"/>
+        <line x1="575" y1="392" x2="865" y2="392" stroke-width="2.2"/>
+        <line x1="575" y1="418" x2="840" y2="418" stroke-width="2.2"/>
+        <line x1="575" y1="444" x2="870" y2="444" stroke-width="2.2"/>
+        <line x1="575" y1="470" x2="820" y2="470" stroke-width="2.2"/>
+        <line x1="575" y1="496" x2="860" y2="496" stroke-width="2.2"/>
+        <line x1="575" y1="522" x2="845" y2="522" stroke-width="2.2"/>
+        <line x1="575" y1="548" x2="875" y2="548" stroke-width="2.2"/>
+        <line x1="575" y1="574" x2="810" y2="574" stroke-width="2.2"/>
+        <line x1="575" y1="600" x2="865" y2="600" stroke-width="2.2"/>
+      </g>
 
-      <path d="M 85,15 C 95,-25 80,-65 55,-85" fill="none" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="88" cy="-5" r="4" fill="url(#goldGrad)"/>
-      <circle cx="92" cy="-28" r="4" fill="url(#goldGrad)"/>
-      <circle cx="84" cy="-52" r="4" fill="url(#goldGrad)"/>
-      <circle cx="68" cy="-72" r="4" fill="url(#goldGrad)"/>
+      <!-- Official Deed Signature Box & Seal on Right Page -->
+      <g transform="translate(735, 665)">
+        <!-- Signature line -->
+        <line x1="-120" y1="0" x2="20" y2="0" stroke="#111827" stroke-width="2"/>
+        <!-- Simulated Bengali Signature Ink Flow -->
+        <path d="M -110,-14 Q -85,-32 -70,-8 Q -55,-26 -35,-6 Q -15,-20 5,-4" fill="none" stroke="#111827" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="-50" y="20" text-anchor="middle" font-family="'SolaimanLipi', sans-serif" font-size="12" font-weight="600" fill="#374151">গ্রহীতা / দাতার স্বাক্ষর</text>
 
-      <!-- Stars in Banner -->
-      <circle cx="-38" cy="50" r="3.5" fill="url(#goldGrad)"/>
-      <circle cx="38" cy="50" r="3.5" fill="url(#goldGrad)"/>
-      <circle cx="0" cy="54" r="4.5" fill="url(#goldGrad)"/>
+        <!-- Official Notary Stamp Seal Beside Signature -->
+        <g transform="translate(95, -5)">
+          <circle cx="0" cy="0" r="34" fill="#111827"/>
+          <circle cx="0" cy="0" r="30" fill="none" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="0" cy="0" r="26" fill="none" stroke="#ffffff" stroke-width="1" stroke-dasharray="3,2"/>
+          <!-- Star in center -->
+          <polygon points="0,-12 3,-3 12,-3 5,2 8,11 0,6 -8,11 -5,2 -12,-3 -3,-3" fill="#ffffff"/>
+          <text x="0" y="20" text-anchor="middle" font-family="'SolaimanLipi', sans-serif" font-size="9" font-weight="bold" fill="#ffffff">রেজিস্টার্ড</text>
+        </g>
+      </g>
     </g>
 
-    <!-- Bangla Title 'দলিল রেজিস্ট্রি' Ribbon Plate Below Emblem -->
-    <g transform="translate(505, 665)">
-      <!-- Golden Plaque Background -->
-      <path d="M -130,-22 L 130,-22 Q 145,0 130,22 L -130,22 Q -145,0 -130,-22 Z" fill="url(#goldGrad)" stroke="#78350f" stroke-width="2"/>
-      <rect x="-115" y="-15" width="230" height="30" rx="4" fill="#0d1b38"/>
-      
-      <!-- Text inside plate -->
-      <text x="0" y="7" text-anchor="middle" font-family="'SolaimanLipi', 'Noto Sans Bengali', 'Segoe UI', 'Roboto', sans-serif" font-size="21" font-weight="bold" fill="url(#goldGrad)" letter-spacing="1">দলিল ফিগার</text>
+    <!-- Center Binding Spine & Silk Bookmark Ribbon (Monochrome) -->
+    <!-- Center Spine Ridge -->
+    <path d="M 500,205 C 506,200 518,200 524,205 L 524,785 C 518,790 506,790 500,785 Z" fill="url(#spineGrad)" stroke="#111827" stroke-width="2"/>
+
+    <!-- Black Ribbon Bookmark with Silver Edge -->
+    <path d="M 506,200 L 518,200 L 526,850 L 512,830 L 498,850 Z" fill="#111827" stroke="#cbd5e1" stroke-width="1.5"/>
+
+    <!-- Classic Metallic Fountain Pen Resting Across Open Page -->
+    <g transform="translate(510, 480) rotate(-42)">
+      <!-- Pen Shadow -->
+      <rect x="-10" y="-170" width="22" height="340" rx="10" fill="#000000" opacity="0.3" filter="blur(6px)"/>
+      <!-- Pen Barrel (Black Lacquer) -->
+      <rect x="-8" y="-160" width="16" height="240" rx="7" fill="#0f172a" stroke="#475569" stroke-width="1.5"/>
+      <!-- Silver Clip -->
+      <rect x="-3" y="-150" width="6" height="90" rx="3" fill="url(#silverGrad)"/>
+      <circle cx="0" cy="-60" r="5" fill="url(#silverGrad)"/>
+      <!-- Silver Band -->
+      <rect x="-9" y="70" width="18" height="12" fill="url(#silverGrad)"/>
+      <!-- Silver Nib Section -->
+      <path d="M -8,82 L 8,82 L 6,110 L -6,110 Z" fill="#334155"/>
+      <!-- Classic Calligraphy Nib -->
+      <path d="M -7,110 L 7,110 L 0,148 Z" fill="url(#silverGrad)" stroke="#64748b" stroke-width="1"/>
+      <line x1="0" y1="112" x2="0" y2="138" stroke="#0f172a" stroke-width="1.5"/>
+      <circle cx="0" cy="126" r="1.5" fill="#0f172a"/>
     </g>
 
-    <!-- Subtle Diagonal Leather Sheen Highlight across Cover -->
-    <path d="M 270,140 L 460,140 L 270,720 Z" fill="#ffffff" opacity="0.04"/>
   </g>
 </svg>`;
 }
