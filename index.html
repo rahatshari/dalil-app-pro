@@ -841,8 +841,8 @@
 
     <!-- App Top Bar -->
     <div class="app-bar no-print">
-        <button class="settings-btn" onclick="toggleSettings()" title="মেনু ও সেটিংস">
-            <span class="material-icons">menu</span>
+        <button class="settings-btn" onclick="toggleSettings()" title="মেনু ও সংরক্ষিত দলিল">
+            <span class="material-icons">more_vert</span>
         </button>
         <h1>
             <img src="icon-192.png" alt="দলিল লোগো" style="width:28px; height:28px; border-radius:6px; object-fit:cover; vertical-align:middle; box-shadow:0 1px 4px rgba(0,0,0,0.2); border:1px solid #374151;">
@@ -862,8 +862,15 @@
 
         <!-- Settings Menu -->
         <div id="settings-menu" class="settings-menu">
-            <h4>ডেটা ও অ্যাপ সেটিং</h4>
+            <h4>মেনু ও সংরক্ষিত দলিল</h4>
             <ul>
+                <li onclick="toggleSettings(); openSavedCollectionsModal();" style="background:#e8f0fe; color:#1a73e8; font-weight:600; display:flex; align-items:center; justify-content:space-between;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <span class="material-icons" style="color:#1a73e8;">folder_special</span>
+                        <span>সংরক্ষিত দলিলের তালিকা</span>
+                    </div>
+                    <span id="menu-saved-count-badge" style="background:#1a73e8; color:#ffffff; font-size:11px; padding:2px 8px; border-radius:12px; font-weight:bold;">০ টি</span>
+                </li>
                 <li id="menu-install-item" onclick="triggerPWAInstall()">
                     <span class="material-icons" style="color:#1a73e8;">install_mobile</span>
                     <span style="color:#1a73e8; font-weight: 500;">অ্যাপ ইনস্টল করুন (Offline)</span>
@@ -1008,28 +1015,6 @@
 
     <!-- অ্যাপের মাঝখানে দলিল সংরক্ষণাগার ও প্রজেক্ট ম্যানেজার (Save & Restore Deeds in Middle) -->
     <div class="middle-save-card no-print">
-        <div class="middle-save-header">
-            <div class="middle-save-title">
-                <span class="material-icons" style="color:#1a73e8; font-size:26px;">inventory_2</span>
-                <div>
-                    <h3 style="margin:0; font-size:15px; font-weight:600; color:#202124;">দলিল সংরক্ষণাগার (প্রজেক্ট সেভ ও লোড)</h3>
-                    <p style="margin:2px 0 0; font-size:12px; color:#5f6368;">
-                        বর্তমান দলিলসমূহ সেভ করে রাখুন, পরবর্তীতে এক ক্লিকেই টেবিলে ফিরিয়ে আনুন
-                    </p>
-                </div>
-            </div>
-            <div class="middle-status-badges">
-                <span class="count-pill current-pill" id="middle-current-count-pill" title="বর্তমানে টেবিলে থাকা দলিলের সংখ্যা">
-                    <span class="material-icons" style="font-size:14px;">description</span>
-                    টেবিলে: <b id="middle-current-count-text">০</b> টি
-                </span>
-                <span class="count-pill saved-pill" id="middle-saved-count-pill" onclick="openSavedCollectionsModal()" style="cursor:pointer;" title="সংরক্ষিত প্রজেক্টের তালিকা দেখুন">
-                    <span class="material-icons" style="font-size:14px;">folder_special</span>
-                    সংরক্ষিত: <b id="middle-saved-count-text">০</b> টি
-                </span>
-            </div>
-        </div>
-
         <div class="middle-save-actions">
             <!-- Save Button -->
             <button type="button" class="action-btn btn-middle-save" onclick="openSaveCurrentCollectionModal()" title="বর্তমানে টেবিলে থাকা সব দলিল সেভ করুন">
@@ -1050,18 +1035,14 @@
             </button>
         </div>
 
-        <!-- Quick Access Saved Collections Strip -->
-        <div id="middle-quick-saved-container" style="display: none; margin-top: 14px; padding-top: 12px; border-top: 1px dashed #dadce0;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-size:12px; font-weight:600; color:#5f6368; display:flex; align-items:center; gap:4px;">
-                    <span class="material-icons" style="font-size:15px; color:#f2994a;">history</span>
-                    সর্বশেষ সংরক্ষিত প্রজেক্টসমূহ (এক ক্লিকে টেবিলে আনুন):
-                </span>
-                <a href="javascript:void(0)" onclick="openSavedCollectionsModal()" style="font-size:12px; color:#1a73e8; text-decoration:none; font-weight:500;">
-                    সবগুলো দেখুন (<span id="quick-total-count">০</span>) &raquo;
-                </a>
-            </div>
-            <div id="middle-quick-chips" class="quick-collection-chips"></div>
+        <!-- প্রিন্ট ও মুছুন বাটন দুটি (মাঝখানের বাটনগুলোর নিচে) -->
+        <div class="bottom-bar no-print" style="padding: 10px 0 0 0; border-top: none; background: transparent; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button class="action-btn btn-pdf" style="margin:0; padding: 11px 14px; border-radius: 8px; font-size: 14px; font-weight: 500;" onclick="window.print()">
+                <span class="material-icons">print</span> প্রিন্ট
+            </button>
+            <button class="action-btn btn-clear" style="margin:0; padding: 11px 14px; border-radius: 8px; font-size: 14px; font-weight: 500;" onclick="clearAllRecords()">
+                <span class="material-icons">delete_sweep</span> মুছুন
+            </button>
         </div>
     </div>
 
@@ -1106,11 +1087,6 @@
                 <!-- Table Body -->
             </table>
         </div>
-    </div>
-
-    <div class="bottom-bar no-print">
-        <button class="action-btn btn-pdf" onclick="window.print()"><span class="material-icons">print</span> প্রিন্ট</button>
-        <button class="action-btn btn-clear" onclick="clearAllRecords()"><span class="material-icons">delete_sweep</span> মুছুন</button>
     </div>
 </div>
 </div>
@@ -1788,7 +1764,7 @@
     function addKhatianField(type = 'এস এ', no = '', land = '', dag = '') {
         const selectedType = (type && type !== '') ? type : 'এস এ';
         const container = document.getElementById('khatian-container'); const div = document.createElement('div'); div.className = 'person-block khatian-block';
-        div.innerHTML = `<div class="khatian-row"><div class="input-group"><label>ধরন</label><select class="khatian-type"><option value="এস এ" ${selectedType==='এস এ'?'selected':''}>এস এ</option><option value="সি এস" ${selectedType==='সি এস'?'selected':''}>সি এস</option><option value="বি আর এস" ${selectedType==='বি আর এস'?'selected':''}>বি আর এস</option><option value="আর এস" ${selectedType==='আর এস'?'selected':''}>আর এস</option><option value="" ${selectedType===''?'selected':''}>বাছাই</option></select></div><div class="input-group"><label>খতিয়ান নং</label><input type="text" class="khatian-no" placeholder="যেমন: ২১৮" value="${no==='-'?'':no}"></div><div class="input-group"><label>জমি (শতক)</label><input type="text" class="khatian-land" placeholder="যেমন: ৩০" value="${cleanShatakForEdit(land)}"></div><div class="input-group"><label>দাগ নং</label><input type="text" class="khatian-dag" placeholder="যেমন: ১৬২০" value="${dag==='-'?'':dag}"></div></div>`;
+        div.innerHTML = `<div class="khatian-row"><div class="input-group"><label>ধরন</label><select class="khatian-type"><option value="এস এ" ${selectedType==='এস এ'?'selected':''}>এস এ</option><option value="সি এস" ${selectedType==='সি এস'?'selected':''}>সি এস</option><option value="বি আর এস" ${selectedType==='বি আর এস'?'selected':''}>বি আর এস</option><option value="আর এস" ${selectedType==='আর এস'?'selected':''}>আর এস</option></select></div><div class="input-group"><label>খতিয়ান নং</label><input type="text" class="khatian-no" placeholder="যেমন: ২১৮" value="${no==='-'?'':no}"></div><div class="input-group"><label>জমি (শতক)</label><input type="text" class="khatian-land" placeholder="যেমন: ৩০" value="${cleanShatakForEdit(land)}"></div><div class="input-group"><label>দাগ নং</label><input type="text" class="khatian-dag" placeholder="যেমন: ১৬২০" value="${dag==='-'?'':dag}"></div></div>`;
         container.appendChild(div); if(!isLoadingDraft) saveFormDraft();
     }
 
@@ -2244,6 +2220,9 @@
 
         const badgeText = document.getElementById('btn-saved-count-badge');
         if (badgeText) badgeText.innerText = toBanglaNum(savedProjects.length);
+
+        const menuBadge = document.getElementById('menu-saved-count-badge');
+        if (menuBadge) menuBadge.innerText = `${toBanglaNum(savedProjects.length)} টি`;
 
         const quickContainer = document.getElementById('middle-quick-saved-container');
         const quickChips = document.getElementById('middle-quick-chips');
