@@ -1,0 +1,95 @@
+name: Build & Release Android APK (দলিল ফিগার)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build Signed APK & Publish Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: |
+          if [ -f "./android/gradlew" ]; then
+            chmod +x ./android/gradlew
+          fi
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+          fi
+
+      - name: Build Signed APK with Auto Versioning
+        run: |
+          # Automatically calculate Version Code and Version Name
+          VERSION_CODE="${{ github.run_number }}"
+          VERSION_NAME="1.0.${{ github.run_number }}"
+          echo "Building Version Code: $VERSION_CODE | Version Name: $VERSION_NAME"
+          
+          if [ -d "./android" ]; then
+            cd android
+            ./gradlew assembleRelease -PversionCode=$VERSION_CODE -PversionName=$VERSION_NAME --stacktrace
+            cd ..
+          else
+            ./gradlew assembleRelease -PversionCode=$VERSION_CODE -PversionName=$VERSION_NAME --stacktrace
+          fi
+
+      - name: Prepare APK Output
+        run: |
+          VERSION_NAME="1.0.${{ github.run_number }}"
+          APK_PATH=$(find . -name "*release*.apk" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            APK_PATH=$(find . -name "*.apk" | head -n 1)
+          fi
+          echo "Found APK at: $APK_PATH"
+          mkdir -p build-output
+          cp "$APK_PATH" "build-output/dalil-figure-v${VERSION_NAME}.apk"
+          # Also copy standard name for convenience
+          cp "$APK_PATH" "build-output/dalil-figure-pro-latest.apk"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dalil-Figure-v1.0.${{ github.run_number }}-APK
+          path: build-output/dalil-figure-v1.0.${{ github.run_number }}.apk
+          retention-days: 30
+
+      - name: Publish to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        with:
+          tag_name: "v1.0.${{ github.run_number }}"
+          name: "দলিল ফিগার v1.0.${{ github.run_number }}"
+          body: |
+            ## 📱 দলিল ফিগার Android অ্যাপ (v1.0.${{ github.run_number }})
+            
+            - **ভার্সন কোড (Version Code):** `${{ github.run_number }}`
+            - **ভার্সন নাম (Version Name):** `1.0.${{ github.run_number }}`
+            - **স্বাক্ষর (Signature):** সেম রিলিজ কি-স্টোর (`release.keystore`) দ্বারা সাইন করা। পূর্বে ইনস্টল করা অ্যাপের ওপর সরাসরি আপডেট করা যাবে।
+            - **ইন-অ্যাপ আপডেট:** এই সংস্করণ ইনস্টল করা থাকলে পরবর্তী যেকোনো আপডেট আসলে সরাসরি অ্যাপের ভেতর থেকেই ১-ক্লিকে আপডেট নেওয়া যাবে।
+            
+            ### 📥 ডাউনলোড লিংক:
+            নিচের অ্যাসেট (Assets) সেকশন থেকে সরাসরি **`dalil-figure-v1.0.${{ github.run_number }}.apk`** ডাউনলোড করুন।
+          files: |
+            build-output/dalil-figure-v1.0.${{ github.run_number }}.apk
+            build-output/dalil-figure-pro-latest.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

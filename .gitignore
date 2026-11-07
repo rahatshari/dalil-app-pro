@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+.npm/
+
+# Android build outputs and caches
+.gradle/
+build/
+android/build/
+android/app/build/
+android/.gradle/
+*.iml
+.idea/
+local.properties
+
+# Crucial: DO NOT ignore the persistent keystore and gradle wrapper jar
+!android/release.keystore
+!release.keystore
+!android/gradle/wrapper/gradle-wrapper.jar
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
