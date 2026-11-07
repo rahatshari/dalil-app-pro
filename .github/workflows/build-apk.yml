@@ -26,6 +26,9 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Grant execute permission for gradlew
         run: |
           if [ -f "./android/gradlew" ]; then
@@ -37,7 +40,6 @@ jobs:
 
       - name: Build Signed APK with Auto Versioning
         run: |
-          # Automatically calculate Version Code and Version Name
           VERSION_CODE="${{ github.run_number }}"
           VERSION_NAME="1.0.${{ github.run_number }}"
           echo "Building Version Code: $VERSION_CODE | Version Name: $VERSION_NAME"
@@ -53,14 +55,16 @@ jobs:
       - name: Prepare APK Output
         run: |
           VERSION_NAME="1.0.${{ github.run_number }}"
-          APK_PATH=$(find . -name "*release*.apk" | head -n 1)
+          APK_PATH=$(find . -name "*release.apk" ! -name "*unsigned*" | head -n 1)
+          if [ -z "$APK_PATH" ]; then
+            APK_PATH=$(find . -name "*release*.apk" | head -n 1)
+          fi
           if [ -z "$APK_PATH" ]; then
             APK_PATH=$(find . -name "*.apk" | head -n 1)
           fi
           echo "Found APK at: $APK_PATH"
           mkdir -p build-output
           cp "$APK_PATH" "build-output/dalil-figure-v${VERSION_NAME}.apk"
-          # Also copy standard name for convenience
           cp "$APK_PATH" "build-output/dalil-figure-pro-latest.apk"
 
       - name: Upload Artifact

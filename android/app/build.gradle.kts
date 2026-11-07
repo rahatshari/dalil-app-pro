@@ -84,5 +84,5 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.webkit)
-    implementation(libs.google-gson)
+    implementation(libs.google.gson)
 }
