@@ -7,6 +7,7 @@
     "dev": "node server.js",
     "start": "node server.js",
     "build": "node -e 'console.log(\"Static build ready\")'",
+    "generate-icons": "node scripts/generate_icons.js && node scripts/generate_android_icons.js",
     "lint": "node -e 'console.log(\"No lint issues\")'"
   },
   "dependencies": {
