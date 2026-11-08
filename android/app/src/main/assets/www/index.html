@@ -66,11 +66,12 @@
         /* App Header (Top Bar) */
         .app-bar {
             background-color: #ffffff;
-            height: 60px;
+            height: 54px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            justify-content: space-between;
+            padding: 0 10px 0 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -78,62 +79,93 @@
             transform: translateZ(0);
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .app-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
         }
         .app-bar h1 {
             margin: 0;
-            font-size: 18px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
             color: #1a73e8;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+        .app-bar h1 img {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            object-fit: cover;
+            vertical-align: middle;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            border: 1px solid #374151;
+            flex-shrink: 0;
         }
         
         /* Floating Settings Button */
         .settings-btn {
-            position: absolute;
-            left: 15px;
+            position: static;
             background: transparent;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             color: #5f6368;
+            flex-shrink: 0;
+            padding: 0;
         }
         .settings-btn:active { background: #f1f3f4; }
 
-        /* Top bar actions & PWA Install Button */
+        /* Top bar actions & Update Button (Compact & pushed to far right) */
         .app-bar-actions {
-            position: absolute;
-            right: 12px;
+            position: static;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            flex-shrink: 0;
+            margin-left: 8px;
         }
         .app-update-btn {
             background: #1a73e8;
             color: #ffffff;
             border: none;
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 13px;
+            border-radius: 14px;
+            padding: 5px 9px;
+            font-size: 11px;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             cursor: pointer;
-            box-shadow: 0 1px 3px rgba(26,115,232,0.3);
+            box-shadow: 0 1px 2px rgba(26,115,232,0.25);
             transition: all 0.2s;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .app-update-btn .material-icons {
+            font-size: 15px !important;
         }
         .app-update-btn:hover { background: #1557b0; }
-        .app-update-btn:active { transform: scale(0.97); }
+        .app-update-btn:active { transform: scale(0.95); }
         .app-update-btn.has-update {
             background: #1e8e3e;
-            box-shadow: 0 1px 6px rgba(30,142,62,0.5);
+            box-shadow: 0 1px 5px rgba(30,142,62,0.4);
             animation: pulseUpdate 1.8s infinite;
         }
         @keyframes pulseUpdate {
@@ -502,9 +534,12 @@
 
         /* Main Container */
         .container {
-            max-width: 800px; 
-            margin: 15px auto;
-            padding: 0 15px;
+            width: 100%;
+            max-width: 820px; 
+            margin: 12px auto;
+            padding: 0 12px;
+            box-sizing: border-box;
+            overflow-x: hidden;
         }
         
         /* Card Style for Form Sections */
@@ -844,44 +879,100 @@
         
         /* Table / Output Container */
         .output-container {
+            width: 100%;
             max-width: 100%;
             margin: 0 auto 30px auto;
             background: #ffffff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
             border-radius: 12px;
             overflow: hidden; 
+            box-sizing: border-box;
             -webkit-transform: translateZ(0);
             transform: translateZ(0);
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
         }
         
-        /* PRINT HEADER */
+        /* PRINT HEADER (Screen display) */
         .print-header {
             display: flex; 
-            padding: 20px;
+            padding: 16px 20px;
             background: #fff;
             border-bottom: 2px solid #3c4043;
             justify-content: space-between;
-            align-items: stretch; 
+            align-items: center; 
+            gap: 12px;
+            box-sizing: border-box;
+            width: 100%;
         }
-        .header-col-left { flex: 1; display: flex; flex-direction: column; justify-content: center; font-size: 13px; line-height: 1.6; color: #202124; }
+        .header-col-left { flex: 1; display: flex; flex-direction: column; justify-content: center; font-size: 13px; line-height: 1.6; color: #202124; min-width: 0; }
         .header-col-left strong { font-weight: 600; color: #000; }
-        .header-col-center { flex: 1.5; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .header-col-center h3 { margin: 0; font-size: 22px; font-weight: 700; color: #000; text-decoration: underline; line-height: 1.2; }
-        .header-col-right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; font-size: 13px; line-height: 1.6; color: #202124; }
+        .header-col-center { flex: 1.5; display: flex; align-items: center; justify-content: center; text-align: center; min-width: 0; }
+        .header-col-center h3 { margin: 0; font-size: 20px; font-weight: 700; color: #000; text-decoration: underline; line-height: 1.2; }
+        .header-col-right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; font-size: 13px; line-height: 1.6; color: #202124; min-width: 0; }
         .header-col-right strong { font-weight: 600; color: #000; }
+
+        @media (max-width: 650px) {
+            .container {
+                padding: 0 8px;
+                margin: 8px auto;
+            }
+            .middle-save-card {
+                padding: 12px 10px;
+            }
+            .print-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 12px 8px;
+                gap: 8px;
+            }
+            .header-col-left, .header-col-right {
+                width: 100%;
+                align-items: center;
+                text-align: center;
+                font-size: 12px;
+            }
+            .header-col-center h3 {
+                font-size: 17px;
+            }
+        }
 
         #default-title { display: none; }
 
+        /* Mobile horizontal scroll hint badge */
+        .table-scroll-hint {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #e8f0fe;
+            color: #1a73e8;
+            font-size: 11.5px;
+            font-weight: 500;
+            padding: 6px 10px;
+            border-bottom: 1px solid #d2e3fc;
+            text-align: center;
+            user-select: none;
+        }
+        @media (max-width: 768px) {
+            .table-scroll-hint {
+                display: flex;
+            }
+        }
+
         /* Table Styling */
         .table-responsive {
+            width: 100%;
+            max-width: 100%;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            box-sizing: border-box;
+            border-radius: 0 0 12px 12px;
             -webkit-transform: translateZ(0);
             transform: translateZ(0);
         }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; }
+        table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: 13px; background: #fff; }
         th, td { border: 1px solid #bdc1c6; padding: 8px 6px; text-align: left; vertical-align: middle; line-height: 1.5; color: #202124; }
         th { background: #f1f3f4; color: #202124; font-weight: 600; text-align: center; white-space: nowrap; }
         .align-center { text-align: center !important; }
@@ -1051,9 +1142,12 @@
                 display: block !important;
             }
             
+            .table-scroll-hint { display: none !important; }
+            
             table { 
                 font-size: 11px !important; 
                 width: 100% !important; 
+                min-width: unset !important;
                 border-collapse: collapse !important; 
                 border: 1px solid #000000 !important; 
                 page-break-inside: auto !important; 
@@ -1135,21 +1229,23 @@
 
     <!-- App Top Bar -->
     <div class="app-bar no-print">
-        <button class="settings-btn" onclick="toggleSettings()" title="মেনু ও সংরক্ষিত দলিল">
-            <span class="material-icons">more_vert</span>
-        </button>
-        <h1>
-            <img src="icon-192.png" alt="দলিল লোগো" style="width:28px; height:28px; border-radius:6px; object-fit:cover; vertical-align:middle; box-shadow:0 1px 4px rgba(0,0,0,0.2); border:1px solid #374151;">
-            <span>দলিল ফিগার</span>
-            <span id="header-offline-badge" class="header-offline-badge" style="display: none;" title="অফলাইনে কাজ করছে — সমস্ত ডেটা আপনার ফোনেই সংরক্ষিত">
-                <span class="material-icons" style="font-size:13px;">cloud_off</span>
-                <span>অফলাইন</span>
-            </span>
-        </h1>
+        <div class="app-bar-left">
+            <button class="settings-btn" onclick="toggleSettings()" title="মেনু ও সংরক্ষিত দলিল">
+                <span class="material-icons">more_vert</span>
+            </button>
+            <h1>
+                <img src="icon-192.png" alt="দলিল লোগো">
+                <span>দলিল ফিগার</span>
+                <span id="header-offline-badge" class="header-offline-badge" style="display: none;" title="অফলাইনে কাজ করছে — সমস্ত ডেটা আপনার ফোনেই সংরক্ষিত">
+                    <span class="material-icons" style="font-size:12px;">cloud_off</span>
+                    <span>অফলাইন</span>
+                </span>
+            </h1>
+        </div>
         
         <div class="app-bar-actions">
             <button id="app-update-btn" class="app-update-btn" onclick="triggerAppUpdateCheck(true)" title="নতুন আপডেট চেক করুন">
-                <span class="material-icons" id="app-update-icon" style="font-size:18px;">autorenew</span>
+                <span class="material-icons" id="app-update-icon">autorenew</span>
                 <span id="app-update-text">আপডেট চেক</span>
             </button>
         </div>
@@ -1379,6 +1475,11 @@
         
         <h3 id="default-title">দলিলে জমির হিসাব</h3>
         
+        <div class="table-scroll-hint no-print">
+            <span class="material-icons" style="font-size:15px;">swap_horiz</span>
+            <span>সম্পূর্ণ তালিকা দেখতে ডানে-বামে স্ক্রোল করুন</span>
+        </div>
+
         <div class="table-responsive">
             <table id="main-table">
                 <thead>
