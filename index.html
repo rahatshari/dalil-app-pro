@@ -24,7 +24,7 @@
     
     <!-- Dynamic Print Page Style -->
     <style id="dynamic-print-css">
-        @page { margin: 14mm 12mm 14mm 12mm; size: portrait; }
+        @page { margin: 12mm 10mm 12mm 10mm; size: portrait; }
     </style>
 
     <style>
@@ -33,23 +33,34 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-        html, body {
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #f2f2f7;
+            -webkit-text-size-adjust: 100%;
+        }
+        body {
             font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Noto Sans Bengali', 'SolaimanLipi', 'Kalpurush', sans-serif;
             background-color: #f2f2f7; 
             color: #1c1e21;
             margin: 0;
             padding: 0;
-            height: 100%; 
-            overflow: hidden; 
+            min-height: 100%; 
+            /* Root-level natural scrolling eliminates GPU layer detachment and white blank screens on mobile WebView */
+            overflow-x: hidden;
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch;
             overscroll-behavior-y: none;
+            -webkit-font-smoothing: antialiased;
         }
         
         .app-scroller {
-            height: 100%;
+            min-height: 100%;
             width: 100%;
-            overflow-y: auto; 
-            overscroll-behavior-y: none; 
-            -webkit-overflow-scrolling: touch; 
+            display: flex;
+            flex-direction: column;
+            overflow: visible;
         }
         
         /* App Header (Top Bar) */
@@ -63,6 +74,10 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
         .app-bar h1 {
             margin: 0;
@@ -835,6 +850,10 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.08);
             border-radius: 12px;
             overflow: hidden; 
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
         
         /* PRINT HEADER */
@@ -856,7 +875,12 @@
         #default-title { display: none; }
 
         /* Table Styling */
-        .table-responsive { overflow-x: auto; }
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
         table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; }
         th, td { border: 1px solid #bdc1c6; padding: 8px 6px; text-align: left; vertical-align: middle; line-height: 1.5; color: #202124; }
         th { background: #f1f3f4; color: #202124; font-weight: 600; text-align: center; white-space: nowrap; }
@@ -911,8 +935,12 @@
             bottom: 50px;
         }
 
-        /* --- PRINT CSS SETTINGS --- */
+        /* --- PRINT CSS SETTINGS (Authentic A4 Government Land Record Sheet) --- */
         @media print {
+            @page {
+                size: portrait;
+                margin: 12mm 10mm 12mm 10mm;
+            }
             html, body { 
                 height: auto !important; 
                 overflow: visible !important; 
@@ -922,6 +950,8 @@
                 margin: 0 !important; 
                 color: #000000 !important; 
                 font-family: 'Roboto', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif !important; 
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             .app-scroller {
                 height: auto !important;
@@ -937,7 +967,7 @@
                 box-shadow: none !important; 
                 background: #ffffff !important; 
                 padding: 0 !important; 
-                margin: 0 auto !important;
+                margin: 0 !important;
                 width: 100% !important; 
                 max-width: 100% !important; 
                 border: none !important; 
@@ -945,18 +975,72 @@
                 display: block !important;
             }
 
-            /* Clear breathing margins on the print page */
+            /* Natural Sheet Layout without artificial double paddings */
             #pdf-section { 
                 box-shadow: none !important; 
                 background: #ffffff !important; 
-                padding: 4mm 8mm 6mm 8mm !important; /* side space for print */
-                margin: 0 auto !important;
+                padding: 0 !important; 
+                margin: 0 !important; 
                 width: 100% !important; 
                 box-sizing: border-box !important;
                 border: none !important; 
                 overflow: visible !important; 
                 display: block !important;
             }
+
+            /* Authentic Clean Header - Clean text without enclosing border box */
+            #print-header-layout { 
+                display: flex !important; 
+                justify-content: space-between !important;
+                align-items: stretch !important;
+                border: none !important; 
+                border-radius: 0 !important;
+                padding: 0 0 8px 0 !important; 
+                margin-bottom: 8px !important; 
+                background: transparent !important;
+                box-shadow: none !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .header-col-left { 
+                flex: 1 !important; 
+                display: flex !important; 
+                flex-direction: column !important; 
+                justify-content: center !important; 
+                font-size: 11.5px !important; 
+                line-height: 1.45 !important; 
+                color: #000000 !important; 
+                text-align: left !important;
+            }
+            .header-col-left strong { font-weight: bold !important; color: #000000 !important; }
+            .header-col-center { 
+                flex: 1.5 !important; 
+                display: flex !important; 
+                align-items: center !important; 
+                justify-content: center !important; 
+                text-align: center !important; 
+            }
+            .header-col-center h3 { 
+                font-size: 18px !important; 
+                color: #000000 !important; 
+                font-weight: bold !important; 
+                text-decoration: underline !important; 
+                margin: 0 !important; 
+                padding: 0 !important;
+                line-height: 1.2 !important;
+            }
+            .header-col-right { 
+                flex: 1 !important; 
+                display: flex !important; 
+                flex-direction: column !important; 
+                justify-content: center !important; 
+                align-items: flex-end !important; 
+                text-align: right !important; 
+                font-size: 11.5px !important; 
+                line-height: 1.45 !important; 
+                color: #000000 !important; 
+            }
+            .header-col-right strong { font-weight: bold !important; color: #000000 !important; }
 
             .table-responsive {
                 overflow: visible !important;
@@ -968,49 +1052,74 @@
             }
             
             table { 
-                font-size: 11.5px !important; 
+                font-size: 11px !important; 
                 width: 100% !important; 
                 border-collapse: collapse !important; 
-                border: 2px solid #000000 !important; /* Clear dark outer border */
+                border: 1px solid #000000 !important; 
                 page-break-inside: auto !important; 
                 box-sizing: border-box !important;
                 margin: 0 !important;
+                table-layout: auto !important;
             }
             table, th, td { 
-                border: 1.5px solid #000000 !important; /* Crisp, visible cell borders */
-                padding: 6px 7px !important; 
+                border: 1px solid #000000 !important; 
+                padding: 5px 6px !important; 
                 color: #000000 !important;
+                vertical-align: middle !important;
+                line-height: 1.35 !important;
             }
             th { 
                 background-color: #ededed !important; 
                 font-weight: bold !important;
+                text-align: center !important;
+                font-size: 11px !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
+            }
+            td.align-center {
+                text-align: center !important;
+            }
+
+            /* Authentic Column Proportion */
+            #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 28px !important; text-align: center !important; }
+            #main-table th:nth-child(2) { width: 48px !important; }
+            #main-table th:nth-child(3) { width: 68px !important; }
+            #main-table th:nth-child(4) { min-width: 130px !important; }
+            #main-table th:nth-child(5) { min-width: 130px !important; }
+            #main-table th:nth-child(6) { width: 55px !important; }
+            #main-table th:nth-child(7) { width: 75px !important; }
+            #main-table th:nth-child(8) { width: 68px !important; }
+            #main-table th:nth-child(9) { width: 75px !important; }
+
+            .person-data { 
+                padding-bottom: 4px !important; 
+                margin-bottom: 4px !important; 
+                border-bottom: 1px dotted #999999 !important; 
+                line-height: 1.35 !important;
+            }
+            .person-data:last-child { 
+                border-bottom: none !important; 
+                margin-bottom: 0 !important; 
+                padding-bottom: 0 !important; 
             }
 
             /* Ensures 'দাগ নং' wraps gracefully in print mode */
             .dag-cell {
-                max-width: 90px !important; 
+                max-width: 85px !important; 
                 word-break: break-word !important;
+                overflow-wrap: break-word !important;
+                white-space: normal !important;
+                text-align: center !important;
             }
-            
-            #print-header-layout { 
-                display: flex !important; 
-                border: 1.5px solid #000000 !important; /* Visible border around header box */
-                border-radius: 4px !important;
-                padding: 8px 12px !important; 
-                margin-bottom: 12px !important; 
-                background: #fafafa !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-            .header-col-left, .header-col-right { font-size: 12px !important; color: #000000 !important; }
-            .header-col-center h3 { font-size: 18px !important; color: #000000 !important; font-weight: bold !important; }
             
             #default-title { display: none !important; }
             
-            /* Prevent rows from splitting across pages */
-            tbody.record-group, tr { 
+            /* Prevent deed records from awkward split across pages */
+            tbody.record-group { 
+                page-break-inside: avoid !important; 
+                break-inside: avoid !important; 
+            }
+            tr {
                 page-break-inside: avoid !important; 
                 break-inside: avoid !important; 
             }
@@ -1701,9 +1810,9 @@
     function applyOrientation(orient) {
         let styleTag = document.getElementById('dynamic-print-css');
         if (orient === 'landscape') {
-            styleTag.innerHTML = '@page { margin: 12mm 14mm 12mm 14mm; size: landscape; }';
+            styleTag.innerHTML = '@page { margin: 10mm 12mm 10mm 12mm; size: landscape; }';
         } else {
-            styleTag.innerHTML = '@page { margin: 14mm 12mm 14mm 12mm; size: portrait; }';
+            styleTag.innerHTML = '@page { margin: 12mm 10mm 12mm 10mm; size: portrait; }';
         }
     }
     

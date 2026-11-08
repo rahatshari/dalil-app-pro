@@ -130,6 +130,17 @@ class MainActivity : ComponentActivity() {
         settings.displayZoomControls = false
         settings.cacheMode = WebSettings.LOAD_DEFAULT
 
+        // Enable offscreen pre-rasterization (API 23+) to eliminate white flashes and tile drop during fast scrolling
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            settings.offscreenPreRaster = true
+        }
+
+        // Hardware acceleration layer and smooth scroll setup
+        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+        webView.isVerticalScrollBarEnabled = true
+        webView.isHorizontalScrollBarEnabled = false
+        webView.overScrollMode = View.OVER_SCROLL_IF_CONTENT_SCROLLS
+
         // Javascript Interface for native bridges (printing, backup, updates)
         webView.addJavascriptInterface(WebAppInterface(this), "AndroidNative")
 
@@ -182,7 +193,8 @@ class MainActivity : ComponentActivity() {
                     (function() {
                         window.print = function() {
                             if (window.AndroidNative && window.AndroidNative.printPage) {
-                                window.AndroidNative.printPage();
+                                var orient = localStorage.getItem('printOrientation') || 'portrait';
+                                window.AndroidNative.printPage(orient);
                             }
                         };
                     })();
@@ -226,16 +238,22 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun triggerPrint() {
+    fun triggerPrint(orientation: String? = "portrait") {
         runOnUiThread {
             try {
                 val printManager = getSystemService(Context.PRINT_SERVICE) as? PrintManager
                 val jobName = "দলিল ফিগার প্রিন্ট ও সংরক্ষণ"
                 val printAdapter = webView.createPrintDocumentAdapter(jobName)
+                val isLandscape = orientation?.equals("landscape", ignoreCase = true) == true
+                val mediaSize = if (isLandscape) {
+                    PrintAttributes.MediaSize.ISO_A4.asLandscape()
+                } else {
+                    PrintAttributes.MediaSize.ISO_A4.asPortrait()
+                }
                 val printAttributes = PrintAttributes.Builder()
-                    .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                    .setMediaSize(mediaSize)
                     .setResolution(PrintAttributes.Resolution("pdf", "pdf", 300, 300))
-                    .setMinMargins(PrintAttributes.Margins(400, 400, 400, 400))
+                    .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
                     .build()
                 printManager?.print(jobName, printAdapter, printAttributes)
             } catch (e: Exception) {
@@ -318,8 +336,13 @@ class MainActivity : ComponentActivity() {
     // JavaScript interface class exposed to original index.html
     inner class WebAppInterface(private val context: Context) {
         @JavascriptInterface
+        fun printPage(orientation: String?) {
+            triggerPrint(orientation ?: "portrait")
+        }
+
+        @JavascriptInterface
         fun printPage() {
-            triggerPrint()
+            triggerPrint("portrait")
         }
 
         @JavascriptInterface
