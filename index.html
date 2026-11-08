@@ -24,7 +24,7 @@
     
     <!-- Dynamic Print Page Style -->
     <style id="dynamic-print-css">
-        @page { margin: 10mm; size: portrait; }
+        @page { margin: 14mm 12mm 14mm 12mm; size: portrait; }
     </style>
 
     <style>
@@ -99,7 +99,7 @@
             align-items: center;
             gap: 8px;
         }
-        .pwa-install-btn {
+        .app-update-btn {
             background: #1a73e8;
             color: #ffffff;
             border: none;
@@ -114,8 +114,17 @@
             box-shadow: 0 1px 3px rgba(26,115,232,0.3);
             transition: all 0.2s;
         }
-        .pwa-install-btn:hover { background: #1557b0; }
-        .pwa-install-btn:active { transform: scale(0.97); }
+        .app-update-btn:hover { background: #1557b0; }
+        .app-update-btn:active { transform: scale(0.97); }
+        .app-update-btn.has-update {
+            background: #1e8e3e;
+            box-shadow: 0 1px 6px rgba(30,142,62,0.5);
+            animation: pulseUpdate 1.8s infinite;
+        }
+        @keyframes pulseUpdate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
         /* Top bar offline indicator badge */
         .header-offline-badge {
@@ -210,98 +219,234 @@
             justify-content: flex-end;
             gap: 10px;
         }
-        .import-stat-banner {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
+        .import-hub-card {
+            max-width: 600px !important;
+            width: 95% !important;
         }
-        .import-stat-card {
-            background: #e8f0fe;
-            border: 1px solid #d2e3fc;
-            padding: 10px;
-            border-radius: 10px;
+        .hub-tab-bar {
+            display: flex;
+            background: #f1f3f4;
+            border-radius: 8px;
+            padding: 3px;
+            margin-bottom: 16px;
+            gap: 4px;
+        }
+        .hub-tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            background: transparent;
+            color: #5f6368;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .hub-tab-btn.active {
+            background: #ffffff;
+            color: #1a73e8;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .hub-dropzone {
+            border: 2px dashed #b8d4fe;
+            background: #f8fbff;
+            border-radius: 12px;
+            padding: 24px 16px;
             text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .import-stat-val {
-            font-size: 20px;
-            font-weight: 700;
+        .hub-dropzone:hover, .hub-dropzone.dragover {
+            border-color: #1a73e8;
+            background: #e8f0fe;
+            transform: scale(0.995);
+        }
+        .hub-dropzone-icon {
+            font-size: 44px;
             color: #1a73e8;
         }
-        .import-stat-lbl {
-            font-size: 12px;
-            color: #5f6368;
-            margin-top: 2px;
-        }
-        .files-summary-list {
-            background: #f8f9fa;
-            border: 1px solid #e8eaed;
-            border-radius: 8px;
-            max-height: 140px;
-            overflow-y: auto;
-            padding: 8px 12px;
-            margin: 10px 0 15px 0;
-        }
-        .file-summary-row {
+        .hub-staged-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 0;
-            font-size: 13px;
-            border-bottom: 1px dashed #e8eaed;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
-        .file-summary-row:last-child { border-bottom: none; }
-        .file-name-text {
+        .staged-files-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 190px;
+            overflow-y: auto;
+            margin-bottom: 14px;
+            padding-right: 4px;
+        }
+        .staged-file-card {
+            background: #ffffff;
+            border: 1px solid #dadce0;
+            border-radius: 10px;
+            padding: 9px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            transition: border-color 0.15s;
+        }
+        .staged-file-card:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .staged-file-card.is-invalid {
+            border-color: #f28b82;
+            background: #fff8f7;
+        }
+        .file-card-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex: 1;
+        }
+        .file-card-texts {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            gap: 2px;
+        }
+        .file-card-title {
+            font-size: 13px;
+            font-weight: 600;
             color: #202124;
-            font-weight: 500;
-            max-width: 260px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+        .file-card-subtitle {
+            font-size: 11px;
+            color: #5f6368;
             display: flex;
             align-items: center;
             gap: 6px;
+            flex-wrap: wrap;
         }
-        .file-count-badge {
-            background: #e8eaed;
-            color: #3c4043;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
+        .file-badge-success {
+            background: #e6f4ea;
+            color: #137333;
             font-weight: 600;
+            font-size: 11px;
+            padding: 1px 6px;
+            border-radius: 4px;
         }
-        .import-strategy-box {
+        .file-badge-error {
+            background: #fce8e6;
+            color: #c5221f;
+            font-weight: 600;
+            font-size: 11px;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+        .btn-remove-file {
+            background: transparent;
+            border: none;
+            color: #5f6368;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .btn-remove-file:hover {
+            background: #fce8e6;
+            color: #d93025;
+        }
+        .hub-strategy-box {
             background: #f8f9fa;
-            border: 1px solid #dadce0;
+            border: 1px solid #e8eaed;
             border-radius: 10px;
-            padding: 14px;
+            padding: 12px;
+            margin-bottom: 12px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
-        .strategy-radio-label {
+        .hub-strategy-card {
+            border: 1.5px solid #dadce0;
+            border-radius: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
             display: flex;
             align-items: flex-start;
             gap: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #202124;
+            transition: all 0.15s;
+            background: #ffffff;
         }
-        .strategy-radio-label input[type="radio"] {
+        .hub-strategy-card:hover {
+            border-color: #1a73e8;
+            background: #f8fbff;
+        }
+        .hub-strategy-card.active {
+            border-color: #1a73e8;
+            background: #eef5fd;
+        }
+        .hub-strategy-card input[type="radio"] {
             margin-top: 3px;
             accent-color: #1a73e8;
         }
-        .dedup-checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-left: 26px;
-            cursor: pointer;
-            font-size: 13px;
-            color: #5f6368;
+        .preview-collapsible {
+            background: #ffffff;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
         }
-        .dedup-checkbox-label input[type="checkbox"] {
-            accent-color: #1a73e8;
+        .preview-toggle-bar {
+            padding: 8px 12px;
+            background: #f8f9fa;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 500;
+            color: #3c4043;
+            user-select: none;
+        }
+        .preview-toggle-bar:hover {
+            background: #f1f3f4;
+        }
+        .preview-table-container {
+            max-height: 140px;
+            overflow-y: auto;
+            border-top: 1px solid #dadce0;
+        }
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+        .preview-table th, .preview-table td {
+            border: 1px solid #e8eaed;
+            padding: 5px 8px;
+            text-align: left;
+        }
+        .preview-table th {
+            background: #f1f3f4;
+            color: #202124;
+            font-weight: 600;
         }
         
         .settings-menu {
@@ -768,59 +913,99 @@
 
         /* --- PRINT CSS SETTINGS --- */
         @media print {
-            html, body, .app-scroller { 
+            html, body { 
                 height: auto !important; 
                 overflow: visible !important; 
                 overscroll-behavior-y: auto !important; 
-                background: white !important; 
+                background: #ffffff !important; 
                 padding: 0 !important; 
                 margin: 0 !important; 
-                color: #000; 
-                font-family: 'Times New Roman', serif; 
+                color: #000000 !important; 
+                font-family: 'Roboto', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif !important; 
             }
-            .no-print, .app-bar, .bottom-bar, .header-offline-badge { display: none !important; }
-            
-            .container, #pdf-section, .table-responsive { 
-                box-shadow: none !important; 
-                background: white !important; 
-                padding: 0 !important; 
+            .app-scroller {
+                height: auto !important;
+                overflow: visible !important;
+                padding: 0 !important;
                 margin: 0 !important;
+            }
+            .no-print, .app-bar, .bottom-bar, .header-offline-badge, .settings-btn, .app-bar-actions, .app-update-btn { 
+                display: none !important; 
+            }
+            
+            .container { 
+                box-shadow: none !important; 
+                background: #ffffff !important; 
+                padding: 0 !important; 
+                margin: 0 auto !important;
                 width: 100% !important; 
                 max-width: 100% !important; 
                 border: none !important; 
                 overflow: visible !important; 
                 display: block !important;
             }
+
+            /* Clear breathing margins on the print page */
+            #pdf-section { 
+                box-shadow: none !important; 
+                background: #ffffff !important; 
+                padding: 4mm 8mm 6mm 8mm !important; /* side space for print */
+                margin: 0 auto !important;
+                width: 100% !important; 
+                box-sizing: border-box !important;
+                border: none !important; 
+                overflow: visible !important; 
+                display: block !important;
+            }
+
+            .table-responsive {
+                overflow: visible !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                display: block !important;
+            }
             
             table { 
-                font-size: 12px !important; 
+                font-size: 11.5px !important; 
                 width: 100% !important; 
                 border-collapse: collapse !important; 
+                border: 2px solid #000000 !important; /* Clear dark outer border */
                 page-break-inside: auto !important; 
+                box-sizing: border-box !important;
+                margin: 0 !important;
             }
             table, th, td { 
-                border: 1px solid #000 !important; 
-                padding: 5px !important; 
+                border: 1.5px solid #000000 !important; /* Crisp, visible cell borders */
+                padding: 6px 7px !important; 
+                color: #000000 !important;
             }
             th { 
-                background-color: #e0e0e0 !important; 
-                -webkit-print-color-adjust: exact; 
-                print-color-adjust: exact;
+                background-color: #ededed !important; 
+                font-weight: bold !important;
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important;
             }
 
             /* Ensures 'দাগ নং' wraps gracefully in print mode */
             .dag-cell {
                 max-width: 90px !important; 
+                word-break: break-word !important;
             }
             
             #print-header-layout { 
                 display: flex !important; 
-                border-bottom: 2px solid #000 !important; 
-                padding: 8px 0 !important; 
-                margin-bottom: 8px !important; 
+                border: 1.5px solid #000000 !important; /* Visible border around header box */
+                border-radius: 4px !important;
+                padding: 8px 12px !important; 
+                margin-bottom: 12px !important; 
+                background: #fafafa !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
-            .header-col-left, .header-col-right { font-size: 12px !important; color: #000 !important; }
-            .header-col-center h3 { font-size: 18px !important; color: #000 !important; }
+            .header-col-left, .header-col-right { font-size: 12px !important; color: #000000 !important; }
+            .header-col-center h3 { font-size: 18px !important; color: #000000 !important; font-weight: bold !important; }
             
             #default-title { display: none !important; }
             
@@ -854,9 +1039,9 @@
         </h1>
         
         <div class="app-bar-actions">
-            <button id="pwa-install-btn" class="pwa-install-btn" onclick="triggerPWAInstall()" title="অ্যাপ ডিভাইসে ইনস্টল করুন">
-                <span class="material-icons" style="font-size:18px;">get_app</span>
-                <span class="install-text">ইনস্টল</span>
+            <button id="app-update-btn" class="app-update-btn" onclick="triggerAppUpdateCheck(true)" title="নতুন আপডেট চেক করুন">
+                <span class="material-icons" id="app-update-icon" style="font-size:18px;">autorenew</span>
+                <span id="app-update-text">আপডেট চেক</span>
             </button>
         </div>
 
@@ -871,9 +1056,26 @@
                     </div>
                     <span id="menu-saved-count-badge" style="background:#1a73e8; color:#ffffff; font-size:11px; padding:2px 8px; border-radius:12px; font-weight:bold;">০ টি</span>
                 </li>
-                <li id="menu-install-item" onclick="triggerPWAInstall()">
-                    <span class="material-icons" style="color:#1a73e8;">install_mobile</span>
-                    <span style="color:#1a73e8; font-weight: 500;">অ্যাপ ইনস্টল করুন (Offline)</span>
+                <li style="border-bottom: 1px solid #f1f3f4; padding: 10px 16px;">
+                    <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; width:100%; margin:0;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span class="material-icons" style="color:#0d9488;">autorenew</span>
+                            <div>
+                                <div style="font-weight: 500; font-size:14px; color:#202124;">অটোমেটিক আপডেট চেক</div>
+                                <div style="font-size:11px; color:#5f6368;">নতুন ভার্সন আসলে নোটিফিকেশন আসবে</div>
+                            </div>
+                        </div>
+                        <input type="checkbox" id="toggle-auto-update" onchange="toggleAutoUpdateSetting(this.checked)" style="width:18px; height:18px; margin:0;" checked>
+                    </label>
+                </li>
+                <li onclick="toggleSettings(); triggerAppUpdateCheck(true);">
+                    <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span class="material-icons" style="color:#1a73e8;">system_update</span>
+                            <span style="color:#1a73e8; font-weight: 500;">এখনই আপডেট চেক করুন</span>
+                        </div>
+                        <span id="current-app-version-badge" style="font-size:11px; background:#e8f0fe; color:#1a73e8; padding:2px 8px; border-radius:10px; font-weight:600;">v১.০.১</span>
+                    </div>
                 </li>
                 <li>
                     <label style="display:flex; align-items:center; gap:12px; cursor:pointer; width:100%; margin:0;">
@@ -891,8 +1093,8 @@
                         </select>
                     </div>
                 </li>
-                <li onclick="exportData()"><span class="material-icons">cloud_download</span> ব্যাকআপ নিন (ডাউনলোড)</li>
-                <li onclick="openMultiFileInput()"><span class="material-icons">cloud_upload</span> ব্যাকআপ রিস্টোর (এক বা একাধিক ফাইল)</li>
+                <li onclick="toggleSettings(); openBackupRestoreHub('export');"><span class="material-icons" style="color:#1e8e3e;">cloud_download</span> ব্যাকআপ নিন (ডাউনলোড)</li>
+                <li onclick="toggleSettings(); openBackupRestoreHub('import');"><span class="material-icons" style="color:#1a73e8;">settings_backup_restore</span> ব্যাকআপ রিস্টোর (এক বা একাধিক ফাইল)</li>
             </ul>
         </div>
         <input type="file" id="importFile" style="display:none;" accept=".json" multiple onchange="handleBackupFileSelect(event)">
@@ -1029,9 +1231,9 @@
             </button>
 
             <!-- Load from JSON File Button -->
-            <button type="button" class="action-btn btn-middle-file" onclick="openDirectFileInput()" title="কম্পিউটার বা ফোন থেকে পূর্বে সেভ করা ব্যাকআপ ফাইল আনুন">
-                <span class="material-icons">upload_file</span>
-                <span>ফাইল থেকে আনুন</span>
+            <button type="button" class="action-btn btn-middle-file" onclick="openBackupRestoreHub('import')" title="কম্পিউটার বা ফোন থেকে এক বা একাধিক ব্যাকআপ ফাইল আনুন">
+                <span class="material-icons">settings_backup_restore</span>
+                <span>ফাইল থেকে আনুন (রিস্টোর)</span>
             </button>
         </div>
 
@@ -1095,61 +1297,171 @@
 <div id="toast" class="toast no-print"></div>
 
 <!-- Multi-file Backup Import Modal -->
+<!-- Multi-file Backup & Restore Hub Modal -->
 <div id="import-modal" class="custom-modal-overlay no-print" style="display: none;">
-    <div class="custom-modal-card">
-        <div class="custom-modal-header">
-            <h3><span class="material-icons" style="color:#1a73e8;">cloud_upload</span> ব্যাকআপ ফাইল ইমপোর্ট</h3>
-            <button class="custom-modal-close-btn" onclick="closeImportModal()">
+    <div class="custom-modal-card import-hub-card">
+        <!-- Header -->
+        <div class="custom-modal-header" style="background:#f8f9fa;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span class="material-icons" style="color:#1a73e8; font-size:24px;">settings_backup_restore</span>
+                <div>
+                    <h3 style="margin:0; font-size:16px; color:#202124;">ব্যাকআপ ও রিস্টোর হাব</h3>
+                    <div style="font-size:11px; color:#5f6368; font-weight:normal; margin-top:2px;">এক বা একাধিক ফাইল ইমপোর্ট বা ব্যাকআপ সংরক্ষণ করুন</div>
+                </div>
+            </div>
+            <button class="custom-modal-close-btn" onclick="closeBackupRestoreHub()" title="বন্ধ করুন">
                 <span class="material-icons">close</span>
             </button>
         </div>
-        <div class="custom-modal-body">
-            <div class="import-stat-banner">
-                <div class="import-stat-card">
-                    <div class="import-stat-val" id="modal-file-count">০</div>
-                    <div class="import-stat-lbl">নির্বাচিত ফাইল</div>
+
+        <div class="custom-modal-body" style="padding:16px 20px;">
+            <!-- Tab Switcher -->
+            <div class="hub-tab-bar">
+                <button type="button" class="hub-tab-btn active" id="tab-btn-import" onclick="switchHubTab('import')">
+                    <span class="material-icons" style="font-size:18px;">cloud_upload</span>
+                    <span>ফাইল ইমপোর্ট / রিস্টোর</span>
+                </button>
+                <button type="button" class="hub-tab-btn" id="tab-btn-export" onclick="switchHubTab('export')">
+                    <span class="material-icons" style="font-size:18px;">cloud_download</span>
+                    <span>ব্যাকআপ ডাউনলোড</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: IMPORT SECTION -->
+            <div id="hub-view-import">
+                <!-- Dropzone Area -->
+                <div class="hub-dropzone" id="hub-dropzone" onclick="triggerMultiFileBrowse()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleFileDrop(event)">
+                    <span class="material-icons hub-dropzone-icon">cloud_upload</span>
+                    <div style="font-weight:600; font-size:14px; color:#202124;">এখানে এক বা একাধিক ব্যাকআপ ফাইল (.json) টেনে এনে রাখুন</div>
+                    <div style="font-size:12px; color:#5f6368;">কিংবা ফাইল পছন্দ করতে ক্লিক করুন (এক সাথে একাধিক ফাইল নির্বাচন করা যাবে)</div>
+                    <button type="button" class="action-btn" style="background:#1a73e8; color:#fff; padding:6px 16px; border-radius:6px; font-size:12px; margin-top:4px; width:auto; pointer-events:none;">
+                        <span class="material-icons" style="font-size:15px; margin-right:4px;">folder_open</span> ফাইল বাছাই করুন
+                    </button>
                 </div>
-                <div class="import-stat-card">
-                    <div class="import-stat-val" id="modal-record-count">০</div>
-                    <div class="import-stat-lbl">প্রাপ্ত দলিল রেকর্ড</div>
+                <input type="file" id="hub-file-input" style="display:none;" accept=".json" multiple onchange="handleHubFileSelect(event)">
+
+                <!-- Staged Files Area (Shown when 1 or more files are selected) -->
+                <div id="hub-staged-area" style="display:none; margin-top:14px;">
+                    <div class="hub-staged-header">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-weight:600; font-size:13px; color:#202124;">নির্বাচিত ফাইলসমূহ:</span>
+                            <span id="hub-staged-count-badge" class="file-badge-success">০ টি ফাইল</span>
+                            <span id="hub-records-count-badge" style="background:#e8f0fe; color:#1a73e8; font-size:11px; font-weight:600; padding:1px 6px; border-radius:4px;">০ টি দলিল</span>
+                        </div>
+                        <div style="display:flex; gap:6px;">
+                            <button type="button" class="action-btn" style="background:#e8f0fe; color:#1a73e8; padding:4px 10px; font-size:11px; border-radius:6px; width:auto;" onclick="triggerMultiFileBrowse()" title="আরও ফাইল তালিকায় যোগ করুন">
+                                <span class="material-icons" style="font-size:14px; margin-right:2px;">add</span> আরও যোগ করুন
+                            </button>
+                            <button type="button" class="action-btn" style="background:#fce8e6; color:#d93025; padding:4px 8px; font-size:11px; border-radius:6px; width:auto;" onclick="clearAllStagedFiles()" title="সব ফাইল সরিয়ে নতুন করে শুরু করুন">
+                                <span class="material-icons" style="font-size:14px; margin-right:2px;">clear_all</span> সব মুছুন
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- List of Staged File Cards -->
+                    <div id="hub-staged-list" class="staged-files-list"></div>
+
+                    <!-- Collapsible Deed Preview Box -->
+                    <div class="preview-collapsible" id="hub-preview-wrapper" style="display:none;">
+                        <div class="preview-toggle-bar" onclick="toggleDeedPreview()">
+                            <span style="display:flex; align-items:center; gap:6px;">
+                                <span class="material-icons" style="font-size:16px; color:#1a73e8;">visibility</span>
+                                <span>প্রাপ্ত দলিলের প্রিভিউ দেখুন (<span id="preview-record-count">০</span> টি)</span>
+                            </span>
+                            <span class="material-icons" id="preview-toggle-icon" style="font-size:18px;">expand_more</span>
+                        </div>
+                        <div id="preview-content-drawer" class="preview-table-container" style="display:none;">
+                            <table class="preview-table">
+                                <thead>
+                                    <tr>
+                                        <th>নম্বর</th>
+                                        <th>তারিখ</th>
+                                        <th>দলিল নং</th>
+                                        <th>গ্রহীতা(গণ)</th>
+                                        <th>মোট জমি</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="preview-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Current Table Info Indicator -->
+                    <div style="font-size:12px; color:#5f6368; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;">
+                        <span>বর্তমানে অ্যাপের টেবিলে আছে: <b id="hub-current-table-count" style="color:#202124;">০</b> টি দলিল</span>
+                    </div>
+
+                    <!-- Import Strategy Box -->
+                    <div class="hub-strategy-box">
+                        <div style="font-weight:600; font-size:12px; color:#3c4043; margin-bottom:2px;">ইমপোর্ট পদ্ধতি নির্বাচন করুন:</div>
+                        
+                        <!-- Option 1: Merge -->
+                        <label class="hub-strategy-card active" id="strategy-card-merge" onclick="selectHubStrategy('merge')">
+                            <input type="radio" name="hub-strategy" id="hub-strat-merge" value="merge" checked>
+                            <div style="flex:1;">
+                                <div style="font-weight:600; font-size:13px; color:#202124; display:flex; align-items:center; gap:6px;">
+                                    <span class="material-icons" style="font-size:16px; color:#1a73e8;">add_circle_outline</span>
+                                    <span>বর্তমান তালিকার সাথে যুক্ত করুন (Merge)</span>
+                                </div>
+                                <div style="font-size:11px; color:#5f6368; margin-top:2px;">টেবিলের বিদ্যমান দলিলগুলো অপরিবর্তিত থাকবে এবং নতুন দলিলগুলো নিচে যুক্ত হবে।</div>
+                                <div style="margin-top:6px; display:flex; align-items:center; gap:6px;">
+                                    <input type="checkbox" id="hub-skip-duplicates" checked style="accent-color:#1a73e8; cursor:pointer;" onclick="event.stopPropagation()">
+                                    <label for="hub-skip-duplicates" style="font-size:11px; color:#3c4043; cursor:pointer; margin:0;" onclick="event.stopPropagation()">একই দলিল নম্বর থাকলে ডুপ্লিকেট এড়িয়ে চলুন</label>
+                                </div>
+                            </div>
+                        </label>
+
+                        <!-- Option 2: Replace -->
+                        <label class="hub-strategy-card" id="strategy-card-replace" onclick="selectHubStrategy('replace')">
+                            <input type="radio" name="hub-strategy" id="hub-strat-replace" value="replace">
+                            <div style="flex:1;">
+                                <div style="font-weight:600; font-size:13px; color:#202124; display:flex; align-items:center; gap:6px;">
+                                    <span class="material-icons" style="font-size:16px; color:#e37400;">find_replace</span>
+                                    <span>বর্তমান তালিকা মুছে নতুনভাবে বসান (Replace)</span>
+                                </div>
+                                <div style="font-size:11px; color:#d93025; margin-top:2px;">বর্তমান সব দলিল মুছে ফেলে শুধুমাত্র নির্বাচিত ফাইলের দলিলগুলো প্রদর্শিত হবে।</div>
+                            </div>
+                        </label>
+
+                        <!-- Option 3: Save to Archive -->
+                        <label class="hub-strategy-card" id="strategy-card-archive" onclick="selectHubStrategy('archive')">
+                            <input type="radio" name="hub-strategy" id="hub-strat-archive" value="archive">
+                            <div style="flex:1;">
+                                <div style="font-weight:600; font-size:13px; color:#202124; display:flex; align-items:center; gap:6px;">
+                                    <span class="material-icons" style="font-size:16px; color:#1e8e3e;">bookmark_added</span>
+                                    <span>সংরক্ষিত প্রজেক্ট তালিকায় জমা রাখুন (Archive Only)</span>
+                                </div>
+                                <div style="font-size:11px; color:#5f6368; margin-top:2px;">বর্তমান টেবিলে কোনো পরিবর্তন হবে না, ফাইলগুলো সরাসরি সংরক্ষিত দলিল প্রজেক্ট হিসেবে সেভ থাকবে।</div>
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            <div style="font-weight: 500; margin-bottom: 5px; color: #202124;">ফাইলসমূহের তালিকা:</div>
-            <div id="modal-files-list" class="files-summary-list"></div>
-
-            <div style="margin: 10px 0 12px 0; font-size: 13px; color: #5f6368;">
-                বর্তমান অ্যাপ তালিকায় সংরক্ষিত দলিল: <b id="modal-current-count" style="color:#202124;">০</b> টি
-            </div>
-
-            <div class="import-strategy-box">
-                <label class="strategy-radio-label">
-                    <input type="radio" name="import-strategy" id="strategy-merge" value="merge" checked onchange="toggleDedupCheckbox(true)">
-                    <div>
-                        <b>বর্তমান তালিকার সাথে যুক্ত করুন (Merge)</b>
-                        <div style="font-size: 12px; color: #5f6368; margin-top: 2px;">বর্তমান তথ্য অক্ষুণ্ণ রেখে নতুন তথ্যগুলো তালিকায় যোগ করা হবে।</div>
+            <!-- TAB 2: EXPORT SECTION -->
+            <div id="hub-view-export" style="display:none;">
+                <div style="background:#f8f9fa; border:1px solid #dadce0; border-radius:12px; padding:18px; text-align:center;">
+                    <span class="material-icons" style="font-size:42px; color:#1e8e3e; margin-bottom:6px;">save_alt</span>
+                    <div style="font-weight:600; font-size:15px; color:#202124;">সম্পূর্ণ ব্যাকআপ ফাইল ডাউনলোড করুন</div>
+                    <div style="font-size:12px; color:#5f6368; margin-top:4px; max-width:380px; margin-left:auto; margin-right:auto;">
+                        বর্তমানে টেবিলে থাকা <b id="export-tab-records-count" style="color:#1a73e8;">০</b> টি দলিলের সম্পূর্ণ ব্যাকআপ একটি একক .json ফাইলে ডাউনলোড করে নিরাপদে সংরক্ষণ করতে পারবেন।
                     </div>
-                </label>
-                <label class="dedup-checkbox-label" id="dedup-option-container">
-                    <input type="checkbox" id="import-skip-duplicates" checked>
-                    <span>একই দলিল নং থাকলে ডুপ্লিকেট এড়িয়ে চলুন</span>
-                </label>
-
-                <hr style="border:none; border-top:1px solid #dadce0; margin: 4px 0;">
-
-                <label class="strategy-radio-label">
-                    <input type="radio" name="import-strategy" id="strategy-replace" value="replace" onchange="toggleDedupCheckbox(false)">
-                    <div>
-                        <b>বর্তমান তালিকা মুছে নতুনভাবে বসান (Replace)</b>
-                        <div style="font-size: 12px; color: #d93025; margin-top: 2px;">বর্তমান সব দলিল মুছে শুধু এই ব্যাকআপের তথ্যগুলো বসবে।</div>
+                    
+                    <div style="margin-top:16px;">
+                        <button type="button" class="action-btn" style="background:#1e8e3e; color:#fff; width:auto; margin:0 auto; padding:10px 20px; font-size:13px; border-radius:8px;" onclick="executeQuickExportFromHub()">
+                            <span class="material-icons" style="font-size:18px; margin-right:6px;">download</span> এখনই ব্যাকআপ ডাউনলোড করুন
+                        </button>
                     </div>
-                </label>
+                </div>
             </div>
         </div>
+
+        <!-- Footer -->
         <div class="custom-modal-footer">
-            <button class="action-btn" style="background:#dadce0; color:#3c4043; border-radius:8px; padding:10px 18px; font-size:14px;" onclick="closeImportModal()">বাতিল</button>
-            <button class="action-btn" style="background:#1a73e8; border-radius:8px; padding:10px 20px; font-size:14px;" onclick="confirmMultiImport()">
-                <span class="material-icons" style="font-size: 18px; margin-right: 4px;">check_circle</span> ইমপোর্ট সম্পন্ন করুন
+            <button type="button" class="action-btn" style="background:#dadce0; color:#3c4043; border-radius:8px; padding:9px 18px; font-size:13px; width:auto;" onclick="closeBackupRestoreHub()">বাতিল</button>
+            <button type="button" id="btn-confirm-hub-import" class="action-btn" style="background:#1a73e8; color:#fff; border-radius:8px; padding:9px 20px; font-size:13px; width:auto; display:none;" onclick="confirmHubImport()">
+                <span class="material-icons" style="font-size:18px; margin-right:4px;">check_circle</span>
+                <span id="btn-confirm-import-text">ইমপোর্ট সম্পন্ন করুন</span>
             </button>
         </div>
     </div>
@@ -1273,77 +1585,38 @@
 
 <input type="file" id="directImportFile" style="display:none;" accept=".json" multiple onchange="handleBackupFileSelect(event)">
 
-<!-- Universal PWA Install Guide Modal -->
-<div id="pwa-install-modal" class="custom-modal-overlay no-print" style="display: none;">
-    <div class="custom-modal-card" style="max-width: 480px;">
-        <div class="custom-modal-header" style="background:#f8f9fa;">
+<!-- App Update Dialog Modal -->
+<div id="app-update-modal" class="custom-modal-overlay no-print" style="display: none;">
+    <div class="custom-modal-card" style="max-width: 460px;">
+        <div class="custom-modal-header" style="background:#e8f0fe;">
             <div style="display:flex; align-items:center; gap:10px;">
-                <img src="icon-192.png" alt="দলিল লোগো" style="width:32px; height:32px; border-radius:8px; object-fit:cover;">
-                <h3 style="margin:0; font-size:16px;">অ্যাপ ইনস্টলেশন গাইড</h3>
+                <span class="material-icons" style="color:#1a73e8; font-size:26px;">system_update</span>
+                <h3 style="margin:0; font-size:16px; color:#1a73e8;">নতুন আপডেট উপলব্ধ!</h3>
             </div>
-            <button class="custom-modal-close-btn" onclick="closeInstallModal()" title="বন্ধ করুন">
+            <button class="custom-modal-close-btn" onclick="closeAppUpdateModal()" title="বন্ধ করুন">
                 <span class="material-icons">close</span>
             </button>
         </div>
-        <div class="custom-modal-body" style="padding:18px 20px; font-size:14px; line-height:1.6;">
-            <!-- Brand Banner -->
-            <div style="display:flex; align-items:center; gap:14px; background:#e8f0fe; border:1px solid #d2e3fc; padding:12px 14px; border-radius:12px; margin-bottom:16px;">
-                <img src="icon-192.png" alt="লোগো" style="width:48px; height:48px; border-radius:10px; object-fit:cover; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
+        <div class="custom-modal-body" style="padding:20px; font-size:14px; line-height:1.6;">
+            <div style="display:flex; align-items:center; gap:12px; background:#f1f3f4; padding:12px 14px; border-radius:10px; margin-bottom:14px;">
+                <span class="material-icons" style="color:#137333; font-size:24px;">verified</span>
                 <div>
-                    <div style="font-weight:700; font-size:15px; color:#1a73e8;">দলিল ফিগার (Dalil Figure)</div>
-                    <div style="font-size:12px; color:#5f6368; margin-top:2px;">ইন্টারনেট সংযোগ ছাড়াই ১০০% অফলাইনে কাজ করবে</div>
+                    <div id="update-modal-ver-info" style="font-weight:700; color:#202124; font-size:14px;">বর্তমান: v১.০.১ ➜ নতুন: v১.০.২</div>
+                    <div style="font-size:12px; color:#5f6368;">GitHub Releases থেকে সরাসরি আপডেট সংগ্রহ করা হয়েছে</div>
                 </div>
             </div>
 
-            <!-- Direct Install Button (Visible when beforeinstallprompt is ready) -->
-            <div id="modal-direct-install-box" style="display:none; margin-bottom:16px; background:#e6f4ea; border:1px solid #ceead6; padding:12px; border-radius:10px; text-align:center;">
-                <div style="font-size:13px; font-weight:600; color:#137333; margin-bottom:8px;">
-                    <span class="material-icons" style="font-size:16px; vertical-align:middle;">check_circle</span> আপনার ব্রাউজারে সরাসরি ইনস্টল প্রস্তুত!
-                </div>
-                <button type="button" class="action-btn" style="background:#1e8e3e; color:#fff; width:100%; justify-content:center; padding:10px 14px; font-size:14px; border-radius:8px;" onclick="executeDeferredPrompt()">
-                    <span class="material-icons" style="font-size:18px;">get_app</span> এখনই ডিভাইসে ইনস্টল করুন
-                </button>
+            <div style="font-weight:600; color:#202124; margin-bottom:6px; font-size:13px;">পরিবর্তনসমূহ:</div>
+            <div id="update-modal-notes" style="background:#f8f9fa; border:1px solid #e8eaed; border-radius:8px; padding:12px; max-height:160px; overflow-y:auto; font-size:13px; color:#3c4043; white-space:pre-wrap; margin-bottom:16px;">
+                নতুন সংস্করণ উপলব্ধ।
             </div>
 
-            <div style="font-weight:600; color:#202124; margin-bottom:10px; font-size:13px; text-transform:uppercase; letter-spacing:0.5px;">
-                ব্রাউজার অনুযায়ী ইনস্টল করার নিয়ম:
-            </div>
-
-            <!-- Chrome Desktop Guide -->
-            <div style="background:#f8f9fa; border:1px solid #e8eaed; border-radius:10px; padding:12px; margin-bottom:10px;">
-                <div style="font-weight:600; color:#1a73e8; display:flex; align-items:center; gap:6px; margin-bottom:6px; font-size:13px;">
-                    <span class="material-icons" style="font-size:18px;">laptop</span> গুগল ক্রোম (কম্পিউটার বা ল্যাপটপ)
-                </div>
-                <div style="font-size:13px; color:#3c4043; line-height:1.5;">
-                    ১. ক্রোম ব্রাউজারের অ্যাড্রেস বারের (URL bar) একদম ডানে থাকা <b>'ইনস্টল'</b> (<span class="material-icons" style="font-size:15px; vertical-align:middle; color:#1a73e8;">install_desktop</span>) আইকনে ক্লিক করুন।<br>
-                    ২. অথবা উপরের ডানে ক্রোম মেনু (⋮) &gt; <b>'Cast, save, and share'</b> বা <b>'Save and share'</b> &gt; <b>'Install Dalil Record'</b> চাপুন।
-                </div>
-            </div>
-
-            <!-- Chrome Mobile Guide -->
-            <div style="background:#f8f9fa; border:1px solid #e8eaed; border-radius:10px; padding:12px; margin-bottom:10px;">
-                <div style="font-weight:600; color:#1e8e3e; display:flex; align-items:center; gap:6px; margin-bottom:6px; font-size:13px;">
-                    <span class="material-icons" style="font-size:18px;">phone_android</span> গুগল ক্রোম (অ্যান্ড্রয়েড ফোন)
-                </div>
-                <div style="font-size:13px; color:#3c4043; line-height:1.5;">
-                    ১. উপরে ডানে ৩-ডট মেনু (⋮) চাপুন।<br>
-                    ২. <b>'Install app' (অ্যাপ ইনস্টল করুন)</b> অথবা <b>'Add to Home screen' (হোম স্ক্রিনে যোগ করুন)</b> অপশনটি বেছে নিন।
-                </div>
-            </div>
-
-            <!-- iOS Safari Guide -->
-            <div style="background:#f8f9fa; border:1px solid #e8eaed; border-radius:10px; padding:12px;">
-                <div style="font-weight:600; color:#5f6368; display:flex; align-items:center; gap:6px; margin-bottom:6px; font-size:13px;">
-                    <span class="material-icons" style="font-size:18px;">apple</span> iPhone / iPad (Safari ব্রাউজার)
-                </div>
-                <div style="font-size:13px; color:#3c4043; line-height:1.5;">
-                    ১. নিচে শেয়ার বোতামে (<span class="material-icons" style="font-size:15px; vertical-align:middle; color:#1a73e8;">ios_share</span>) চাপুন।<br>
-                    ২. <b>'Add to Home Screen'</b> নির্বাচন করে উপরে <b>'Add'</b> চাপুন।
-                </div>
-            </div>
+            <button type="button" id="update-modal-download-btn" class="action-btn" style="background:#1a73e8; color:#fff; width:100%; justify-content:center; padding:12px 14px; font-size:14px; border-radius:8px; font-weight:600; box-shadow:0 2px 6px rgba(26,115,232,0.3);">
+                <span class="material-icons" style="font-size:19px; margin-right:6px;">get_app</span> এখনই আপডেট ও ইনস্টল করুন
+            </button>
         </div>
-        <div class="custom-modal-footer">
-            <button class="action-btn" style="background:#dadce0; color:#3c4043; border-radius:8px; padding:8px 18px; font-size:14px;" onclick="closeInstallModal()">বন্ধ করুন</button>
+        <div class="custom-modal-footer" style="padding:10px 20px; border-top:1px solid #dadce0; display:flex; justify-content:flex-end; background:#f8f9fa; border-radius:0 0 16px 16px;">
+            <button type="button" class="action-btn" style="background:#dadce0; color:#3c4043; border-radius:8px; padding:8px 18px; font-size:13px;" onclick="closeAppUpdateModal()">পরে</button>
         </div>
     </div>
 </div>
@@ -1381,7 +1654,7 @@
         loadGlobalHeader();
         loadFormDraft();
         
-        initPWAInstall();
+        initAppUpdateSystem();
         initOfflineDetection();
         setupDateInputs();
         updateMiddleSectionUI();
@@ -1428,9 +1701,9 @@
     function applyOrientation(orient) {
         let styleTag = document.getElementById('dynamic-print-css');
         if (orient === 'landscape') {
-            styleTag.innerHTML = '@page { margin: 10mm; size: landscape; }';
+            styleTag.innerHTML = '@page { margin: 12mm 14mm 12mm 14mm; size: landscape; }';
         } else {
-            styleTag.innerHTML = '@page { margin: 10mm; size: portrait; }';
+            styleTag.innerHTML = '@page { margin: 14mm 12mm 14mm 12mm; size: portrait; }';
         }
     }
     
@@ -1891,99 +2164,145 @@
         const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(dalilRecords)], { type: "application/json" })); a.download = `Dalil_Backup_${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); toggleSettings(); showToast("ব্যাকআপ ডাউনলোড শুরু হয়েছে!");
     }
 
-    // --- PWA Installation & Device Integration ---
-    let deferredInstallPrompt = null;
+    // --- App Update & Device Integration ---
+    const CURRENT_APP_VERSION = "1.0.1";
+    let latestUpdateData = null;
 
-    function initPWAInstall() {
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredInstallPrompt = e;
-            updateInstallUI(true);
-            const directBox = document.getElementById('modal-direct-install-box');
-            if (directBox) directBox.style.display = 'block';
-        });
+    function initAppUpdateSystem() {
+        // Load saved auto-update preference
+        const autoCheckEnabled = isAutoUpdateCheckEnabled();
+        const toggleEl = document.getElementById('toggle-auto-update');
+        if (toggleEl) toggleEl.checked = autoCheckEnabled;
 
-        window.addEventListener('appinstalled', () => {
-            deferredInstallPrompt = null;
-            updateInstallUI(false);
-            closeInstallModal();
-            showToast("দলিল ফিগার অ্যাপটি সফলভাবে ডিভাইসে ইনস্টল হয়েছে!");
-        });
+        // Display current version badge in menu
+        const verBadge = document.getElementById('current-app-version-badge');
+        if (verBadge) {
+            const ver = (window.AndroidNative && window.AndroidNative.getAppVersion) ? window.AndroidNative.getAppVersion() : CURRENT_APP_VERSION;
+            verBadge.innerText = 'v' + toBanglaNum(ver);
+        }
 
-        // Always show install triggers in browser tabs if not running standalone
-        if (isAppRunningStandalone()) {
-            updateInstallUI(false);
-        } else {
-            updateInstallUI(true);
+        // Auto-check for updates if enabled
+        if (autoCheckEnabled) {
+            setTimeout(() => {
+                triggerAppUpdateCheck(false);
+            }, 2500);
         }
     }
 
-    function isAppRunningStandalone() {
-        return window.matchMedia('(display-mode: standalone)').matches || 
-               window.navigator.standalone === true || 
-               document.referrer.includes('android-app://');
+    function isAutoUpdateCheckEnabled() {
+        return localStorage.getItem('autoUpdateCheckEnabled') !== 'false';
     }
 
-    function updateInstallUI(visible) {
-        if (isAppRunningStandalone()) {
-            visible = false;
+    function toggleAutoUpdateSetting(enabled) {
+        localStorage.setItem('autoUpdateCheckEnabled', enabled ? 'true' : 'false');
+        showToast(enabled ? "অটোমেটিক আপডেট চেক চালু করা হয়েছে!" : "অটোমেটিক আপডেট চেক বন্ধ করা হয়েছে!");
+        if (enabled) {
+            triggerAppUpdateCheck(false);
         }
-        const installBtn = document.getElementById('pwa-install-btn');
-        const menuInstallItem = document.getElementById('menu-install-item');
-        if (installBtn) installBtn.style.display = visible ? 'inline-flex' : 'none';
-        if (menuInstallItem) menuInstallItem.style.display = visible ? 'flex' : 'none';
     }
 
-    function triggerPWAInstall() {
-        if (isAppRunningStandalone()) {
-            showToast("অ্যাপটি ইতিমধ্যে আপনার ডিভাইসে ইনস্টল করা আছে!");
+    async function triggerAppUpdateCheck(manual = false) {
+        const updateBtn = document.getElementById('app-update-btn');
+        const updateIcon = document.getElementById('app-update-icon');
+        const updateText = document.getElementById('app-update-text');
+
+        if (updateIcon) updateIcon.style.animation = "spin 1s linear infinite";
+        if (updateText && manual) updateText.innerText = "চেক হচ্ছে...";
+
+        // If inside native Android WebView
+        if (window.AndroidNative && window.AndroidNative.checkUpdate) {
+            window.AndroidNative.checkUpdate();
+            setTimeout(() => {
+                if (updateIcon) updateIcon.style.animation = "none";
+                if (updateText) updateText.innerText = "আপডেট চেক";
+            }, 1200);
             return;
         }
 
-        const menu = document.getElementById('settings-menu');
-        if (menu) menu.style.display = 'none';
-
-        if (deferredInstallPrompt) {
-            deferredInstallPrompt.prompt();
-            deferredInstallPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    showToast("অ্যাপ ইনস্টলেশন সফলভাবে শুরু হয়েছে...");
-                }
-                deferredInstallPrompt = null;
-            }).catch(() => {
-                openInstallModal();
+        try {
+            const res = await fetch('https://api.github.com/repos/rahatshari/dalil-app-pro/releases/latest', {
+                headers: { 'Accept': 'application/vnd.github.v3+json' }
             });
-        } else {
-            openInstallModal();
+
+            if (!res.ok) {
+                if (manual) showToast("আপডেট সার্ভারে সংযোগ করা যায়নি। পরে চেষ্টা করুন।");
+                return;
+            }
+
+            const data = await res.json();
+            const remoteTag = data.tag_name || "";
+            const cleanRemote = remoteTag.replace(/[^0-9.]/g, '');
+            const cleanCurrent = ((window.AndroidNative && window.AndroidNative.getAppVersion) ? window.AndroidNative.getAppVersion() : CURRENT_APP_VERSION).replace(/[^0-9.]/g, '');
+
+            const isNewer = compareSemVer(cleanCurrent, cleanRemote);
+
+            if (isNewer) {
+                latestUpdateData = data;
+                if (updateBtn) updateBtn.classList.add('has-update');
+                if (updateText) updateText.innerText = "নতুন আপডেট!";
+                openAppUpdateModal(cleanCurrent, cleanRemote, data.body, data.assets);
+            } else {
+                if (manual) showToast("আপনার অ্যাপটি আপ-টু-ডেট আছে (v" + toBanglaNum(cleanCurrent) + ")!");
+                if (updateText) updateText.innerText = "আপডেট চেক";
+            }
+        } catch (err) {
+            if (manual) showToast("ইন্টারনেট সংযোগ চেক করুন");
+        } finally {
+            if (updateIcon) updateIcon.style.animation = "none";
+            if (updateBtn && !updateBtn.classList.contains('has-update') && updateText) {
+                updateText.innerText = "আপডেট চেক";
+            }
         }
     }
 
-    function executeDeferredPrompt() {
-        if (deferredInstallPrompt) {
-            deferredInstallPrompt.prompt();
-            deferredInstallPrompt.userChoice.then((choiceResult) => {
-                if (choiceResult.outcome === 'accepted') {
-                    showToast("অ্যাপ ইনস্টলেশন সম্পন্ন হয়েছে!");
-                    closeInstallModal();
+    function compareSemVer(curr, remote) {
+        if (!curr || !remote) return false;
+        const cParts = curr.split('.').map(n => parseInt(n, 10) || 0);
+        const rParts = remote.split('.').map(n => parseInt(n, 10) || 0);
+        const max = Math.max(cParts.length, rParts.length);
+        for (let i = 0; i < max; i++) {
+            const c = cParts[i] || 0;
+            const r = rParts[i] || 0;
+            if (r > c) return true;
+            if (r < c) return false;
+        }
+        return false;
+    }
+
+    function openAppUpdateModal(currentVer, newVer, notes, assets) {
+        const modal = document.getElementById('app-update-modal');
+        if (!modal) return;
+        const verInfoEl = document.getElementById('update-modal-ver-info');
+        if (verInfoEl) verInfoEl.innerText = "বর্তমান: v" + toBanglaNum(currentVer) + " ➜ নতুন: v" + toBanglaNum(newVer);
+        
+        const notesEl = document.getElementById('update-modal-notes');
+        if (notesEl) notesEl.innerText = notes || "নতুন সংস্করণ ও পারফরম্যান্স আপডেট যুক্ত করা হয়েছে।";
+
+        let apkUrl = "";
+        if (assets && assets.length) {
+            const apkAsset = assets.find(a => a.name && a.name.endsWith('.apk'));
+            if (apkAsset) apkUrl = apkAsset.browser_download_url;
+        }
+        if (!apkUrl) {
+            apkUrl = "https://github.com/rahatshari/dalil-app-pro/releases/latest";
+        }
+
+        const downloadBtn = document.getElementById('update-modal-download-btn');
+        if (downloadBtn) {
+            downloadBtn.onclick = function() {
+                if (window.AndroidNative && window.AndroidNative.checkUpdate) {
+                    window.AndroidNative.checkUpdate();
+                } else {
+                    window.open(apkUrl, '_blank');
                 }
-                deferredInstallPrompt = null;
-            });
-        } else {
-            showToast("ব্রাউজারের ৩-ডট (⋮) মেনু থেকে 'Install app' বা 'Add to Home screen' নির্বাচন করুন।");
+                closeAppUpdateModal();
+            };
         }
+        modal.style.display = 'flex';
     }
 
-    function openInstallModal() {
-        const modal = document.getElementById('pwa-install-modal');
-        const directBox = document.getElementById('modal-direct-install-box');
-        if (directBox) {
-            directBox.style.display = deferredInstallPrompt ? 'block' : 'none';
-        }
-        if (modal) modal.style.display = 'flex';
-    }
-
-    function closeInstallModal() {
-        const modal = document.getElementById('pwa-install-modal');
+    function closeAppUpdateModal() {
+        const modal = document.getElementById('app-update-modal');
         if (modal) modal.style.display = 'none';
     }
 
@@ -2006,153 +2325,467 @@
     }
 
     // --- Multi-File Backup Import & Export Engine ---
-    let stagedImportData = null;
-
-    function openMultiFileInput() {
-        const menu = document.getElementById('settings-menu');
-        if (menu) menu.style.display = 'none';
-        document.getElementById('importFile').click();
-    }
+    let hubStagedFiles = [];
+    let currentHubStrategy = 'merge';
 
     function readFileAsText(file) {
+        if (file && typeof file.text === 'function') {
+            return file.text();
+        }
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = (e) => resolve({ name: file.name, content: e.target.result });
+            reader.onload = (e) => resolve(e.target.result);
             reader.onerror = () => reject(new Error(`${file.name} ফাইলটি পড়তে ব্যর্থ হয়েছে`));
             reader.readAsText(file);
         });
     }
 
-    async function handleBackupFileSelect(event) {
-        const fileList = event.target.files;
-        if (!fileList || fileList.length === 0) return;
+    function openBackupRestoreHub(tab = 'import') {
+        const modal = document.getElementById('import-modal');
+        if (!modal) return;
+        modal.style.display = 'flex';
+        
+        switchHubTab(tab);
+        updateHubCounters();
 
-        const files = Array.from(fileList);
-        let allExtractedRecords = [];
-        let fileSummaries = [];
+        const currentCountEl = document.getElementById('hub-current-table-count');
+        if (currentCountEl) currentCountEl.innerText = toBanglaNum(dalilRecords.length);
 
-        for (const file of files) {
-            try {
-                const res = await readFileAsText(file);
-                const parsed = JSON.parse(res.content);
-                let records = [];
-
-                if (Array.isArray(parsed)) {
-                    records = parsed;
-                } else if (parsed && Array.isArray(parsed.dalilRecords)) {
-                    records = parsed.dalilRecords;
-                } else if (parsed && typeof parsed === 'object' && (parsed.dalil_no || parsed.khatians)) {
-                    records = [parsed];
-                }
-
-                // Filter & normalize valid records
-                const validRecords = records.filter(r => r && typeof r === 'object' && (r.dalil_no || r.receiversHTML || r.khatians || r.dateVal));
-
-                if (validRecords.length > 0) {
-                    validRecords.forEach(r => {
-                        if (!r.khatians || !Array.isArray(r.khatians) || r.khatians.length === 0) {
-                            r.khatians = [{ type: '', no: '-', land: '-', dag: '-' }];
-                        }
-                        if (!r.rawReceivers) r.rawReceivers = [];
-                        if (!r.rawDonors) r.rawDonors = [];
-                        if (!r.total_land) r.total_land = '-';
-                        if (!r.dateVal) r.dateVal = '-';
-                        if (!r.dalil_no) r.dalil_no = '-';
-                    });
-                    allExtractedRecords.push(...validRecords);
-                    fileSummaries.push({ name: file.name, count: validRecords.length, valid: true });
-                } else {
-                    fileSummaries.push({ name: file.name, count: 0, valid: false, reason: 'কোনো বৈধ দলিল তথ্য নেই' });
-                }
-            } catch (err) {
-                fileSummaries.push({ name: file.name, count: 0, valid: false, reason: 'ভুল JSON ফরম্যাট' });
-            }
-        }
-
-        event.target.value = ""; // Clear file input so same files can be re-selected if needed
-
-        if (allExtractedRecords.length === 0) {
-            showToast("নির্বাচিত ফাইলে কোনো সঠিক দলিল রেকর্ড পাওয়া যায়নি!");
-            return;
-        }
-
-        // Stage data and open modal
-        stagedImportData = {
-            records: allExtractedRecords,
-            summaries: fileSummaries,
-            totalFiles: files.length
-        };
-
-        showImportModal();
+        const exportCountEl = document.getElementById('export-tab-records-count');
+        if (exportCountEl) exportCountEl.innerText = toBanglaNum(dalilRecords.length);
     }
 
-    function showImportModal() {
-        if (!stagedImportData) return;
-
-        document.getElementById('modal-file-count').innerText = toBanglaNum(stagedImportData.totalFiles);
-        document.getElementById('modal-record-count').innerText = toBanglaNum(stagedImportData.records.length);
-        document.getElementById('modal-current-count').innerText = toBanglaNum(dalilRecords.length);
-
-        const listContainer = document.getElementById('modal-files-list');
-        listContainer.innerHTML = '';
-
-        stagedImportData.summaries.forEach(f => {
-            const row = document.createElement('div');
-            row.className = 'file-summary-row';
-            row.innerHTML = `
-                <span class="file-name-text" title="${f.name}">
-                    <span class="material-icons" style="font-size:16px; color:${f.valid ? '#1a73e8' : '#d93025'};">description</span>
-                    ${f.name}
-                </span>
-                <span class="file-count-badge" style="${!f.valid ? 'background:#fce8e6; color:#c5221f;' : ''}">
-                    ${f.valid ? `${toBanglaNum(f.count)}টি দলিল` : 'অকার্যকর'}
-                </span>
-            `;
-            listContainer.appendChild(row);
-        });
-
-        // Default to merge option
-        document.getElementById('strategy-merge').checked = true;
-        document.getElementById('import-skip-duplicates').checked = true;
-        toggleDedupCheckbox(true);
-
-        document.getElementById('import-modal').style.display = 'flex';
+    function closeBackupRestoreHub() {
+        const modal = document.getElementById('import-modal');
+        if (modal) modal.style.display = 'none';
+        clearAllStagedFiles();
     }
 
     function closeImportModal() {
-        document.getElementById('import-modal').style.display = 'none';
-        stagedImportData = null;
+        closeBackupRestoreHub();
     }
 
-    function toggleDedupCheckbox(enable) {
-        const container = document.getElementById('dedup-option-container');
-        if (container) {
-            container.style.opacity = enable ? '1' : '0.4';
-            container.style.pointerEvents = enable ? 'auto' : 'none';
+    function switchHubTab(tabName) {
+        const importBtn = document.getElementById('tab-btn-import');
+        const exportBtn = document.getElementById('tab-btn-export');
+        const importView = document.getElementById('hub-view-import');
+        const exportView = document.getElementById('hub-view-export');
+        const confirmBtn = document.getElementById('btn-confirm-hub-import');
+
+        if (tabName === 'export') {
+            importBtn?.classList.remove('active');
+            exportBtn?.classList.add('active');
+            if (importView) importView.style.display = 'none';
+            if (exportView) exportView.style.display = 'block';
+            if (confirmBtn) confirmBtn.style.display = 'none';
+            const countEl = document.getElementById('export-tab-records-count');
+            if (countEl) countEl.innerText = toBanglaNum(dalilRecords.length);
+        } else {
+            exportBtn?.classList.remove('active');
+            importBtn?.classList.add('active');
+            if (exportView) exportView.style.display = 'none';
+            if (importView) importView.style.display = 'block';
+            renderStagedFilesUI();
         }
     }
 
-    function confirmMultiImport() {
-        if (!stagedImportData || !stagedImportData.records.length) {
-            closeImportModal();
+    function triggerMultiFileBrowse() {
+        const input = document.getElementById('hub-file-input');
+        if (input) input.click();
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dropzone = document.getElementById('hub-dropzone');
+        if (dropzone) dropzone.classList.add('dragover');
+    }
+
+    function handleDragLeave(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dropzone = document.getElementById('hub-dropzone');
+        if (dropzone) dropzone.classList.remove('dragover');
+    }
+
+    function handleFileDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dropzone = document.getElementById('hub-dropzone');
+        if (dropzone) dropzone.classList.remove('dragover');
+
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            processIncomingFiles(Array.from(e.dataTransfer.files));
+        }
+    }
+
+    function handleHubFileSelect(e) {
+        if (e.target && e.target.files && e.target.files.length > 0) {
+            processIncomingFiles(Array.from(e.target.files));
+            e.target.value = ''; // Reset so same files can be re-selected if needed
+        }
+    }
+
+    function formatFileSize(bytes) {
+        if (!bytes || bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+
+    async function processIncomingFiles(fileList) {
+        const validJsonFiles = fileList.filter(f => f.name.toLowerCase().endsWith('.json') || f.type.includes('json') || f.name.includes('.'));
+        if (validJsonFiles.length === 0) {
+            showToast("অনুগ্রহ করে .json ব্যাকআপ ফাইল নির্বাচন করুন!");
             return;
         }
 
-        const isMerge = document.getElementById('strategy-merge').checked;
-        const skipDuplicates = document.getElementById('import-skip-duplicates').checked;
-        let importedCount = 0;
-        let duplicateSkippedCount = 0;
+        let newStagedCount = 0;
 
-        if (isMerge) {
+        for (const file of validJsonFiles) {
+            // Check if file already staged
+            if (hubStagedFiles.some(f => f.name === file.name && f.size === file.size)) {
+                continue;
+            }
+
+            try {
+                const text = await readFileAsText(file);
+                let parsed = null;
+                try {
+                    parsed = JSON.parse(text);
+                } catch(pe) {
+                    hubStagedFiles.push({
+                        id: 'f_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                        name: file.name,
+                        size: file.size,
+                        sizeStr: formatFileSize(file.size),
+                        valid: false,
+                        records: [],
+                        count: 0,
+                        error: 'ভুল JSON ফরম্যাট'
+                    });
+                    newStagedCount++;
+                    continue;
+                }
+
+                let rawRecords = [];
+                let header = null;
+                let projectName = null;
+
+                if (Array.isArray(parsed)) {
+                    rawRecords = parsed;
+                } else if (parsed && typeof parsed === 'object') {
+                    if (Array.isArray(parsed.dalilRecords)) {
+                        rawRecords = parsed.dalilRecords;
+                        header = parsed.header || null;
+                        projectName = parsed.projectName || null;
+                    } else if (parsed.dalil_no || parsed.khatians || parsed.receiversHTML) {
+                        rawRecords = [parsed];
+                    }
+                }
+
+                // Filter & normalize valid deeds
+                const validRecords = rawRecords.filter(r => r && typeof r === 'object' && (r.dalil_no || r.receiversHTML || r.khatians || r.dateVal));
+
+                const normalized = validRecords.map((r, idx) => {
+                    const khatians = Array.isArray(r.khatians) && r.khatians.length > 0
+                        ? r.khatians.map(k => ({
+                            type: k.type || '',
+                            no: k.no !== undefined && k.no !== null ? String(k.no) : '-',
+                            land: k.land !== undefined && k.land !== null ? String(k.land) : '-',
+                            dag: k.dag !== undefined && k.dag !== null ? String(k.dag) : '-'
+                        }))
+                        : [{ type: '', no: '-', land: '-', dag: '-' }];
+
+                    return {
+                        sl_no: idx + 1,
+                        dalil_no: r.dalil_no ? String(r.dalil_no).trim() : '-',
+                        dateVal: r.dateVal ? String(r.dateVal).trim() : '-',
+                        receiversHTML: r.receiversHTML || '',
+                        donorsHTML: r.donorsHTML || '',
+                        rawReceivers: Array.isArray(r.rawReceivers) ? r.rawReceivers : [],
+                        rawDonors: Array.isArray(r.rawDonors) ? r.rawDonors : [],
+                        total_land: r.total_land !== undefined && r.total_land !== null ? String(r.total_land).trim() : '-',
+                        khatians
+                    };
+                });
+
+                if (normalized.length > 0) {
+                    hubStagedFiles.push({
+                        id: 'f_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                        name: file.name,
+                        size: file.size,
+                        sizeStr: formatFileSize(file.size),
+                        valid: true,
+                        records: normalized,
+                        count: normalized.length,
+                        header,
+                        projectName: projectName || file.name.replace(/\.[^/.]+$/, "")
+                    });
+                    newStagedCount++;
+                } else {
+                    hubStagedFiles.push({
+                        id: 'f_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                        name: file.name,
+                        size: file.size,
+                        sizeStr: formatFileSize(file.size),
+                        valid: false,
+                        records: [],
+                        count: 0,
+                        error: 'কোনো বৈধ দলিল তথ্য নেই'
+                    });
+                    newStagedCount++;
+                }
+            } catch(e) {
+                console.error("Error reading file", file.name, e);
+            }
+        }
+
+        renderStagedFilesUI();
+        if (newStagedCount > 0) {
+            showToast(`${toBanglaNum(newStagedCount)}টি ফাইল যুক্ত হয়েছে`);
+        }
+    }
+
+    function removeStagedFile(fileId) {
+        hubStagedFiles = hubStagedFiles.filter(f => f.id !== fileId);
+        renderStagedFilesUI();
+    }
+
+    function clearAllStagedFiles() {
+        hubStagedFiles = [];
+        renderStagedFilesUI();
+    }
+
+    function updateHubCounters() {
+        const totalValidRecords = hubStagedFiles.reduce((acc, f) => acc + (f.valid ? f.count : 0), 0);
+        const fileCountBadge = document.getElementById('hub-staged-count-badge');
+        const recordsCountBadge = document.getElementById('hub-records-count-badge');
+        const confirmBtn = document.getElementById('btn-confirm-hub-import');
+        const confirmText = document.getElementById('btn-confirm-import-text');
+
+        if (fileCountBadge) fileCountBadge.innerText = `${toBanglaNum(hubStagedFiles.length)} টি ফাইল`;
+        if (recordsCountBadge) recordsCountBadge.innerText = `${toBanglaNum(totalValidRecords)} টি দলিল প্রাপ্ত`;
+
+        if (confirmBtn && confirmText) {
+            if (totalValidRecords > 0) {
+                confirmBtn.style.display = 'inline-flex';
+                confirmText.innerText = `ইমপোর্ট সম্পন্ন করুন (${toBanglaNum(totalValidRecords)}টি দলিল)`;
+            } else {
+                confirmBtn.style.display = 'none';
+            }
+        }
+
+        const previewCount = document.getElementById('preview-record-count');
+        if (previewCount) previewCount.innerText = toBanglaNum(totalValidRecords);
+    }
+
+    function renderStagedFilesUI() {
+        const stagedArea = document.getElementById('hub-staged-area');
+        const dropzone = document.getElementById('hub-dropzone');
+        const listContainer = document.getElementById('hub-staged-list');
+        const previewWrapper = document.getElementById('hub-preview-wrapper');
+
+        if (!stagedArea || !listContainer) return;
+
+        if (hubStagedFiles.length === 0) {
+            stagedArea.style.display = 'none';
+            if (dropzone) {
+                dropzone.style.padding = '28px 16px';
+                dropzone.style.display = 'flex';
+            }
+            updateHubCounters();
+            return;
+        }
+
+        stagedArea.style.display = 'block';
+        if (dropzone) {
+            // Keep dropzone compact when files are already staged
+            dropzone.style.padding = '12px 16px';
+            dropzone.style.display = 'flex';
+        }
+
+        listContainer.innerHTML = '';
+
+        hubStagedFiles.forEach(f => {
+            const card = document.createElement('div');
+            card.className = `staged-file-card ${f.valid ? '' : 'is-invalid'}`;
+
+            let metaText = f.sizeStr;
+            if (f.valid && f.header && f.header.mouza) {
+                metaText += ` • মৌজা: ${f.header.mouza}`;
+            }
+
+            card.innerHTML = `
+                <div class="file-card-info">
+                    <span class="material-icons" style="font-size:24px; color:${f.valid ? '#1a73e8' : '#d93025'};">
+                        ${f.valid ? 'description' : 'error_outline'}
+                    </span>
+                    <div class="file-card-texts">
+                        <div class="file-card-title" title="${escapeHTML(f.name)}">${escapeHTML(f.name)}</div>
+                        <div class="file-card-subtitle">
+                            <span>${metaText}</span>
+                            <span class="${f.valid ? 'file-badge-success' : 'file-badge-error'}">
+                                ${f.valid ? `✓ ${toBanglaNum(f.count)} টি দলিল` : (f.error || 'ত্রুটি')}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn-remove-file" onclick="removeStagedFile('${f.id}')" title="তালিকা থেকে বাদ দিন">
+                    <span class="material-icons" style="font-size:18px;">delete</span>
+                </button>
+            `;
+            listContainer.appendChild(card);
+        });
+
+        // Update preview table
+        const totalValidRecords = hubStagedFiles.reduce((acc, f) => acc + (f.valid ? f.count : 0), 0);
+        if (totalValidRecords > 0) {
+            if (previewWrapper) previewWrapper.style.display = 'block';
+            renderDeedPreviewTable();
+        } else {
+            if (previewWrapper) previewWrapper.style.display = 'none';
+        }
+
+        updateHubCounters();
+    }
+
+    function toggleDeedPreview() {
+        const drawer = document.getElementById('preview-content-drawer');
+        const icon = document.getElementById('preview-toggle-icon');
+        if (!drawer) return;
+
+        if (drawer.style.display === 'none' || !drawer.style.display) {
+            drawer.style.display = 'block';
+            if (icon) icon.innerText = 'expand_less';
+        } else {
+            drawer.style.display = 'none';
+            if (icon) icon.innerText = 'expand_more';
+        }
+    }
+
+    function renderDeedPreviewTable() {
+        const tbody = document.getElementById('preview-table-body');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        // Combine preview records (show up to 10 for preview)
+        let count = 0;
+        for (const file of hubStagedFiles) {
+            if (!file.valid) continue;
+            for (const r of file.records) {
+                count++;
+                if (count > 10) break;
+                
+                let receiverName = '-';
+                if (r.rawReceivers && r.rawReceivers.length > 0 && r.rawReceivers[0].name) {
+                    receiverName = r.rawReceivers[0].name;
+                    if (r.rawReceivers.length > 1) receiverName += ` (+${toBanglaNum(r.rawReceivers.length - 1)})`;
+                } else if (r.receiversHTML) {
+                    const temp = document.createElement('div');
+                    temp.innerHTML = r.receiversHTML;
+                    receiverName = temp.textContent.trim().split('\n')[0] || '-';
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="text-align:center;">${toBanglaNum(count)}</td>
+                    <td>${escapeHTML(r.dateVal || '-')}</td>
+                    <td style="font-weight:600; color:#1a73e8;">${escapeHTML(r.dalil_no || '-')}</td>
+                    <td>${escapeHTML(receiverName)}</td>
+                    <td style="text-align:right;">${toBanglaNum(r.total_land || '-')} শতক</td>
+                `;
+                tbody.appendChild(tr);
+            }
+            if (count > 10) break;
+        }
+
+        if (count > 10) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td colspan="5" style="text-align:center; color:#5f6368; background:#f8f9fa; font-style:italic;">... এবং আরও অন্যান্য দলিল</td>`;
+            tbody.appendChild(tr);
+        }
+    }
+
+    function selectHubStrategy(strategy) {
+        currentHubStrategy = strategy;
+        ['merge', 'replace', 'archive'].forEach(s => {
+            const card = document.getElementById('strategy-card-' + s);
+            const radio = document.getElementById('hub-strat-' + s);
+            if (card) {
+                if (s === strategy) card.classList.add('active');
+                else card.classList.remove('active');
+            }
+            if (radio) radio.checked = (s === strategy);
+        });
+    }
+
+    function confirmHubImport() {
+        const validFiles = hubStagedFiles.filter(f => f.valid && f.records.length > 0);
+        if (validFiles.length === 0) {
+            showToast("ইমপোর্ট করার মতো কোনো বৈধ দলিল তথ্য পাওয়া যায়নি!");
+            return;
+        }
+
+        // Collect all records from valid files
+        const allNewRecords = [];
+        let primaryHeader = null;
+
+        validFiles.forEach(f => {
+            if (!primaryHeader && f.header) primaryHeader = f.header;
+            allNewRecords.push(...f.records);
+        });
+
+        if (allNewRecords.length === 0) {
+            showToast("কোনো দলিল রেকর্ড পাওয়া যায়নি!");
+            return;
+        }
+
+        // 1. STRATEGY: ARCHIVE ONLY (Save to Saved Projects Archive without modifying table)
+        if (currentHubStrategy === 'archive') {
+            const list = getSavedCollections();
+            let addedProjectsCount = 0;
+
+            validFiles.forEach(f => {
+                const now = new Date();
+                const projName = f.projectName || f.name.replace(/\.[^/.]+$/, "");
+                const newProj = {
+                    id: 'proj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+                    name: projName,
+                    note: `ইমপোর্ট করা ফাইল: ${f.name}`,
+                    createdAt: now.toISOString(),
+                    dateDisplay: now.toLocaleDateString('bn-BD') + ' ' + now.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' }),
+                    recordsCount: f.records.length,
+                    header: f.header || null,
+                    records: f.records
+                };
+                list.unshift(newProj);
+                addedProjectsCount++;
+            });
+
+            saveCollectionsList(list);
+            closeBackupRestoreHub();
+            showToast(`সফলভাবে ${toBanglaNum(addedProjectsCount)}টি ব্যাকআপ প্রজেক্ট সংরক্ষিত দলিল তালিকায় যোগ হয়েছে!`);
+            return;
+        }
+
+        // 2. STRATEGY: MERGE
+        if (currentHubStrategy === 'merge') {
+            const skipDuplicates = document.getElementById('hub-skip-duplicates')?.checked ?? true;
+            let addedCount = 0;
+            let duplicateCount = 0;
+
             if (skipDuplicates) {
-                // Avoid duplicate দলিল নং
-                const existingNos = new Set(dalilRecords.map(r => String(r.dalil_no || '').trim().toLowerCase()).filter(Boolean));
+                const existingNos = new Set(
+                    dalilRecords.map(r => String(r.dalil_no || '').trim().toLowerCase()).filter(n => n && n !== '-')
+                );
                 const itemsToAdd = [];
 
-                stagedImportData.records.forEach(r => {
+                allNewRecords.forEach(r => {
                     const dNo = String(r.dalil_no || '').trim().toLowerCase();
                     if (dNo && dNo !== '-' && existingNos.has(dNo)) {
-                        duplicateSkippedCount++;
+                        duplicateCount++;
                     } else {
                         if (dNo && dNo !== '-') existingNos.add(dNo);
                         itemsToAdd.push(r);
@@ -2160,31 +2793,75 @@
                 });
 
                 dalilRecords = dalilRecords.concat(itemsToAdd);
-                importedCount = itemsToAdd.length;
+                addedCount = itemsToAdd.length;
             } else {
-                dalilRecords = dalilRecords.concat(stagedImportData.records);
-                importedCount = stagedImportData.records.length;
+                dalilRecords = dalilRecords.concat(allNewRecords);
+                addedCount = allNewRecords.length;
             }
-        } else {
-            // Replace all
-            dalilRecords = stagedImportData.records;
-            importedCount = stagedImportData.records.length;
+
+            recalculateSerialNumbers();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords));
+            renderTable();
+            closeBackupRestoreHub();
+
+            // Scroll down to table
+            const tableSec = document.getElementById('pdf-section');
+            if (tableSec) tableSec.scrollIntoView({ behavior: 'smooth' });
+
+            if (duplicateCount > 0) {
+                showToast(`সফলভাবে ${toBanglaNum(addedCount)}টি দলিল যোগ হয়েছে (${toBanglaNum(duplicateCount)}টি ডুপ্লিকেট বাদ)!`);
+            } else {
+                showToast(`সফলভাবে ${toBanglaNum(addedCount)}টি দলিল টেবিলে যোগ হয়েছে!`);
+            }
+            return;
         }
 
-        recalculateSerialNumbers();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords));
-        renderTable();
-        closeImportModal();
+        // 3. STRATEGY: REPLACE
+        if (currentHubStrategy === 'replace') {
+            dalilRecords = allNewRecords;
+            recalculateSerialNumbers();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dalilRecords));
 
-        if (duplicateSkippedCount > 0) {
-            showToast(`${toBanglaNum(importedCount)}টি দলিল যোগ হয়েছে (${toBanglaNum(duplicateSkippedCount)}টি ডুপ্লিকেট বাদ দেওয়া হয়েছে)!`);
-        } else {
-            showToast(`সফলভাবে ${toBanglaNum(importedCount)}টি দলিল রেকর্ড সংরক্ষিত হয়েছে!`);
+            // Restore header if available
+            if (primaryHeader && typeof primaryHeader === 'object') {
+                if (primaryHeader.main_title !== undefined) document.getElementById('g_main_title').value = primaryHeader.main_title;
+                if (primaryHeader.zila !== undefined) document.getElementById('g_zila').value = primaryHeader.zila;
+                if (primaryHeader.upazila !== undefined) document.getElementById('g_upazila').value = primaryHeader.upazila;
+                if (primaryHeader.mouza !== undefined) document.getElementById('g_mouza').value = primaryHeader.mouza;
+                if (primaryHeader.creator !== undefined) document.getElementById('g_creator').value = primaryHeader.creator;
+                if (primaryHeader.date !== undefined) document.getElementById('g_date').value = primaryHeader.date;
+                saveGlobalHeader();
+            }
+
+            renderTable();
+            closeBackupRestoreHub();
+
+            const tableSec = document.getElementById('pdf-section');
+            if (tableSec) tableSec.scrollIntoView({ behavior: 'smooth' });
+
+            showToast(`বর্তমান তালিকা মুছে ${toBanglaNum(allNewRecords.length)}টি দলিল দিয়ে প্রতিস্থাপন করা হয়েছে!`);
         }
     }
 
+    function executeQuickExportFromHub() {
+        if (!dalilRecords || dalilRecords.length === 0) {
+            showToast("ব্যাকআপ নেওয়ার মতো কোনো দলিল তথ্য টেবিলে নেই!");
+            return;
+        }
+        exportData();
+        closeBackupRestoreHub();
+    }
+
+    function openMultiFileInput() {
+        openBackupRestoreHub('import');
+    }
+
+    function openDirectFileInput() {
+        openBackupRestoreHub('import');
+    }
+
     function importData(event) {
-        handleBackupFileSelect(event);
+        handleHubFileSelect(event);
     }
 
     // --- Saved Deed Collections & Projects Archive Manager ---
@@ -2604,8 +3281,7 @@
     }
 
     function openDirectFileInput() {
-        const input = document.getElementById('directImportFile');
-        if (input) input.click();
+        openBackupRestoreHub('import');
     }
 </script>
 </body>

@@ -235,7 +235,7 @@ class MainActivity : ComponentActivity() {
                 val printAttributes = PrintAttributes.Builder()
                     .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
                     .setResolution(PrintAttributes.Resolution("pdf", "pdf", 300, 300))
-                    .setMinMargins(PrintAttributes.Margins.NO_MARGINS)
+                    .setMinMargins(PrintAttributes.Margins(400, 400, 400, 400))
                     .build()
                 printManager?.print(jobName, printAdapter, printAttributes)
             } catch (e: Exception) {
@@ -244,13 +244,19 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun checkForAppUpdates() {
+    private fun checkForAppUpdates(manual: Boolean = false) {
         lifecycleScope.launch(Dispatchers.IO) {
             val currentVersion = BuildConfig.VERSION_NAME
             val updateInfo = UpdateManager.checkForUpdate(currentVersion)
-            if (updateInfo != null) {
-                withContext(Dispatchers.Main) {
+            withContext(Dispatchers.Main) {
+                if (updateInfo != null) {
                     showUpdatePrompt(updateInfo)
+                } else if (manual) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "আপনার অ্যাপটি আপ-টু-ডেট আছে (v${BanglaUtils.toBanglaNum(currentVersion)})",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -318,7 +324,7 @@ class MainActivity : ComponentActivity() {
 
         @JavascriptInterface
         fun checkUpdate() {
-            checkForAppUpdates()
+            checkForAppUpdates(manual = true)
         }
 
         @JavascriptInterface
