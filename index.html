@@ -19,12 +19,14 @@
     <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     
-    <!-- Dynamic Print Page Style -->
+    <!-- Dynamic Print Page Style (Updated via JavaScript for Chrome-like orientation & margins) -->
     <style id="dynamic-print-css">
-        @page { margin: 12mm 10mm 12mm 10mm; size: portrait; }
+        @page { size: A4 portrait; margin: 10mm 8mm 10mm 8mm; }
     </style>
 
     <style>
@@ -41,7 +43,7 @@
             -webkit-text-size-adjust: 100%;
         }
         body {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Noto Sans Bengali', 'SolaimanLipi', 'Kalpurush', sans-serif;
+            font-family: 'Noto Sans Bengali', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'SolaimanLipi', 'Kalpurush', sans-serif;
             background-color: #f2f2f7; 
             color: #1c1e21;
             margin: 0;
@@ -877,115 +879,336 @@
         .btn-card-delete { background: #fce8e6; color: #d93025; }
         .btn-card-delete:hover { background: #fad2cf; }
         
-        /* Table / Output Container */
-        .output-container {
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto 30px auto;
-            background: #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        /* --- Document Desk & Authentic A4 Paper Sheet (Google Chrome-like Print Preview) --- */
+        .doc-desk {
+            background: #eef2f6;
+            padding: 22px 14px 30px 14px;
             border-radius: 12px;
-            overflow: hidden; 
+            margin: 18px auto 26px auto;
+            border: 1px solid #dbe3ed;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.03);
             box-sizing: border-box;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
+            width: 100%;
+        }
+        @media (max-width: 650px) {
+            .doc-desk {
+                padding: 10px 4px 16px 4px;
+                border-radius: 8px;
+                margin: 12px auto 18px auto;
+            }
+        }
+
+        /* Custom Print Settings Toolbar (Floating / Sticky Control Bar Before Print) */
+        .print-settings-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #cfd7df;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            box-sizing: border-box;
+            width: 100%;
+            position: sticky;
+            top: 58px;
+            z-index: 900;
+        }
+        .print-toolbar-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14.5px;
+            font-weight: 600;
+            color: #1a73e8;
+        }
+        .sheet-record-badge {
+            background: #e8f0fe;
+            color: #1a73e8;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid #cce0ff;
+        }
+        .print-toolbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
         
-        /* PRINT HEADER (Screen display) */
+        /* Orientation Segments (Portrait vs Landscape) */
+        .orient-pill-group {
+            display: inline-flex;
+            background: #f1f3f4;
+            border-radius: 8px;
+            padding: 3px;
+            border: 1px solid #dadce0;
+        }
+        .orient-pill-btn {
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #5f6368;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+        .orient-pill-btn.active {
+            background: #ffffff;
+            color: #1a73e8;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        
+        /* Margins & Border Selectors */
+        .print-opt-select {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 7px;
+            padding: 5px 9px;
+            font-size: 12px;
+            color: #3c4043;
+        }
+        .print-opt-select select {
+            border: none;
+            background: transparent;
+            font-size: 12px;
+            color: #202124;
+            cursor: pointer;
+            font-family: inherit;
+            outline: none;
+            font-weight: 500;
+        }
+        
+        .border-toggle-btn {
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 7px;
+            padding: 6px 10px;
+            font-size: 12px;
+            color: #3c4043;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            transition: all 0.18s ease;
+        }
+        .border-toggle-btn.active {
+            background: #e8f0fe;
+            color: #1a73e8;
+            border-color: #1a73e8;
+            font-weight: 600;
+        }
+
+        .btn-print-main {
+            background: #1a73e8;
+            color: #ffffff;
+            border: none;
+            border-radius: 7px;
+            padding: 8px 16px;
+            font-size: 13.5px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(26,115,232,0.3);
+            transition: all 0.18s ease;
+        }
+        .btn-print-main:hover { background: #1557b0; }
+        .btn-clear-main {
+            background: #ea4335;
+            color: #ffffff;
+            border: none;
+            border-radius: 7px;
+            padding: 8px 13px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+        .btn-clear-main:hover { background: #c5221f; }
+
+        /* The Authentic A4 Paper Sheet (প্রকৃত কাগজের পাতা) */
+        .a4-sheet {
+            background: #ffffff;
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 34px 28px 40px 28px;
+            border-radius: 2px;
+            border: 1px solid #cfd4dc;
+            box-shadow: 0 4px 22px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
+            box-sizing: border-box;
+            font-family: 'Noto Serif Bengali', 'SolaimanLipi', 'Kalpurush', -apple-system, serif;
+            position: relative;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            transition: max-width 0.25s ease, padding 0.2s ease;
+        }
+        /* Landscape on-screen preview */
+        .a4-sheet.orient-landscape {
+            max-width: 1140px;
+            padding: 30px 32px 36px 32px;
+        }
+        /* Outer border toggle on screen */
+        .a4-sheet.has-outer-border {
+            border: 2px solid #000000;
+            outline: 4px solid #ffffff;
+            outline-offset: -6px;
+        }
+        
+        /* Margin Presets */
+        .a4-sheet.margin-minimum { padding: 18px 16px; }
+        .a4-sheet.margin-standard { padding: 32px 28px; }
+        .a4-sheet.margin-wide { padding: 44px 38px; }
+
+        @media (max-width: 650px) {
+            .a4-sheet {
+                padding: 16px 8px 20px 8px;
+                border-radius: 2px;
+            }
+            .print-settings-toolbar {
+                top: 54px;
+                padding: 10px 10px;
+            }
+        }
+
+        /* Authentic Clean 3-Column Header (Never stacks or breaks into vertical list) */
         .print-header {
             display: flex; 
-            padding: 16px 20px;
-            background: #fff;
-            border-bottom: 2px solid #3c4043;
             justify-content: space-between;
-            align-items: center; 
-            gap: 12px;
+            align-items: flex-start;
+            padding: 0 0 12px 0;
+            background: transparent;
+            border-bottom: none;
+            margin-bottom: 12px;
+            gap: 10px;
             box-sizing: border-box;
             width: 100%;
+            min-width: 680px;
+            font-family: 'Noto Serif Bengali', serif;
         }
-        .header-col-left { flex: 1; display: flex; flex-direction: column; justify-content: center; font-size: 13px; line-height: 1.6; color: #202124; min-width: 0; }
-        .header-col-left strong { font-weight: 600; color: #000; }
-        .header-col-center { flex: 1.5; display: flex; align-items: center; justify-content: center; text-align: center; min-width: 0; }
-        .header-col-center h3 { margin: 0; font-size: 20px; font-weight: 700; color: #000; text-decoration: underline; line-height: 1.2; }
-        .header-col-right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; text-align: right; font-size: 13px; line-height: 1.6; color: #202124; min-width: 0; }
-        .header-col-right strong { font-weight: 600; color: #000; }
+        .header-col-left { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            font-size: 13px; 
+            line-height: 1.55; 
+            color: #000000; 
+            text-align: left; 
+        }
+        .header-col-left strong { font-weight: 700; color: #000000; }
+        .header-col-center { 
+            flex: 1.4; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+        }
+        .header-col-center h3 { 
+            margin: 0; 
+            font-size: 21px; 
+            font-weight: 700; 
+            color: #000000; 
+            text-decoration: underline; 
+            line-height: 1.25; 
+            letter-spacing: 0.2px; 
+            font-family: 'Noto Serif Bengali', serif;
+        }
+        .header-col-right { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            align-items: flex-end; 
+            text-align: right; 
+            font-size: 13px; 
+            line-height: 1.55; 
+            color: #000000; 
+        }
+        .header-col-right strong { font-weight: 700; color: #000000; }
 
         @media (max-width: 650px) {
             .container {
-                padding: 0 8px;
-                margin: 8px auto;
+                padding: 0 6px;
+                margin: 6px auto;
             }
             .middle-save-card {
-                padding: 12px 10px;
-            }
-            .print-header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
                 padding: 12px 8px;
-                gap: 8px;
-            }
-            .header-col-left, .header-col-right {
-                width: 100%;
-                align-items: center;
-                text-align: center;
-                font-size: 12px;
-            }
-            .header-col-center h3 {
-                font-size: 17px;
             }
         }
 
         #default-title { display: none; }
 
-        /* Mobile horizontal scroll hint badge */
-        .table-scroll-hint {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            background: #e8f0fe;
-            color: #1a73e8;
-            font-size: 11.5px;
-            font-weight: 500;
-            padding: 6px 10px;
-            border-bottom: 1px solid #d2e3fc;
-            text-align: center;
-            user-select: none;
-        }
-        @media (max-width: 768px) {
-            .table-scroll-hint {
-                display: flex;
-            }
-        }
-
         /* Table Styling */
         .table-responsive {
             width: 100%;
-            max-width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+            overflow-x: visible;
             box-sizing: border-box;
-            border-radius: 0 0 12px 12px;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
         }
-        table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: 13px; background: #fff; }
-        th, td { border: 1px solid #bdc1c6; padding: 8px 6px; text-align: left; vertical-align: middle; line-height: 1.5; color: #202124; }
-        th { background: #f1f3f4; color: #202124; font-weight: 600; text-align: center; white-space: nowrap; }
+        table#main-table { 
+            width: 100%; 
+            min-width: 680px; 
+            border-collapse: collapse; 
+            font-size: 12.5px; 
+            background: #ffffff; 
+            border: 1px solid #000000;
+            font-family: 'Noto Serif Bengali', serif;
+        }
+        table#main-table th, table#main-table td { 
+            border: 1px solid #000000; 
+            padding: 6px 6px; 
+            vertical-align: middle; 
+            line-height: 1.45; 
+            color: #000000; 
+        }
+        table#main-table th { 
+            background-color: #ededed; 
+            color: #000000; 
+            font-weight: 700; 
+            text-align: center; 
+            white-space: nowrap; 
+            font-size: 12px;
+        }
         .align-center { text-align: center !important; }
         
-        /* New CSS for 'দাগ নং' column to wrap text */
         .dag-cell {
-            max-width: 140px; 
+            max-width: 130px; 
             word-wrap: break-word;
             overflow-wrap: break-word;
+            text-align: center;
         }
 
-        .person-data { padding-bottom: 5px; margin-bottom: 5px; border-bottom: 1px dotted #9aa0a6; }
-        .person-data:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .person-data { 
+            padding-bottom: 4px; 
+            margin-bottom: 4px; 
+            border-bottom: 1px dotted #888888; 
+            line-height: 1.4;
+        }
+        .person-data:last-child { 
+            border-bottom: none; 
+            margin-bottom: 0; 
+            padding-bottom: 0; 
+        }
         
         /* Action Buttons in Table */
         .icon-btn { background: transparent; border: none; padding: 6px; border-radius: 50%; color: #5f6368; cursor: pointer; transition: background 0.2s;}
@@ -993,13 +1216,6 @@
         .delete-btn { color: #d93025; }
         .edit-btn { color: #1a73e8; }
         .move-btn { color: #0f9d58; }
-
-        /* Bottom Action Bar */
-        .bottom-bar { padding: 15px; display: flex; gap: 15px; background: #fff; border-top: 1px solid #e8eaed; }
-        .btn-pdf { background-color: #4285f4; }
-        .btn-clear { background-color: #ea4335; }
-        .btn-update { background-color: #fbbc04; color: #000; display: none; }
-        .btn-cancel { background-color: #5f6368; display: none; }
 
         /* Toast Notification Styling */
         .toast {
@@ -1026,11 +1242,15 @@
             bottom: 50px;
         }
 
-        /* --- PRINT CSS SETTINGS (Authentic A4 Government Land Record Sheet) --- */
+        /* ==========================================================================
+           ACCURATE PRINT CSS (@media print)
+           Google Chrome, Android WebView, and Desktop Native Spooler
+           ========================================================================== */
         @media print {
-            @page {
-                size: portrait;
-                margin: 12mm 10mm 12mm 10mm;
+            * {
+                box-sizing: border-box !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
             html, body { 
                 height: auto !important; 
@@ -1040,7 +1260,7 @@
                 padding: 0 !important; 
                 margin: 0 !important; 
                 color: #000000 !important; 
-                font-family: 'Roboto', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif !important; 
+                font-family: 'Noto Serif Bengali', 'SolaimanLipi', 'Kalpurush', serif !important; 
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
@@ -1050,15 +1270,20 @@
                 padding: 0 !important;
                 margin: 0 !important;
             }
-            .no-print, .app-bar, .bottom-bar, .header-offline-badge, .settings-btn, .app-bar-actions, .app-update-btn { 
+            
+            /* Hide all non-printable UI elements */
+            .no-print, .app-bar, .bottom-bar, .header-offline-badge, .settings-btn, 
+            .app-bar-actions, .app-update-btn, .print-settings-toolbar, .doc-toolbar, .table-scroll-hint,
+            .custom-modal-overlay, .settings-overlay, .toast, .middle-save-card,
+            .form-container, .header-container { 
                 display: none !important; 
             }
             
-            .container { 
+            .container, .doc-desk { 
                 box-shadow: none !important; 
-                background: #ffffff !important; 
+                background: transparent !important; 
                 padding: 0 !important; 
-                margin: 0 !important;
+                margin: 0 !important; 
                 width: 100% !important; 
                 max-width: 100% !important; 
                 border: none !important; 
@@ -1066,30 +1291,43 @@
                 display: block !important;
             }
 
-            /* Natural Sheet Layout without artificial double paddings */
-            #pdf-section { 
+            /* Natural Pure White Sheet Layout */
+            #pdf-section, .a4-sheet { 
                 box-shadow: none !important; 
                 background: #ffffff !important; 
                 padding: 0 !important; 
                 margin: 0 !important; 
                 width: 100% !important; 
+                max-width: 100% !important;
                 box-sizing: border-box !important;
                 border: none !important; 
                 overflow: visible !important; 
                 display: block !important;
+                font-family: 'Noto Serif Bengali', 'SolaimanLipi', 'Kalpurush', serif !important;
             }
 
-            /* Authentic Clean Header - Clean text without enclosing border box */
+            /* Outer Page Border strictly within printable margin - Never clipped */
+            #pdf-section.has-outer-border {
+                border: 1.5px solid #000000 !important;
+                padding: 5mm !important;
+                margin: 0 auto !important;
+                box-sizing: border-box !important;
+                outline: none !important;
+            }
+
+            /* Authentic Clean Header - Matching reference PDF */
             #print-header-layout { 
                 display: flex !important; 
-                justify-content: space-between !important;
-                align-items: stretch !important;
+                justify-content: space-between !important; 
+                align-items: flex-start !important; 
                 border: none !important; 
-                border-radius: 0 !important;
-                padding: 0 0 8px 0 !important; 
-                margin-bottom: 8px !important; 
-                background: transparent !important;
-                box-shadow: none !important;
+                border-radius: 0 !important; 
+                padding: 0 0 6px 0 !important; 
+                margin: 0 0 8px 0 !important; 
+                background: transparent !important; 
+                box-shadow: none !important; 
+                min-width: unset !important;
+                width: 100% !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
@@ -1097,76 +1335,76 @@
                 flex: 1 !important; 
                 display: flex !important; 
                 flex-direction: column !important; 
-                justify-content: center !important; 
+                justify-content: flex-start !important; 
                 font-size: 11.5px !important; 
                 line-height: 1.45 !important; 
                 color: #000000 !important; 
                 text-align: left !important;
             }
-            .header-col-left strong { font-weight: bold !important; color: #000000 !important; }
+            .header-col-left strong { font-weight: 700 !important; color: #000000 !important; }
             .header-col-center { 
-                flex: 1.5 !important; 
+                flex: 1.4 !important; 
                 display: flex !important; 
                 align-items: center !important; 
                 justify-content: center !important; 
                 text-align: center !important; 
             }
             .header-col-center h3 { 
-                font-size: 18px !important; 
+                font-size: 18.5px !important; 
                 color: #000000 !important; 
-                font-weight: bold !important; 
+                font-weight: 700 !important; 
                 text-decoration: underline !important; 
                 margin: 0 !important; 
                 padding: 0 !important;
-                line-height: 1.2 !important;
+                line-height: 1.25 !important;
+                font-family: 'Noto Serif Bengali', serif !important;
             }
             .header-col-right { 
                 flex: 1 !important; 
                 display: flex !important; 
                 flex-direction: column !important; 
-                justify-content: center !important; 
+                justify-content: flex-start !important; 
                 align-items: flex-end !important; 
                 text-align: right !important; 
                 font-size: 11.5px !important; 
                 line-height: 1.45 !important; 
                 color: #000000 !important; 
             }
-            .header-col-right strong { font-weight: bold !important; color: #000000 !important; }
+            .header-col-right strong { font-weight: 700 !important; color: #000000 !important; }
 
             .table-responsive {
                 overflow: visible !important;
                 width: 100% !important;
+                min-width: unset !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 box-sizing: border-box !important;
                 display: block !important;
             }
             
-            .table-scroll-hint { display: none !important; }
-            
-            table { 
-                font-size: 11px !important; 
+            table#main-table { 
+                font-size: 10.5px !important; 
                 width: 100% !important; 
                 min-width: unset !important;
                 border-collapse: collapse !important; 
                 border: 1px solid #000000 !important; 
-                page-break-inside: auto !important; 
                 box-sizing: border-box !important;
                 margin: 0 !important;
                 table-layout: auto !important;
+                font-family: 'Noto Serif Bengali', serif !important;
             }
-            table, th, td { 
+            table#main-table th, table#main-table td { 
                 border: 1px solid #000000 !important; 
-                padding: 5px 6px !important; 
+                padding: 5px 4px !important; 
                 color: #000000 !important;
                 vertical-align: middle !important;
                 line-height: 1.35 !important;
             }
-            th { 
+            table#main-table th { 
                 background-color: #ededed !important; 
-                font-weight: bold !important;
+                font-weight: 700 !important;
                 text-align: center !important;
-                font-size: 11px !important;
+                font-size: 10.5px !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
             }
@@ -1174,21 +1412,21 @@
                 text-align: center !important;
             }
 
-            /* Authentic Column Proportion */
-            #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 28px !important; text-align: center !important; }
-            #main-table th:nth-child(2) { width: 48px !important; }
-            #main-table th:nth-child(3) { width: 68px !important; }
-            #main-table th:nth-child(4) { min-width: 130px !important; }
-            #main-table th:nth-child(5) { min-width: 130px !important; }
-            #main-table th:nth-child(6) { width: 55px !important; }
-            #main-table th:nth-child(7) { width: 75px !important; }
-            #main-table th:nth-child(8) { width: 68px !important; }
-            #main-table th:nth-child(9) { width: 75px !important; }
+            /* Accurate Column Widths fitting standard A4 without clipping */
+            #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 24px !important; text-align: center !important; }
+            #main-table th:nth-child(2) { width: 44px !important; }
+            #main-table th:nth-child(3) { width: 62px !important; }
+            #main-table th:nth-child(4) { min-width: 125px !important; }
+            #main-table th:nth-child(5) { min-width: 125px !important; }
+            #main-table th:nth-child(6) { width: 52px !important; }
+            #main-table th:nth-child(7) { width: 68px !important; }
+            #main-table th:nth-child(8) { width: 64px !important; }
+            #main-table th:nth-child(9) { width: 70px !important; }
 
             .person-data { 
                 padding-bottom: 4px !important; 
                 margin-bottom: 4px !important; 
-                border-bottom: 1px dotted #999999 !important; 
+                border-bottom: 1px dotted #888888 !important; 
                 line-height: 1.35 !important;
             }
             .person-data:last-child { 
@@ -1199,7 +1437,7 @@
 
             /* Ensures 'দাগ নং' wraps gracefully in print mode */
             .dag-cell {
-                max-width: 85px !important; 
+                max-width: 80px !important; 
                 word-break: break-word !important;
                 overflow-wrap: break-word !important;
                 white-space: normal !important;
@@ -1208,7 +1446,7 @@
             
             #default-title { display: none !important; }
             
-            /* Prevent deed records from awkward split across pages */
+            /* Prevent awkward table row or content splitting across pages */
             tbody.record-group { 
                 page-break-inside: avoid !important; 
                 break-inside: avoid !important; 
@@ -1217,7 +1455,6 @@
                 page-break-inside: avoid !important; 
                 break-inside: avoid !important; 
             }
-            
             thead { display: table-header-group !important; }
         }
     </style>
@@ -1442,62 +1679,102 @@
             </button>
         </div>
 
-        <!-- প্রিন্ট ও মুছুন বাটন দুটি (মাঝখানের বাটনগুলোর নিচে) -->
-        <div class="bottom-bar no-print" style="padding: 10px 0 0 0; border-top: none; background: transparent; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button class="action-btn btn-pdf" style="margin:0; padding: 11px 14px; border-radius: 8px; font-size: 14px; font-weight: 500;" onclick="window.print()">
-                <span class="material-icons">print</span> প্রিন্ট
-            </button>
-            <button class="action-btn btn-clear" style="margin:0; padding: 11px 14px; border-radius: 8px; font-size: 14px; font-weight: 500;" onclick="clearAllRecords()">
-                <span class="material-icons">delete_sweep</span> মুছুন
-            </button>
-        </div>
     </div>
 
-    <!-- আউটপুট / পিডিএফ সেকশন -->
-    <div class="output-container" id="pdf-section">
-        <!-- Always display layout because defaults are set -->
-        <div id="print-header-layout" class="print-header">
-            <div class="header-col-left">
-                <span><strong>জেলা:</strong> <span id="out_zila"></span></span>
-                <span><strong>উপজেলা:</strong> <span id="out_upazila"></span></span>
-                <span><strong>মৌজা:</strong> <span id="out_mouza"></span></span>
+    <!-- প্রিন্ট ও আউটপুট সেকশন (Google Chrome-like Print Hub & A4 Document Sheet) -->
+    <div class="doc-desk" id="doc-desk-container">
+        <!-- 1. Custom Print Settings Toolbar (Before Print) -->
+        <div class="print-settings-toolbar no-print">
+            <div class="print-toolbar-title">
+                <span class="material-icons" style="font-size:22px; color:#1a73e8;">print</span>
+                <span>প্রিন্ট প্রিভিউ সেটিংস</span>
+                <span id="sheet-record-badge" class="sheet-record-badge">০টি দলিল</span>
             </div>
-            <div class="header-col-center">
-                <h3 id="out_main_title">দলিলে জমির হিসাব</h3>
+            
+            <div class="print-toolbar-controls">
+                <!-- Page Orientation: Portrait vs Landscape -->
+                <div class="orient-pill-group" title="পৃষ্ঠা ঘোরান (Page Orientation)">
+                    <button type="button" class="orient-pill-btn active" id="btn-orient-portrait" onclick="setPrintOrientation('portrait')">
+                        <span class="material-icons" style="font-size:16px;">crop_portrait</span>
+                        <span>পোর্ট্রেট (খাড়া)</span>
+                    </button>
+                    <button type="button" class="orient-pill-btn" id="btn-orient-landscape" onclick="setPrintOrientation('landscape')">
+                        <span class="material-icons" style="font-size:16px;">crop_landscape</span>
+                        <span>ল্যান্ডস্কেপ (শোয়ানো)</span>
+                    </button>
+                </div>
+
+                <!-- Margin Control -->
+                <div class="print-opt-select" title="প্রিন্ট মার্জিন নির্বাচন করুন">
+                    <span class="material-icons" style="font-size:16px; color:#5f6368;">straighten</span>
+                    <label style="font-size:11.5px; color:#5f6368; margin-right:2px;">মার্জিন:</label>
+                    <select id="select-print-margin" onchange="setPrintMargin(this.value)">
+                        <option value="standard" selected>স্ট্যান্ডার্ড (১০ মিমি)</option>
+                        <option value="minimum">ন্যূনতম (৬ মিমি)</option>
+                        <option value="wide">প্রশস্ত (১৫ মিমি)</option>
+                    </select>
+                </div>
+
+                <!-- Outer Page Border Toggle -->
+                <button type="button" class="border-toggle-btn active" id="btn-toggle-outer-border" onclick="toggleOuterPageBorder()" title="কাগজের চারপাশের বর্ডার অন বা অফ করুন">
+                    <span class="material-icons" style="font-size:16px;" id="icon-outer-border">check_box</span>
+                    <span>কাগজের বর্ডার</span>
+                </button>
+
+                <!-- Direct Print Button -->
+                <button type="button" class="btn-print-main" onclick="triggerPrintDocument()" title="গুগল ক্রোম বা অ্যান্ড্রয়েড সিস্টেম প্রিন্টারে প্রিন্ট বা PDF হিসেবে সংরক্ষণ করুন">
+                    <span class="material-icons" style="font-size:19px;">print</span>
+                    <span>প্রিন্ট করুন</span>
+                </button>
+
+                <!-- Clear Records Button -->
+                <button type="button" class="btn-clear-main" onclick="clearAllRecords()" title="সম্পূর্ণ তালিকা মুছুন">
+                    <span class="material-icons" style="font-size:18px;">delete_sweep</span>
+                    <span>মুছুন</span>
+                </button>
             </div>
-            <div class="header-col-right">
-                <span><strong>প্রস্তুতকারক:</strong></span>
-                <span id="out_creator"></span>
-                <span style="margin-top:4px;"><strong>তারিখ:</strong></span>
-                <span id="out_g_date"></span>
-            </div>
-        </div>
-        
-        <h3 id="default-title">দলিলে জমির হিসাব</h3>
-        
-        <div class="table-scroll-hint no-print">
-            <span class="material-icons" style="font-size:15px;">swap_horiz</span>
-            <span>সম্পূর্ণ তালিকা দেখতে ডানে-বামে স্ক্রোল করুন</span>
         </div>
 
-        <div class="table-responsive">
-            <table id="main-table">
-                <thead>
-                    <tr>
-                        <th>নং</th>
-                        <th>দলিল নং</th>
-                        <th>তারিখ</th>
-                        <th>গ্রহীতা(গণ)</th>
-                        <th>দাতা(গণ)</th>
-                        <th>মোট জমি</th>
-                        <th>খতিয়ান</th>
-                        <th>খতিয়ানের জমি</th>
-                        <th>দাগ নং</th>
-                        <th class="no-print">অ্যাকশন</th>
-                    </tr>
-                </thead>
-                <!-- Table Body -->
-            </table>
+        <!-- 2. The Authentic A4 Paper Sheet (প্রকৃত কাগজের পাতা) -->
+        <div class="a4-sheet orient-portrait margin-standard has-outer-border" id="pdf-section">
+            <!-- Authentic Legal Header -->
+            <div id="print-header-layout" class="print-header">
+                <div class="header-col-left">
+                    <span><strong>জেলা:</strong> <span id="out_zila">বাগেরহাট</span></span>
+                    <span><strong>উপজেলা:</strong> <span id="out_upazila">মোড়েলগঞ্জ</span></span>
+                    <span><strong>মৌজা:</strong> <span id="out_mouza">৯৩ পাঠামারা</span></span>
+                </div>
+                <div class="header-col-center">
+                    <h3 id="out_main_title">দলিলে জমির হিসাব</h3>
+                </div>
+                <div class="header-col-right">
+                    <span><strong>প্রস্তুতকারক:</strong></span>
+                    <span id="out_creator">মোঃ আব্দুল্লাহ আল রাহাত</span>
+                    <span style="margin-top:2px;"><strong>তারিখ:</strong> <span id="out_g_date"></span></span>
+                </div>
+            </div>
+            
+            <h3 id="default-title">দলিলে জমির হিসাব</h3>
+
+            <div class="table-responsive">
+                <table id="main-table">
+                    <thead>
+                        <tr>
+                            <th>নং</th>
+                            <th>দলিল নং</th>
+                            <th>তারিখ</th>
+                            <th>গ্রহীতা(গণ)</th>
+                            <th>দাতা(গণ)</th>
+                            <th>মোট জমি</th>
+                            <th>খতিয়ান</th>
+                            <th>খতিয়ানের জমি</th>
+                            <th>দাগ নং</th>
+                            <th class="no-print">অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <!-- Table Body -->
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -1848,9 +2125,7 @@
         document.getElementById('toggle-mother-name').checked = savedMotherPref;
         toggleMotherSettings(savedMotherPref);
         
-        let savedOrient = localStorage.getItem('printOrientation') || 'portrait';
-        document.getElementById('print-orientation').value = savedOrient;
-        applyOrientation(savedOrient);
+        initPrintSettingsUI();
 
         const savedData = localStorage.getItem(STORAGE_KEY); 
         if (savedData) {
@@ -1900,20 +2175,134 @@
         if(checked) document.body.classList.add('show-mother-name'); else document.body.classList.remove('show-mother-name');
     }
     
-    // Dynamic Layout Change
-    function changeOrientation(orient) {
+    // --- Chrome-like Print Settings & Orientation Controller ---
+    let currentOrientation = localStorage.getItem('printOrientation') || 'portrait';
+    let currentMargin = localStorage.getItem('printMargin') || 'standard';
+    let showOuterBorder = localStorage.getItem('printOuterBorder') !== 'false'; // default true
+
+    function initPrintSettingsUI() {
+        applyOrientation(currentOrientation);
+        applyMargin(currentMargin);
+        applyOuterBorder(showOuterBorder);
+    }
+
+    function setPrintOrientation(orient) {
+        currentOrientation = orient;
         localStorage.setItem('printOrientation', orient);
         applyOrientation(orient);
         showToast(orient === 'portrait' ? "পোর্ট্রেট লেআউট সেট হয়েছে!" : "ল্যান্ডস্কেপ লেআউট সেট হয়েছে!");
+    }
+
+    function changeOrientation(orient) {
+        setPrintOrientation(orient);
         toggleSettings();
     }
 
     function applyOrientation(orient) {
-        let styleTag = document.getElementById('dynamic-print-css');
-        if (orient === 'landscape') {
-            styleTag.innerHTML = '@page { margin: 10mm 12mm 10mm 12mm; size: landscape; }';
+        currentOrientation = orient;
+        const sheet = document.getElementById('pdf-section');
+        const btnPortrait = document.getElementById('btn-orient-portrait');
+        const btnLandscape = document.getElementById('btn-orient-landscape');
+        const selectSettings = document.getElementById('print-orientation');
+
+        if (sheet) {
+            sheet.classList.remove('orient-portrait', 'orient-landscape');
+            sheet.classList.add(orient === 'landscape' ? 'orient-landscape' : 'orient-portrait');
+        }
+
+        if (btnPortrait && btnLandscape) {
+            if (orient === 'landscape') {
+                btnLandscape.classList.add('active');
+                btnPortrait.classList.remove('active');
+            } else {
+                btnPortrait.classList.add('active');
+                btnLandscape.classList.remove('active');
+            }
+        }
+
+        if (selectSettings) selectSettings.value = orient;
+
+        updateDynamicPrintCSS();
+    }
+
+    function setPrintMargin(marginKey) {
+        currentMargin = marginKey;
+        localStorage.setItem('printMargin', marginKey);
+        applyMargin(marginKey);
+        showToast("প্রিন্ট মার্জিন আপডেট হয়েছে!");
+    }
+
+    function applyMargin(marginKey) {
+        currentMargin = marginKey;
+        const sheet = document.getElementById('pdf-section');
+        const select = document.getElementById('select-print-margin');
+
+        if (sheet) {
+            sheet.classList.remove('margin-standard', 'margin-minimum', 'margin-wide');
+            sheet.classList.add(`margin-${marginKey}`);
+        }
+        if (select) select.value = marginKey;
+
+        updateDynamicPrintCSS();
+    }
+
+    function toggleOuterPageBorder() {
+        showOuterBorder = !showOuterBorder;
+        localStorage.setItem('printOuterBorder', showOuterBorder);
+        applyOuterBorder(showOuterBorder);
+        showToast(showOuterBorder ? "কাগজের বর্ডার অন করা হয়েছে!" : "কাগজের বর্ডার অফ করা হয়েছে!");
+    }
+
+    function applyOuterBorder(enabled) {
+        showOuterBorder = enabled;
+        const sheet = document.getElementById('pdf-section');
+        const btn = document.getElementById('btn-toggle-outer-border');
+        const icon = document.getElementById('icon-outer-border');
+
+        if (sheet) {
+            if (enabled) {
+                sheet.classList.add('has-outer-border');
+            } else {
+                sheet.classList.remove('has-outer-border');
+            }
+        }
+        if (btn) {
+            if (enabled) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+        if (icon) {
+            icon.innerText = enabled ? 'check_box' : 'check_box_outline_blank';
+        }
+    }
+
+    function updateDynamicPrintCSS() {
+        const styleTag = document.getElementById('dynamic-print-css');
+        if (!styleTag) return;
+
+        let marginCSS = '10mm 8mm 10mm 8mm';
+        if (currentOrientation === 'landscape') {
+            if (currentMargin === 'minimum') marginCSS = '6mm 8mm 6mm 8mm';
+            else if (currentMargin === 'wide') marginCSS = '12mm 15mm 12mm 15mm';
+            else marginCSS = '8mm 10mm 8mm 10mm';
         } else {
-            styleTag.innerHTML = '@page { margin: 12mm 10mm 12mm 10mm; size: portrait; }';
+            if (currentMargin === 'minimum') marginCSS = '6mm 6mm 6mm 6mm';
+            else if (currentMargin === 'wide') marginCSS = '15mm 12mm 15mm 12mm';
+            else marginCSS = '10mm 8mm 10mm 8mm';
+        }
+
+        styleTag.innerHTML = `@page { size: A4 ${currentOrientation}; margin: ${marginCSS}; }`;
+    }
+
+    function triggerPrintDocument() {
+        updateDynamicPrintCSS();
+        
+        if (window.AndroidNative && typeof window.AndroidNative.printPage === 'function') {
+            window.AndroidNative.printPage(currentOrientation);
+        } else {
+            window.print();
         }
     }
     
@@ -2347,6 +2736,10 @@
             table.appendChild(tbody);
         });
         updateMiddleSectionUI();
+        const sheetBadge = document.getElementById('sheet-record-badge');
+        if (sheetBadge) {
+            sheetBadge.innerText = dalilRecords.length > 0 ? `${toBanglaNum(dalilRecords.length)}টি দলিল` : '০টি দলিল';
+        }
     }
 
     function deleteRecord(index) {
