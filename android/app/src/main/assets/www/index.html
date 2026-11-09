@@ -542,6 +542,10 @@
             padding: 0 12px;
             box-sizing: border-box;
             overflow-x: hidden;
+            transition: max-width 0.25s ease;
+        }
+        .container.container-landscape {
+            max-width: 1180px;
         }
         
         /* Card Style for Form Sections */
@@ -1162,7 +1166,8 @@
         /* Table Styling */
         .table-responsive {
             width: 100%;
-            overflow-x: visible;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             box-sizing: border-box;
         }
         table#main-table { 
@@ -1173,13 +1178,18 @@
             background: #ffffff; 
             border: 1px solid #000000;
             font-family: 'Noto Serif Bengali', serif;
+            table-layout: fixed;
+            box-sizing: border-box;
         }
         table#main-table th, table#main-table td { 
             border: 1px solid #000000; 
-            padding: 6px 6px; 
+            padding: 6px 5px; 
             vertical-align: middle; 
-            line-height: 1.45; 
-            color: #000000; 
+            line-height: 1.4; 
+            color: #000000;
+            box-sizing: border-box;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         table#main-table th { 
             background-color: #ededed; 
@@ -1191,8 +1201,19 @@
         }
         .align-center { text-align: center !important; }
         
+        /* On-screen 10-column distribution */
+        #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 4.5%; text-align: center; }
+        #main-table th:nth-child(2), #main-table td:nth-child(2) { width: 7.5%; text-align: center; }
+        #main-table th:nth-child(3), #main-table td:nth-child(3) { width: 9%; text-align: center; }
+        #main-table th:nth-child(4), #main-table td:nth-child(4) { width: 20%; }
+        #main-table th:nth-child(5), #main-table td:nth-child(5) { width: 20%; }
+        #main-table th:nth-child(6), #main-table td:nth-child(6) { width: 7.5%; text-align: center; }
+        #main-table th:nth-child(7), #main-table td:nth-child(7) { width: 8.5%; text-align: center; }
+        #main-table th:nth-child(8), #main-table td:nth-child(8) { width: 7.5%; text-align: center; }
+        #main-table th:nth-child(9), #main-table td:nth-child(9) { width: 8.5%; text-align: center; }
+        #main-table th:nth-child(10), #main-table td:nth-child(10) { width: 7%; text-align: center; }
+
         .dag-cell {
-            max-width: 130px; 
             word-wrap: break-word;
             overflow-wrap: break-word;
             text-align: center;
@@ -1375,7 +1396,8 @@
             .table-responsive {
                 overflow: visible !important;
                 width: 100% !important;
-                min-width: unset !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 box-sizing: border-box !important;
@@ -1383,14 +1405,15 @@
             }
             
             table#main-table { 
-                font-size: 10.5px !important; 
+                font-size: 11px !important; 
                 width: 100% !important; 
-                min-width: unset !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
                 border-collapse: collapse !important; 
-                border: 1px solid #000000 !important; 
+                border: 1.2px solid #000000 !important; 
                 box-sizing: border-box !important;
                 margin: 0 !important;
-                table-layout: auto !important;
+                table-layout: fixed !important;
                 font-family: 'Noto Serif Bengali', serif !important;
             }
             table#main-table th, table#main-table td { 
@@ -1399,12 +1422,15 @@
                 color: #000000 !important;
                 vertical-align: middle !important;
                 line-height: 1.35 !important;
+                box-sizing: border-box !important;
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
             }
             table#main-table th { 
                 background-color: #ededed !important; 
                 font-weight: 700 !important;
                 text-align: center !important;
-                font-size: 10.5px !important;
+                font-size: 11px !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
             }
@@ -1412,16 +1438,24 @@
                 text-align: center !important;
             }
 
-            /* Accurate Column Widths fitting standard A4 without clipping */
-            #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 24px !important; text-align: center !important; }
-            #main-table th:nth-child(2) { width: 44px !important; }
-            #main-table th:nth-child(3) { width: 62px !important; }
-            #main-table th:nth-child(4) { min-width: 125px !important; }
-            #main-table th:nth-child(5) { min-width: 125px !important; }
-            #main-table th:nth-child(6) { width: 52px !important; }
-            #main-table th:nth-child(7) { width: 68px !important; }
-            #main-table th:nth-child(8) { width: 64px !important; }
-            #main-table th:nth-child(9) { width: 70px !important; }
+            /* Accurate 100% Full-Width Column Proportions in Print (Sums to exactly 100%) */
+            #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 4.5% !important; text-align: center !important; }
+            #main-table th:nth-child(2), #main-table td:nth-child(2) { width: 7.5% !important; text-align: center !important; }
+            #main-table th:nth-child(3), #main-table td:nth-child(3) { width: 9.5% !important; text-align: center !important; }
+            #main-table th:nth-child(4), #main-table td:nth-child(4) { width: 22% !important; }
+            #main-table th:nth-child(5), #main-table td:nth-child(5) { width: 22% !important; }
+            #main-table th:nth-child(6), #main-table td:nth-child(6) { width: 8% !important; text-align: center !important; }
+            #main-table th:nth-child(7), #main-table td:nth-child(7) { width: 8.5% !important; text-align: center !important; }
+            #main-table th:nth-child(8), #main-table td:nth-child(8) { width: 8% !important; text-align: center !important; }
+            #main-table th:nth-child(9), #main-table td:nth-child(9) { width: 10% !important; text-align: center !important; }
+
+            /* Enhanced formatting when printed in Landscape mode */
+            .orient-landscape table#main-table {
+                font-size: 11.5px !important;
+            }
+            .orient-landscape table#main-table th, .orient-landscape table#main-table td {
+                padding: 6px 5px !important;
+            }
 
             .person-data { 
                 padding-bottom: 4px !important; 
@@ -1437,7 +1471,6 @@
 
             /* Ensures 'দাগ নং' wraps gracefully in print mode */
             .dag-cell {
-                max-width: 80px !important; 
                 word-break: break-word !important;
                 overflow-wrap: break-word !important;
                 white-space: normal !important;
@@ -1716,8 +1749,8 @@
                 </div>
 
                 <!-- Outer Page Border Toggle -->
-                <button type="button" class="border-toggle-btn active" id="btn-toggle-outer-border" onclick="toggleOuterPageBorder()" title="কাগজের চারপাশের বর্ডার অন বা অফ করুন">
-                    <span class="material-icons" style="font-size:16px;" id="icon-outer-border">check_box</span>
+                <button type="button" class="border-toggle-btn" id="btn-toggle-outer-border" onclick="toggleOuterPageBorder()" title="কাগজের চারপাশের বর্ডার অন বা অফ করুন">
+                    <span class="material-icons" style="font-size:16px;" id="icon-outer-border">check_box_outline_blank</span>
                     <span>কাগজের বর্ডার</span>
                 </button>
 
@@ -1736,7 +1769,7 @@
         </div>
 
         <!-- 2. The Authentic A4 Paper Sheet (প্রকৃত কাগজের পাতা) -->
-        <div class="a4-sheet orient-portrait margin-standard has-outer-border" id="pdf-section">
+        <div class="a4-sheet orient-portrait margin-standard" id="pdf-section">
             <!-- Authentic Legal Header -->
             <div id="print-header-layout" class="print-header">
                 <div class="header-col-left">
@@ -2178,7 +2211,7 @@
     // --- Chrome-like Print Settings & Orientation Controller ---
     let currentOrientation = localStorage.getItem('printOrientation') || 'portrait';
     let currentMargin = localStorage.getItem('printMargin') || 'standard';
-    let showOuterBorder = localStorage.getItem('printOuterBorder') !== 'false'; // default true
+    let showOuterBorder = localStorage.getItem('printOuterBorder') === 'true'; // default false for standard Chrome print
 
     function initPrintSettingsUI() {
         applyOrientation(currentOrientation);
@@ -2201,6 +2234,7 @@
     function applyOrientation(orient) {
         currentOrientation = orient;
         const sheet = document.getElementById('pdf-section');
+        const container = document.querySelector('.container');
         const btnPortrait = document.getElementById('btn-orient-portrait');
         const btnLandscape = document.getElementById('btn-orient-landscape');
         const selectSettings = document.getElementById('print-orientation');
@@ -2208,6 +2242,14 @@
         if (sheet) {
             sheet.classList.remove('orient-portrait', 'orient-landscape');
             sheet.classList.add(orient === 'landscape' ? 'orient-landscape' : 'orient-portrait');
+        }
+
+        if (container) {
+            if (orient === 'landscape') {
+                container.classList.add('container-landscape');
+            } else {
+                container.classList.remove('container-landscape');
+            }
         }
 
         if (btnPortrait && btnLandscape) {

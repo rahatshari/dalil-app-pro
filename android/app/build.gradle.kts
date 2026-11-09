@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-val vCode = project.findProperty("versionCode")?.toString()?.toIntOrNull() ?: 1
-val vName = project.findProperty("versionName")?.toString() ?: "1.0.$vCode"
+val vCode = project.findProperty("versionCode")?.toString()?.toIntOrNull() ?: 2
+val vName = project.findProperty("versionName")?.toString() ?: "1.0.2"
 
 android {
     namespace = "com.rahatsharif.dalilapp"

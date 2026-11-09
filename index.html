@@ -492,10 +492,82 @@
             padding: 5px 8px;
             text-align: left;
         }
-        .preview-table th {
-            background: #f1f3f4;
+        /* What's New & Release Highlights */
+        .changelog-card {
+            background: #ffffff;
+            border: 1px solid #e8eaed;
+            border-radius: 12px;
+            padding: 13px 15px;
+            margin-bottom: 11px;
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+            transition: all 0.18s ease;
+        }
+        .changelog-card:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 2px 8px rgba(26,115,232,0.08);
+            transform: translateY(-1px);
+        }
+        .changelog-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #e8f0fe;
+            color: #1a73e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .changelog-card-icon.accent-amber { background: #fef7e0; color: #b06000; }
+        .changelog-card-icon.accent-green { background: #e6f4ea; color: #137333; }
+        .changelog-card-icon.accent-purple { background: #f3e8fd; color: #9334e6; }
+        .changelog-card-icon.accent-teal { background: #e6fffa; color: #0d9488; }
+        .changelog-card-content { flex: 1; min-width: 0; }
+        .changelog-card-title {
+            font-size: 13.5px;
+            font-weight: 700;
             color: #202124;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+        .changelog-card-desc {
+            font-size: 12px;
+            color: #5f6368;
+            line-height: 1.5;
+        }
+        .version-switcher {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+            background: #f1f3f4;
+            padding: 4px;
+            border-radius: 10px;
+        }
+        .version-tab-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 12px;
+            font-size: 12.5px;
             font-weight: 600;
+            color: #5f6368;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .version-tab-btn.active {
+            background: #ffffff;
+            color: #1a73e8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
         }
         
         .settings-menu {
@@ -542,6 +614,10 @@
             padding: 0 12px;
             box-sizing: border-box;
             overflow-x: hidden;
+            transition: max-width 0.25s ease;
+        }
+        .container.container-landscape {
+            max-width: 1180px;
         }
         
         /* Card Style for Form Sections */
@@ -1162,7 +1238,8 @@
         /* Table Styling */
         .table-responsive {
             width: 100%;
-            overflow-x: visible;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             box-sizing: border-box;
         }
         table#main-table { 
@@ -1173,13 +1250,18 @@
             background: #ffffff; 
             border: 1px solid #000000;
             font-family: 'Noto Serif Bengali', serif;
+            table-layout: fixed;
+            box-sizing: border-box;
         }
         table#main-table th, table#main-table td { 
             border: 1px solid #000000; 
-            padding: 6px 6px; 
+            padding: 6px 5px; 
             vertical-align: middle; 
-            line-height: 1.45; 
-            color: #000000; 
+            line-height: 1.4; 
+            color: #000000;
+            box-sizing: border-box;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         table#main-table th { 
             background-color: #ededed; 
@@ -1191,8 +1273,19 @@
         }
         .align-center { text-align: center !important; }
         
+        /* On-screen 10-column distribution */
+        #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 4.5%; text-align: center; }
+        #main-table th:nth-child(2), #main-table td:nth-child(2) { width: 7.5%; text-align: center; }
+        #main-table th:nth-child(3), #main-table td:nth-child(3) { width: 9%; text-align: center; }
+        #main-table th:nth-child(4), #main-table td:nth-child(4) { width: 20%; }
+        #main-table th:nth-child(5), #main-table td:nth-child(5) { width: 20%; }
+        #main-table th:nth-child(6), #main-table td:nth-child(6) { width: 7.5%; text-align: center; }
+        #main-table th:nth-child(7), #main-table td:nth-child(7) { width: 8.5%; text-align: center; }
+        #main-table th:nth-child(8), #main-table td:nth-child(8) { width: 7.5%; text-align: center; }
+        #main-table th:nth-child(9), #main-table td:nth-child(9) { width: 8.5%; text-align: center; }
+        #main-table th:nth-child(10), #main-table td:nth-child(10) { width: 7%; text-align: center; }
+
         .dag-cell {
-            max-width: 130px; 
             word-wrap: break-word;
             overflow-wrap: break-word;
             text-align: center;
@@ -1375,7 +1468,8 @@
             .table-responsive {
                 overflow: visible !important;
                 width: 100% !important;
-                min-width: unset !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 box-sizing: border-box !important;
@@ -1383,14 +1477,15 @@
             }
             
             table#main-table { 
-                font-size: 10.5px !important; 
+                font-size: 11px !important; 
                 width: 100% !important; 
-                min-width: unset !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
                 border-collapse: collapse !important; 
-                border: 1px solid #000000 !important; 
+                border: 1.2px solid #000000 !important; 
                 box-sizing: border-box !important;
                 margin: 0 !important;
-                table-layout: auto !important;
+                table-layout: fixed !important;
                 font-family: 'Noto Serif Bengali', serif !important;
             }
             table#main-table th, table#main-table td { 
@@ -1399,12 +1494,15 @@
                 color: #000000 !important;
                 vertical-align: middle !important;
                 line-height: 1.35 !important;
+                box-sizing: border-box !important;
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
             }
             table#main-table th { 
                 background-color: #ededed !important; 
                 font-weight: 700 !important;
                 text-align: center !important;
-                font-size: 10.5px !important;
+                font-size: 11px !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
             }
@@ -1412,16 +1510,24 @@
                 text-align: center !important;
             }
 
-            /* Accurate Column Widths fitting standard A4 without clipping */
-            #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 24px !important; text-align: center !important; }
-            #main-table th:nth-child(2) { width: 44px !important; }
-            #main-table th:nth-child(3) { width: 62px !important; }
-            #main-table th:nth-child(4) { min-width: 125px !important; }
-            #main-table th:nth-child(5) { min-width: 125px !important; }
-            #main-table th:nth-child(6) { width: 52px !important; }
-            #main-table th:nth-child(7) { width: 68px !important; }
-            #main-table th:nth-child(8) { width: 64px !important; }
-            #main-table th:nth-child(9) { width: 70px !important; }
+            /* Accurate 100% Full-Width Column Proportions in Print (Sums to exactly 100%) */
+            #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 4.5% !important; text-align: center !important; }
+            #main-table th:nth-child(2), #main-table td:nth-child(2) { width: 7.5% !important; text-align: center !important; }
+            #main-table th:nth-child(3), #main-table td:nth-child(3) { width: 9.5% !important; text-align: center !important; }
+            #main-table th:nth-child(4), #main-table td:nth-child(4) { width: 22% !important; }
+            #main-table th:nth-child(5), #main-table td:nth-child(5) { width: 22% !important; }
+            #main-table th:nth-child(6), #main-table td:nth-child(6) { width: 8% !important; text-align: center !important; }
+            #main-table th:nth-child(7), #main-table td:nth-child(7) { width: 8.5% !important; text-align: center !important; }
+            #main-table th:nth-child(8), #main-table td:nth-child(8) { width: 8% !important; text-align: center !important; }
+            #main-table th:nth-child(9), #main-table td:nth-child(9) { width: 10% !important; text-align: center !important; }
+
+            /* Enhanced formatting when printed in Landscape mode */
+            .orient-landscape table#main-table {
+                font-size: 11.5px !important;
+            }
+            .orient-landscape table#main-table th, .orient-landscape table#main-table td {
+                padding: 6px 5px !important;
+            }
 
             .person-data { 
                 padding-bottom: 4px !important; 
@@ -1437,7 +1543,6 @@
 
             /* Ensures 'দাগ নং' wraps gracefully in print mode */
             .dag-cell {
-                max-width: 80px !important; 
                 word-break: break-word !important;
                 overflow-wrap: break-word !important;
                 white-space: normal !important;
@@ -1498,6 +1603,15 @@
                     </div>
                     <span id="menu-saved-count-badge" style="background:#1a73e8; color:#ffffff; font-size:11px; padding:2px 8px; border-radius:12px; font-weight:bold;">০ টি</span>
                 </li>
+                <li onclick="toggleSettings(); openWhatsNewModal('1.0.2');" style="border-bottom: 1px solid #f1f3f4; padding: 11px 16px;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span class="material-icons" style="color:#e37400;">campaign</span>
+                            <span style="font-weight: 500; color:#202124;">নতুন আপডেটের পরিবর্তনসমূহ</span>
+                        </div>
+                        <span id="whats-new-menu-badge" style="font-size:10.5px; background:#fef7e0; color:#b06000; border:1px solid #f9ab00; padding:1px 7px; border-radius:10px; font-weight:700;">নতুন v১.০.২</span>
+                    </div>
+                </li>
                 <li style="border-bottom: 1px solid #f1f3f4; padding: 10px 16px;">
                     <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; width:100%; margin:0;">
                         <div style="display:flex; align-items:center; gap:12px;">
@@ -1516,7 +1630,7 @@
                             <span class="material-icons" style="color:#1a73e8;">system_update</span>
                             <span style="color:#1a73e8; font-weight: 500;">এখনই আপডেট চেক করুন</span>
                         </div>
-                        <span id="current-app-version-badge" style="font-size:11px; background:#e8f0fe; color:#1a73e8; padding:2px 8px; border-radius:10px; font-weight:600;">v১.০.১</span>
+                        <span id="current-app-version-badge" style="font-size:11px; background:#e8f0fe; color:#1a73e8; padding:2px 8px; border-radius:10px; font-weight:600;">v১.০.২</span>
                     </div>
                 </li>
                 <li>
@@ -1716,8 +1830,8 @@
                 </div>
 
                 <!-- Outer Page Border Toggle -->
-                <button type="button" class="border-toggle-btn active" id="btn-toggle-outer-border" onclick="toggleOuterPageBorder()" title="কাগজের চারপাশের বর্ডার অন বা অফ করুন">
-                    <span class="material-icons" style="font-size:16px;" id="icon-outer-border">check_box</span>
+                <button type="button" class="border-toggle-btn" id="btn-toggle-outer-border" onclick="toggleOuterPageBorder()" title="কাগজের চারপাশের বর্ডার অন বা অফ করুন">
+                    <span class="material-icons" style="font-size:16px;" id="icon-outer-border">check_box_outline_blank</span>
                     <span>কাগজের বর্ডার</span>
                 </button>
 
@@ -1736,7 +1850,7 @@
         </div>
 
         <!-- 2. The Authentic A4 Paper Sheet (প্রকৃত কাগজের পাতা) -->
-        <div class="a4-sheet orient-portrait margin-standard has-outer-border" id="pdf-section">
+        <div class="a4-sheet orient-portrait margin-standard" id="pdf-section">
             <!-- Authentic Legal Header -->
             <div id="print-header-layout" class="print-header">
                 <div class="header-col-left">
@@ -2108,6 +2222,56 @@
     </div>
 </div>
 
+<!-- What's New Dialog Modal -->
+<div id="whats-new-modal" class="custom-modal-overlay no-print" style="display: none;">
+    <div class="custom-modal-card" style="max-width: 540px;">
+        <div class="custom-modal-header" style="background: linear-gradient(135deg, #1a73e8 0%, #1557b0 100%); color: #ffffff; padding: 16px 20px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;">
+                    <span class="material-icons" style="color: #ffffff; font-size: 22px;">campaign</span>
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+                        <span>নতুন আপডেটের পরিবর্তনসমূহ</span>
+                        <span style="font-size: 11px; background: rgba(255,255,255,0.25); color: #ffffff; padding: 2px 8px; border-radius: 12px; font-weight: 600;">v১.০.২</span>
+                    </h3>
+                    <div style="font-size: 12px; opacity: 0.9; margin-top: 2px;">দলিল ফিগার অ্যাপে যুক্ত হওয়া সকল নতুন সুবিধা ও পরিবর্তন</div>
+                </div>
+            </div>
+            <button class="custom-modal-close-btn" onclick="closeWhatsNewModal()" title="বন্ধ করুন" style="color: #ffffff; background: rgba(255,255,255,0.15);">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+
+        <div class="custom-modal-body" style="padding: 16px 20px; font-size: 14px; max-height: 65vh; overflow-y: auto;">
+            <!-- Version Switcher Tabs -->
+            <div class="version-switcher">
+                <button type="button" class="version-tab-btn active" id="tab-v102" onclick="switchChangelogTab('1.0.2')">
+                    <span class="material-icons" style="font-size: 16px;">stars</span>
+                    <span>ভার্সন ১.০.২ (নতুন)</span>
+                </button>
+                <button type="button" class="version-tab-btn" id="tab-v101" onclick="switchChangelogTab('1.0.1')">
+                    <span class="material-icons" style="font-size: 16px;">history</span>
+                    <span>পূর্ববর্তী সংস্করণ (১.০.১)</span>
+                </button>
+            </div>
+
+            <!-- Dynamic Changelog Content Container -->
+            <div id="changelog-cards-container">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+
+        <div class="custom-modal-footer" style="padding: 12px 20px; border-top: 1px solid #dadce0; display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; border-radius: 0 0 16px 16px;">
+            <div style="font-size: 12px; color: #5f6368; display: flex; align-items: center; gap: 5px;">
+                <span class="material-icons" style="font-size: 16px; color: #1e8e3e;">verified</span>
+                <span>সর্বশেষ সংস্করণ ইনস্টল করা আছে</span>
+            </div>
+            <button type="button" class="action-btn" style="background: #1a73e8; color: #ffffff; border-radius: 8px; padding: 8px 20px; font-size: 13px; font-weight: 600; width: auto;" onclick="closeWhatsNewModal()">বুঝেছি</button>
+        </div>
+    </div>
+</div>
+
 <script>
     let dalilRecords = [];
     let editIndex = -1; 
@@ -2178,7 +2342,7 @@
     // --- Chrome-like Print Settings & Orientation Controller ---
     let currentOrientation = localStorage.getItem('printOrientation') || 'portrait';
     let currentMargin = localStorage.getItem('printMargin') || 'standard';
-    let showOuterBorder = localStorage.getItem('printOuterBorder') !== 'false'; // default true
+    let showOuterBorder = localStorage.getItem('printOuterBorder') === 'true'; // default false for standard Chrome print
 
     function initPrintSettingsUI() {
         applyOrientation(currentOrientation);
@@ -2201,6 +2365,7 @@
     function applyOrientation(orient) {
         currentOrientation = orient;
         const sheet = document.getElementById('pdf-section');
+        const container = document.querySelector('.container');
         const btnPortrait = document.getElementById('btn-orient-portrait');
         const btnLandscape = document.getElementById('btn-orient-landscape');
         const selectSettings = document.getElementById('print-orientation');
@@ -2208,6 +2373,14 @@
         if (sheet) {
             sheet.classList.remove('orient-portrait', 'orient-landscape');
             sheet.classList.add(orient === 'landscape' ? 'orient-landscape' : 'orient-portrait');
+        }
+
+        if (container) {
+            if (orient === 'landscape') {
+                container.classList.add('container-landscape');
+            } else {
+                container.classList.remove('container-landscape');
+            }
         }
 
         if (btnPortrait && btnLandscape) {
@@ -2768,8 +2941,87 @@
     }
 
     // --- App Update & Device Integration ---
-    const CURRENT_APP_VERSION = "1.0.1";
+    const CURRENT_APP_VERSION = "1.0.2";
     let latestUpdateData = null;
+
+    const APP_CHANGELOG = {
+        "1.0.2": {
+            version: "১.০.২",
+            date: "নভেম্বর ২০২৬",
+            badge: "সর্বশেষ সংস্করণ",
+            summary: "গুগল ক্রোম স্টাইল নিখুঁত প্রিন্ট, উন্নত ল্যান্ডস্কেপ মোড, মাল্টি-ফাইল ব্যাকআপ রিস্টোর হাব ও অটোমেটিক আপডেট ব্যবস্থা।",
+            items: [
+                {
+                    icon: "print",
+                    color: "",
+                    title: "গুগল ক্রোমের মতো ১০০% পূর্ণাঙ্গ প্রিন্ট ও পিডিএফ",
+                    desc: "পোর্ট্রেট ও ল্যান্ডস্কেপ উভয় মোডেই টেবিল পুরো পৃষ্ঠা জুড়ে (Full Width) নিখুঁতভাবে বসে। কলামের সুষম শতাংশ ডিস্ট্রিবিউশন থাকায় কোনো পাশে বাড়তি ফাঁকা জায়গা থাকে না বা লেখা কেটে যায় না।"
+                },
+                {
+                    icon: "crop_landscape",
+                    color: "accent-purple",
+                    title: "ল্যান্ডস্কেপ পেজ ও স্ক্রিন অটো-অ্যাডজাস্ট",
+                    desc: "ল্যান্ডস্কেপ মোড বেছে নিলে স্ক্রিন প্রিভিউ ও প্রিন্ট পেজ ১১৮০ পিক্সেল পর্যন্ত আরামদায়কভাবে প্রসারিত হয়। ফন্ট ও সেল প্যাডিং স্বাভাবিক স্কেলে বড় হয়ে স্পষ্ট দেখায়।"
+                },
+                {
+                    icon: "tune",
+                    color: "accent-teal",
+                    title: "ভাসমান প্রিন্ট কন্ট্রোল প্যানেল (ওরিয়েন্টেশন ও মার্জিন)",
+                    desc: "প্রিন্ট পেজের উপরে নতুন ভাসমান টুলবার থেকে এক ক্লিকেই খাড়া (Portrait) ও শোয়ানো (Landscape) ওরিয়েন্টেশন পরিবর্তন, ৩ ধরনের মার্জিন এবং কাগজের বর্ডার অন/অফ করার সুবিধা।"
+                },
+                {
+                    icon: "border_clear",
+                    color: "accent-amber",
+                    title: "স্বাভাবিক ক্রোম প্রিন্ট ডিফল্ট (কাগজের বর্ডার অপশন)",
+                    desc: "অপ্রয়োজনীয় কৃত্রিম বাইরের ফ্রেম বন্ধ রেখে সাধারণ গুগল ক্রোম প্রিন্টের স্বাভাবিক সৌন্দর্য ফিরিয়ে আনা হয়েছে। প্রয়োজনে টুলবার থেকে এক ক্লিকেই বর্ডার অন/অফ করা যায়।"
+                },
+                {
+                    icon: "settings_backup_restore",
+                    color: "accent-green",
+                    title: "মাল্টি-ফাইল ব্যাকআপ ও স্মার্ট রিস্টোর হাব",
+                    desc: "এক বা একাধিক ব্যাকআপ ফাইল (.json) একসাথে ইম্পোর্ট, ফাইল প্রতি দলিল সংখ্যা প্রিভিউ, ডুপ্লিকেট দলিল স্কিপিং ফিল্টার এবং Replace, Merge ও প্রজেক্ট সংরক্ষণের ৩টি কৌশল।"
+                },
+                {
+                    icon: "autorenew",
+                    color: "accent-teal",
+                    title: "অটোমেটিক আপডেট চেক ও নোটিফিকেশন",
+                    desc: "অ্যাপ চালু হলে নিজে থেকেই ব্যাকগ্রাউন্ডে GitHub Release থেকে নতুন ভার্সন চেক করার সুবিধা (অন/অফ টগলসহ), নোটিফিকেশন ব্যাজ এবং সরাসরি APK ডাউনলোডের লিঙ্ক।"
+                },
+                {
+                    icon: "cloud_off",
+                    color: "accent-amber",
+                    title: "সম্পূর্ণ অফলাইন সাপোর্ট ও ডেটা নিরাপত্তা",
+                    desc: "ইন্টারনেট ছাড়াও শতভাগ গতিতে নিরবচ্ছিন্ন ব্যবহার। হেডার বারে অফলাইন স্ট্যাটাস এবং প্রতিটি দলিলের ড্রাফট তাৎক্ষণিক সুরক্ষিত থাকা।"
+                }
+            ]
+        },
+        "1.0.1": {
+            version: "১.০.১",
+            date: "নভেম্বর ২০২৬",
+            badge: "পূর্ববর্তী সংস্করণ",
+            summary: "সংরক্ষিত দলিলের পৃথক ক্যাটাগরি কালেকশন, দলিলের ক্রম পরিবর্তন এবং পারফরম্যান্স উন্নয়ন।",
+            items: [
+                {
+                    icon: "folder_special",
+                    color: "",
+                    title: "সংরক্ষিত দলিলের ক্যাটাগরি কালেকশন",
+                    desc: "একাধিক প্রকল্পের দলিল আলাদা আলাদা শিরোনামে সেভ ও পরবর্তীতে এক ক্লিকে লোড করার পূর্ণাঙ্গ ব্যবস্থা।"
+                },
+                {
+                    icon: "swap_vert",
+                    color: "accent-green",
+                    title: "তালিকায় দলিলের ক্রম পরিবর্তন",
+                    desc: "উপরে-নিচে বাটন চেপে যে কোনো দলিলের সিরিয়াল বা অবস্থান দ্রুত পরিবর্তন করার সুবিধা।"
+                },
+                {
+                    icon: "edit_note",
+                    color: "accent-purple",
+                    title: "মাতার নাম ঐচ্ছিক প্রদর্শন",
+                    desc: "সেটিংস থেকে মাতার নাম ফিল্ড চালু বা বন্ধ রাখার অপশন।"
+                }
+            ]
+        }
+    };
 
     function initAppUpdateSystem() {
         // Load saved auto-update preference
@@ -2782,6 +3034,12 @@
         if (verBadge) {
             const ver = (window.AndroidNative && window.AndroidNative.getAppVersion) ? window.AndroidNative.getAppVersion() : CURRENT_APP_VERSION;
             verBadge.innerText = 'v' + toBanglaNum(ver);
+        }
+
+        // Hide "NEW" badge if already seen
+        if (localStorage.getItem('seenWhatsNew_' + CURRENT_APP_VERSION) === 'true') {
+            const menuBadge = document.getElementById('whats-new-menu-badge');
+            if (menuBadge) menuBadge.style.display = 'none';
         }
 
         // Auto-check for updates if enabled
@@ -2818,6 +3076,7 @@
             setTimeout(() => {
                 if (updateIcon) updateIcon.style.animation = "none";
                 if (updateText) updateText.innerText = "আপডেট চেক";
+                if (manual) openWhatsNewModal(CURRENT_APP_VERSION);
             }, 1200);
             return;
         }
@@ -2828,7 +3087,10 @@
             });
 
             if (!res.ok) {
-                if (manual) showToast("আপডেট সার্ভারে সংযোগ করা যায়নি। পরে চেষ্টা করুন।");
+                if (manual) {
+                    showToast("আপডেট সার্ভারে সংযোগ করা যায়নি। বর্তমান সংস্করণ বিবরণী খোলা হচ্ছে...");
+                    openWhatsNewModal(CURRENT_APP_VERSION);
+                }
                 return;
             }
 
@@ -2845,11 +3107,17 @@
                 if (updateText) updateText.innerText = "নতুন আপডেট!";
                 openAppUpdateModal(cleanCurrent, cleanRemote, data.body, data.assets);
             } else {
-                if (manual) showToast("আপনার অ্যাপটি আপ-টু-ডেট আছে (v" + toBanglaNum(cleanCurrent) + ")!");
+                if (manual) {
+                    showToast("আপনার অ্যাপটি আপ-টু-ডেট আছে (v" + toBanglaNum(cleanCurrent) + ")!");
+                    setTimeout(() => { openWhatsNewModal(CURRENT_APP_VERSION); }, 400);
+                }
                 if (updateText) updateText.innerText = "আপডেট চেক";
             }
         } catch (err) {
-            if (manual) showToast("ইন্টারনেট সংযোগ চেক করুন");
+            if (manual) {
+                showToast("ইন্টারনেট সংযোগ চেক করুন");
+                openWhatsNewModal(CURRENT_APP_VERSION);
+            }
         } finally {
             if (updateIcon) updateIcon.style.animation = "none";
             if (updateBtn && !updateBtn.classList.contains('has-update') && updateText) {
@@ -2870,6 +3138,69 @@
             if (r < c) return false;
         }
         return false;
+    }
+
+    function openWhatsNewModal(targetVer = '1.0.2') {
+        const modal = document.getElementById('whats-new-modal');
+        if (!modal) return;
+        switchChangelogTab(targetVer);
+        modal.style.display = 'flex';
+        localStorage.setItem('seenWhatsNew_' + CURRENT_APP_VERSION, 'true');
+        const menuBadge = document.getElementById('whats-new-menu-badge');
+        if (menuBadge) menuBadge.style.display = 'none';
+    }
+
+    function closeWhatsNewModal() {
+        const modal = document.getElementById('whats-new-modal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function switchChangelogTab(verKey) {
+        const tab102 = document.getElementById('tab-v102');
+        const tab101 = document.getElementById('tab-v101');
+        const container = document.getElementById('changelog-cards-container');
+        if (!container) return;
+
+        if (tab102 && tab101) {
+            if (verKey === '1.0.2') {
+                tab102.classList.add('active');
+                tab101.classList.remove('active');
+            } else {
+                tab101.classList.add('active');
+                tab102.classList.remove('active');
+            }
+        }
+
+        const data = APP_CHANGELOG[verKey] || APP_CHANGELOG['1.0.2'];
+        let html = `
+            <div style="background:#f8f9fa; border:1px solid #e8eaed; border-radius:10px; padding:12px 14px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between;">
+                <div>
+                    <div style="font-weight:700; color:#202124; font-size:14px;">ভার্সন ${data.version}</div>
+                    <div style="font-size:11.5px; color:#5f6368; margin-top:2px;">প্রকাশকাল: ${data.date}</div>
+                </div>
+                <span style="font-size:11px; background:${verKey==='1.0.2'?'#e6f4ea':'#f1f3f4'}; color:${verKey==='1.0.2'?'#137333':'#5f6368'}; font-weight:700; padding:3px 9px; border-radius:12px;">${data.badge}</span>
+            </div>
+            <div style="font-size:12.5px; color:#3c4043; line-height:1.55; margin-bottom:14px; padding:0 2px;">
+                ${data.summary}
+            </div>
+            <div style="font-weight:600; font-size:13px; color:#202124; margin-bottom:10px;">যুক্ত হওয়া পরিবর্তনসমূহ:</div>
+        `;
+
+        data.items.forEach(item => {
+            html += `
+                <div class="changelog-card">
+                    <div class="changelog-card-icon ${item.color || ''}">
+                        <span class="material-icons" style="font-size:20px;">${item.icon}</span>
+                    </div>
+                    <div class="changelog-card-content">
+                        <div class="changelog-card-title">${item.title}</div>
+                        <div class="changelog-card-desc">${item.desc}</div>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
     }
 
     function openAppUpdateModal(currentVer, newVer, notes, assets) {
