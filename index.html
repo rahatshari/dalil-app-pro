@@ -1517,7 +1517,7 @@
                 border: 1px solid #000000 !important; 
                 padding: 4px 3px !important; 
                 color: #000000 !important;
-                vertical-align: middle !important;
+                vertical-align: top !important;
                 line-height: 1.35 !important;
                 box-sizing: border-box !important;
                 word-break: break-word !important;
@@ -2334,6 +2334,7 @@
         initOfflineDetection();
         setupDateInputs();
         updateMiddleSectionUI();
+        checkUrlDataAutoLoad();
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./service-worker.js')
@@ -2448,12 +2449,85 @@
         }, 150);
     }
 
+    // Fallback html2pdf.js download method (if external html2pdf script is used)
+    function downloadPdfWithHtml2Pdf() {
+        const element = document.getElementById('pdf-section');
+        if (!element) return;
+        if (typeof html2pdf !== 'function') {
+            triggerPrintDocument();
+            return;
+        }
+        const opt = {
+            margin:       [10, 8, 10, 8],
+            filename:     `Dalil_Figure_${new Date().toISOString().slice(0,10)}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, scrollY: 0, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: currentOrientation },
+            pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    function checkUrlDataAutoLoad() {
+        try {
+            const hash = window.location.hash;
+            if (hash && hash.includes('printData=')) {
+                const match = hash.match(/printData=([^&]+)/);
+                if (match && match[1]) {
+                    const rawJson = decodeURIComponent(match[1]);
+                    const payload = JSON.parse(rawJson);
+                    if (payload && Array.isArray(payload.records) && payload.records.length > 0) {
+                        dalilRecords = payload.records;
+                        recalculateSerialNumbers();
+                        renderTable();
+                    }
+                    if (payload && payload.header) {
+                        applyHeaderToUI(payload.header);
+                    }
+                    if (payload && payload.orientation) {
+                        applyOrientation(payload.orientation);
+                    }
+                    // Auto trigger print in Chrome after rendering
+                    setTimeout(() => {
+                        window.print();
+                    }, 500);
+                }
+            }
+        } catch (e) {
+            console.error("Error auto loading URL print data", e);
+        }
+    }
+
     function openChromePrintMode() {
         updateDynamicPrintCSS();
-        const appWebUrl = "https://ais-pre-qz4kyugvcygsa57ugyzcqo-167397067583.asia-east1.run.app";
+        if (!dalilRecords || dalilRecords.length === 0) {
+            showToast("প্রিন্ট করার মতো কোনো দলিল নেই! আগে টেবিলে তথ্য যোগ করুন।");
+            return;
+        }
+
+        const headerSnapshot = {
+            title: document.getElementById('out_main_title')?.innerText || 'দলিলে জমির হিসাব',
+            zila: document.getElementById('out_zila')?.innerText || '',
+            upazila: document.getElementById('out_upazila')?.innerText || '',
+            mouza: document.getElementById('out_mouza')?.innerText || '',
+            creator: document.getElementById('out_creator')?.innerText || '',
+            date: document.getElementById('out_g_date')?.innerText || ''
+        };
+
+        const payload = {
+            records: dalilRecords,
+            header: headerSnapshot,
+            orientation: currentOrientation
+        };
+
+        const jsonStr = JSON.stringify(payload);
+        const encodedStr = encodeURIComponent(jsonStr);
+        const baseUrl = "https://ais-pre-qz4kyugvcygsa57ugyzcqo-167397067583.asia-east1.run.app";
+        const fullChromeUrl = `${baseUrl}#printData=${encodedStr}`;
+
         if (window.AndroidNative && typeof window.AndroidNative.openInChrome === 'function') {
-            window.AndroidNative.showToast("গুগল ক্রোম চালু হচ্ছে—এখানে ১০০% নিখুঁত ক্রোম পিডিএফ সেভ করতে পারবেন!");
-            window.AndroidNative.openInChrome(appWebUrl);
+            window.AndroidNative.showToast("গুগল ক্রোমে ডেটা সহ খোলা হচ্ছে...");
+            window.AndroidNative.openInChrome(fullChromeUrl);
         } else {
             showToast("গুগল ক্রোমে প্রিন্ট প্রিভিউ চালু হচ্ছে...");
             window.print();
