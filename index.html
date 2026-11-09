@@ -1273,17 +1273,17 @@
         }
         .align-center { text-align: center !important; }
         
-        /* On-screen 10-column distribution */
-        #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 4.5%; text-align: center; }
-        #main-table th:nth-child(2), #main-table td:nth-child(2) { width: 7.5%; text-align: center; }
-        #main-table th:nth-child(3), #main-table td:nth-child(3) { width: 9%; text-align: center; }
-        #main-table th:nth-child(4), #main-table td:nth-child(4) { width: 20%; }
-        #main-table th:nth-child(5), #main-table td:nth-child(5) { width: 20%; }
-        #main-table th:nth-child(6), #main-table td:nth-child(6) { width: 7.5%; text-align: center; }
-        #main-table th:nth-child(7), #main-table td:nth-child(7) { width: 8.5%; text-align: center; }
-        #main-table th:nth-child(8), #main-table td:nth-child(8) { width: 7.5%; text-align: center; }
-        #main-table th:nth-child(9), #main-table td:nth-child(9) { width: 8.5%; text-align: center; }
-        #main-table th:nth-child(10), #main-table td:nth-child(10) { width: 7%; text-align: center; }
+        /* On-screen 10-column distribution using colgroup */
+        #main-table col.col-1 { width: 4.5%; }
+        #main-table col.col-2 { width: 7.5%; }
+        #main-table col.col-3 { width: 9%; }
+        #main-table col.col-4 { width: 20%; }
+        #main-table col.col-5 { width: 20%; }
+        #main-table col.col-6 { width: 7.5%; }
+        #main-table col.col-7 { width: 8.5%; }
+        #main-table col.col-8 { width: 7.5%; }
+        #main-table col.col-9 { width: 8.5%; }
+        #main-table col.col-10 { width: 7%; }
 
         .dag-cell {
             word-wrap: break-word;
@@ -1346,6 +1346,7 @@
                 print-color-adjust: exact !important;
             }
             html, body { 
+                width: 100% !important;
                 height: auto !important; 
                 overflow: visible !important; 
                 overscroll-behavior-y: auto !important; 
@@ -1357,31 +1358,27 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            .app-scroller {
+            .app-scroller, .container, .doc-desk {
+                width: 100% !important;
+                max-width: 100% !important;
                 height: auto !important;
                 overflow: visible !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                display: block !important;
             }
             
-            /* Hide all non-printable UI elements */
+            /* Hide all non-printable UI elements & 10th action column */
             .no-print, .app-bar, .bottom-bar, .header-offline-badge, .settings-btn, 
             .app-bar-actions, .app-update-btn, .print-settings-toolbar, .doc-toolbar, .table-scroll-hint,
             .custom-modal-overlay, .settings-overlay, .toast, .middle-save-card,
-            .form-container, .header-container { 
+            .form-container, .header-container,
+            #main-table col.col-10, #main-table th.no-print, #main-table td.no-print { 
                 display: none !important; 
-            }
-            
-            .container, .doc-desk { 
-                box-shadow: none !important; 
-                background: transparent !important; 
-                padding: 0 !important; 
-                margin: 0 !important; 
-                width: 100% !important; 
-                max-width: 100% !important; 
-                border: none !important; 
-                overflow: visible !important; 
-                display: block !important;
+                width: 0 !important;
             }
 
             /* Natural Pure White Sheet Layout */
@@ -1394,6 +1391,7 @@
                 max-width: 100% !important;
                 box-sizing: border-box !important;
                 border: none !important; 
+                outline: none !important;
                 overflow: visible !important; 
                 display: block !important;
                 font-family: 'Noto Serif Bengali', 'SolaimanLipi', 'Kalpurush', serif !important;
@@ -1402,15 +1400,19 @@
             /* Outer Page Border strictly within printable margin - Never clipped */
             #pdf-section.has-outer-border {
                 border: 1.5px solid #000000 !important;
-                padding: 5mm !important;
+                padding: 4mm !important;
+                width: calc(100% - 1mm) !important;
                 margin: 0 auto !important;
                 box-sizing: border-box !important;
                 outline: none !important;
+                -webkit-box-decoration-break: clone;
+                box-decoration-break: clone;
             }
 
             /* Authentic Clean Header - Matching reference PDF */
-            #print-header-layout { 
+            #print-header-layout, .print-header { 
                 display: flex !important; 
+                flex-direction: row !important;
                 justify-content: space-between !important; 
                 align-items: flex-start !important; 
                 border: none !important; 
@@ -1419,7 +1421,7 @@
                 margin: 0 0 8px 0 !important; 
                 background: transparent !important; 
                 box-shadow: none !important; 
-                min-width: unset !important;
+                min-width: 0 !important;
                 width: 100% !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
@@ -1429,21 +1431,21 @@
                 display: flex !important; 
                 flex-direction: column !important; 
                 justify-content: flex-start !important; 
-                font-size: 11.5px !important; 
-                line-height: 1.45 !important; 
+                font-size: 11px !important; 
+                line-height: 1.4 !important; 
                 color: #000000 !important; 
                 text-align: left !important;
             }
             .header-col-left strong { font-weight: 700 !important; color: #000000 !important; }
             .header-col-center { 
-                flex: 1.4 !important; 
+                flex: 1.3 !important; 
                 display: flex !important; 
                 align-items: center !important; 
                 justify-content: center !important; 
                 text-align: center !important; 
             }
             .header-col-center h3 { 
-                font-size: 18.5px !important; 
+                font-size: 18px !important; 
                 color: #000000 !important; 
                 font-weight: 700 !important; 
                 text-decoration: underline !important; 
@@ -1459,8 +1461,8 @@
                 justify-content: flex-start !important; 
                 align-items: flex-end !important; 
                 text-align: right !important; 
-                font-size: 11.5px !important; 
-                line-height: 1.45 !important; 
+                font-size: 11px !important; 
+                line-height: 1.4 !important; 
                 color: #000000 !important; 
             }
             .header-col-right strong { font-weight: 700 !important; color: #000000 !important; }
@@ -1468,7 +1470,7 @@
             .table-responsive {
                 overflow: visible !important;
                 width: 100% !important;
-                min-width: 100% !important;
+                min-width: 0 !important;
                 max-width: 100% !important;
                 margin: 0 !important;
                 padding: 0 !important;
@@ -1477,9 +1479,9 @@
             }
             
             table#main-table { 
-                font-size: 11px !important; 
+                font-size: 10.5px !important; 
                 width: 100% !important; 
-                min-width: 100% !important;
+                min-width: 0 !important;
                 max-width: 100% !important;
                 border-collapse: collapse !important; 
                 border: 1.2px solid #000000 !important; 
@@ -1490,7 +1492,7 @@
             }
             table#main-table th, table#main-table td { 
                 border: 1px solid #000000 !important; 
-                padding: 5px 4px !important; 
+                padding: 4px 3px !important; 
                 color: #000000 !important;
                 vertical-align: middle !important;
                 line-height: 1.35 !important;
@@ -1502,7 +1504,8 @@
                 background-color: #ededed !important; 
                 font-weight: 700 !important;
                 text-align: center !important;
-                font-size: 11px !important;
+                font-size: 10.5px !important;
+                white-space: normal !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
             }
@@ -1510,29 +1513,29 @@
                 text-align: center !important;
             }
 
-            /* Accurate 100% Full-Width Column Proportions in Print (Sums to exactly 100%) */
-            #main-table th:nth-child(1), #main-table td:nth-child(1) { width: 4.5% !important; text-align: center !important; }
-            #main-table th:nth-child(2), #main-table td:nth-child(2) { width: 7.5% !important; text-align: center !important; }
-            #main-table th:nth-child(3), #main-table td:nth-child(3) { width: 9.5% !important; text-align: center !important; }
-            #main-table th:nth-child(4), #main-table td:nth-child(4) { width: 22% !important; }
-            #main-table th:nth-child(5), #main-table td:nth-child(5) { width: 22% !important; }
-            #main-table th:nth-child(6), #main-table td:nth-child(6) { width: 8% !important; text-align: center !important; }
-            #main-table th:nth-child(7), #main-table td:nth-child(7) { width: 8.5% !important; text-align: center !important; }
-            #main-table th:nth-child(8), #main-table td:nth-child(8) { width: 8% !important; text-align: center !important; }
-            #main-table th:nth-child(9), #main-table td:nth-child(9) { width: 10% !important; text-align: center !important; }
+            /* Accurate 100% Full-Width Column Proportions in Print via <col> (Safe with rowspan) */
+            #main-table col.col-1 { width: 4.5% !important; }
+            #main-table col.col-2 { width: 7.5% !important; }
+            #main-table col.col-3 { width: 9.5% !important; }
+            #main-table col.col-4 { width: 22% !important; }
+            #main-table col.col-5 { width: 22% !important; }
+            #main-table col.col-6 { width: 8% !important; }
+            #main-table col.col-7 { width: 8.5% !important; }
+            #main-table col.col-8 { width: 8% !important; }
+            #main-table col.col-9 { width: 10% !important; }
 
             /* Enhanced formatting when printed in Landscape mode */
             .orient-landscape table#main-table {
                 font-size: 11.5px !important;
             }
             .orient-landscape table#main-table th, .orient-landscape table#main-table td {
-                padding: 6px 5px !important;
+                padding: 5px 4px !important;
             }
 
             .person-data { 
-                padding-bottom: 4px !important; 
-                margin-bottom: 4px !important; 
-                border-bottom: 1px dotted #888888 !important; 
+                padding-bottom: 3px !important; 
+                margin-bottom: 3px !important; 
+                border-bottom: 1px dotted #666666 !important; 
                 line-height: 1.35 !important;
             }
             .person-data:last-child { 
@@ -1818,25 +1821,8 @@
                     </button>
                 </div>
 
-                <!-- Margin Control -->
-                <div class="print-opt-select" title="প্রিন্ট মার্জিন নির্বাচন করুন">
-                    <span class="material-icons" style="font-size:16px; color:#5f6368;">straighten</span>
-                    <label style="font-size:11.5px; color:#5f6368; margin-right:2px;">মার্জিন:</label>
-                    <select id="select-print-margin" onchange="setPrintMargin(this.value)">
-                        <option value="standard" selected>স্ট্যান্ডার্ড (১০ মিমি)</option>
-                        <option value="minimum">ন্যূনতম (৬ মিমি)</option>
-                        <option value="wide">প্রশস্ত (১৫ মিমি)</option>
-                    </select>
-                </div>
-
-                <!-- Outer Page Border Toggle -->
-                <button type="button" class="border-toggle-btn" id="btn-toggle-outer-border" onclick="toggleOuterPageBorder()" title="কাগজের চারপাশের বর্ডার অন বা অফ করুন">
-                    <span class="material-icons" style="font-size:16px;" id="icon-outer-border">check_box_outline_blank</span>
-                    <span>কাগজের বর্ডার</span>
-                </button>
-
                 <!-- Direct Print Button -->
-                <button type="button" class="btn-print-main" onclick="triggerPrintDocument()" title="গুগল ক্রোম বা অ্যান্ড্রয়েড সিস্টেম প্রিন্টারে প্রিন্ট বা PDF হিসেবে সংরক্ষণ করুন">
+                <button type="button" class="btn-print-main" onclick="triggerPrintDocument()" title="প্রিন্ট বা PDF হিসেবে সংরক্ষণ করুন">
                     <span class="material-icons" style="font-size:19px;">print</span>
                     <span>প্রিন্ট করুন</span>
                 </button>
@@ -1872,6 +1858,18 @@
 
             <div class="table-responsive">
                 <table id="main-table">
+                    <colgroup>
+                        <col class="col-1">
+                        <col class="col-2">
+                        <col class="col-3">
+                        <col class="col-4">
+                        <col class="col-5">
+                        <col class="col-6">
+                        <col class="col-7">
+                        <col class="col-8">
+                        <col class="col-9">
+                        <col class="col-10 no-print">
+                    </colgroup>
                     <thead>
                         <tr>
                             <th>নং</th>
@@ -2339,15 +2337,18 @@
         if(checked) document.body.classList.add('show-mother-name'); else document.body.classList.remove('show-mother-name');
     }
     
-    // --- Chrome-like Print Settings & Orientation Controller ---
+    // --- Print Orientation Controller (Portrait & Landscape Only) ---
     let currentOrientation = localStorage.getItem('printOrientation') || 'portrait';
-    let currentMargin = localStorage.getItem('printMargin') || 'standard';
-    let showOuterBorder = localStorage.getItem('printOuterBorder') === 'true'; // default false for standard Chrome print
 
     function initPrintSettingsUI() {
+        localStorage.removeItem('printOuterBorder');
+        localStorage.removeItem('printMargin');
+        const sheet = document.getElementById('pdf-section');
+        if (sheet) {
+            sheet.classList.remove('has-outer-border', 'margin-minimum', 'margin-wide');
+            sheet.classList.add('margin-standard');
+        }
         applyOrientation(currentOrientation);
-        applyMargin(currentMargin);
-        applyOuterBorder(showOuterBorder);
     }
 
     function setPrintOrientation(orient) {
@@ -2371,7 +2372,7 @@
         const selectSettings = document.getElementById('print-orientation');
 
         if (sheet) {
-            sheet.classList.remove('orient-portrait', 'orient-landscape');
+            sheet.classList.remove('orient-portrait', 'orient-landscape', 'has-outer-border');
             sheet.classList.add(orient === 'landscape' ? 'orient-landscape' : 'orient-portrait');
         }
 
@@ -2398,85 +2399,24 @@
         updateDynamicPrintCSS();
     }
 
-    function setPrintMargin(marginKey) {
-        currentMargin = marginKey;
-        localStorage.setItem('printMargin', marginKey);
-        applyMargin(marginKey);
-        showToast("প্রিন্ট মার্জিন আপডেট হয়েছে!");
-    }
-
-    function applyMargin(marginKey) {
-        currentMargin = marginKey;
-        const sheet = document.getElementById('pdf-section');
-        const select = document.getElementById('select-print-margin');
-
-        if (sheet) {
-            sheet.classList.remove('margin-standard', 'margin-minimum', 'margin-wide');
-            sheet.classList.add(`margin-${marginKey}`);
-        }
-        if (select) select.value = marginKey;
-
-        updateDynamicPrintCSS();
-    }
-
-    function toggleOuterPageBorder() {
-        showOuterBorder = !showOuterBorder;
-        localStorage.setItem('printOuterBorder', showOuterBorder);
-        applyOuterBorder(showOuterBorder);
-        showToast(showOuterBorder ? "কাগজের বর্ডার অন করা হয়েছে!" : "কাগজের বর্ডার অফ করা হয়েছে!");
-    }
-
-    function applyOuterBorder(enabled) {
-        showOuterBorder = enabled;
-        const sheet = document.getElementById('pdf-section');
-        const btn = document.getElementById('btn-toggle-outer-border');
-        const icon = document.getElementById('icon-outer-border');
-
-        if (sheet) {
-            if (enabled) {
-                sheet.classList.add('has-outer-border');
-            } else {
-                sheet.classList.remove('has-outer-border');
-            }
-        }
-        if (btn) {
-            if (enabled) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
-        }
-        if (icon) {
-            icon.innerText = enabled ? 'check_box' : 'check_box_outline_blank';
-        }
-    }
-
     function updateDynamicPrintCSS() {
         const styleTag = document.getElementById('dynamic-print-css');
         if (!styleTag) return;
 
-        let marginCSS = '10mm 8mm 10mm 8mm';
-        if (currentOrientation === 'landscape') {
-            if (currentMargin === 'minimum') marginCSS = '6mm 8mm 6mm 8mm';
-            else if (currentMargin === 'wide') marginCSS = '12mm 15mm 12mm 15mm';
-            else marginCSS = '8mm 10mm 8mm 10mm';
-        } else {
-            if (currentMargin === 'minimum') marginCSS = '6mm 6mm 6mm 6mm';
-            else if (currentMargin === 'wide') marginCSS = '15mm 12mm 15mm 12mm';
-            else marginCSS = '10mm 8mm 10mm 8mm';
-        }
-
+        const marginCSS = currentOrientation === 'landscape' ? '8mm 10mm 8mm 10mm' : '10mm 8mm 10mm 8mm';
         styleTag.innerHTML = `@page { size: A4 ${currentOrientation}; margin: ${marginCSS}; }`;
     }
 
     function triggerPrintDocument() {
         updateDynamicPrintCSS();
         
-        if (window.AndroidNative && typeof window.AndroidNative.printPage === 'function') {
-            window.AndroidNative.printPage(currentOrientation);
-        } else {
-            window.print();
-        }
+        setTimeout(() => {
+            if (window.AndroidNative && typeof window.AndroidNative.printPage === 'function') {
+                window.AndroidNative.printPage(currentOrientation);
+            } else {
+                window.print();
+            }
+        }, 150);
     }
     
     function toggleHeaderContent() {
