@@ -1106,6 +1106,26 @@
             transition: all 0.18s ease;
         }
         .btn-print-main:hover { background: #1557b0; }
+        .btn-chrome-print {
+            background: #ffffff;
+            color: #202124;
+            border: 1px solid #dadce0;
+            border-radius: 7px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .btn-chrome-print:hover {
+            background: #f8f9fa;
+            border-color: #ea4335;
+            color: #ea4335;
+        }
         .btn-clear-main {
             background: #ea4335;
             color: #ffffff;
@@ -1268,20 +1288,23 @@
             color: #000000; 
             font-weight: 700; 
             text-align: center; 
-            white-space: nowrap; 
-            font-size: 12px;
+            white-space: normal; 
+            word-break: break-word;
+            overflow-wrap: break-word;
+            font-size: 11.5px;
+            padding: 5px 3px;
         }
         .align-center { text-align: center !important; }
         
         /* On-screen 10-column distribution using colgroup */
         #main-table col.col-1 { width: 4.5%; }
-        #main-table col.col-2 { width: 7.5%; }
-        #main-table col.col-3 { width: 9%; }
-        #main-table col.col-4 { width: 20%; }
-        #main-table col.col-5 { width: 20%; }
+        #main-table col.col-2 { width: 8%; }
+        #main-table col.col-3 { width: 9.5%; }
+        #main-table col.col-4 { width: 19%; }
+        #main-table col.col-5 { width: 19%; }
         #main-table col.col-6 { width: 7.5%; }
         #main-table col.col-7 { width: 8.5%; }
-        #main-table col.col-8 { width: 7.5%; }
+        #main-table col.col-8 { width: 8.5%; }
         #main-table col.col-9 { width: 8.5%; }
         #main-table col.col-10 { width: 7%; }
 
@@ -1515,13 +1538,13 @@
 
             /* Accurate 100% Full-Width Column Proportions in Print via <col> (Safe with rowspan) */
             #main-table col.col-1 { width: 4.5% !important; }
-            #main-table col.col-2 { width: 7.5% !important; }
+            #main-table col.col-2 { width: 8.5% !important; }
             #main-table col.col-3 { width: 9.5% !important; }
-            #main-table col.col-4 { width: 22% !important; }
-            #main-table col.col-5 { width: 22% !important; }
+            #main-table col.col-4 { width: 21% !important; }
+            #main-table col.col-5 { width: 21% !important; }
             #main-table col.col-6 { width: 8% !important; }
-            #main-table col.col-7 { width: 8.5% !important; }
-            #main-table col.col-8 { width: 8% !important; }
+            #main-table col.col-7 { width: 9% !important; }
+            #main-table col.col-8 { width: 8.5% !important; }
             #main-table col.col-9 { width: 10% !important; }
 
             /* Enhanced formatting when printed in Landscape mode */
@@ -1825,6 +1848,12 @@
                 <button type="button" class="btn-print-main" onclick="triggerPrintDocument()" title="প্রিন্ট বা PDF হিসেবে সংরক্ষণ করুন">
                     <span class="material-icons" style="font-size:19px;">print</span>
                     <span>প্রিন্ট করুন</span>
+                </button>
+
+                <!-- Google Chrome Print Button (100% Chrome PDF Output) -->
+                <button type="button" class="btn-chrome-print" onclick="openChromePrintMode()" title="গুগল ক্রোম ব্রাউজারে খুলুন ও ১০০% নিখুঁত ক্রোম পিডিএফ তৈরি করুন">
+                    <span class="material-icons" style="font-size:18px; color:#ea4335;">open_in_browser</span>
+                    <span>গুগল ক্রোমে প্রিন্ট (নিখুঁত PDF)</span>
                 </button>
 
                 <!-- Clear Records Button -->
@@ -2417,6 +2446,18 @@
                 window.print();
             }
         }, 150);
+    }
+
+    function openChromePrintMode() {
+        updateDynamicPrintCSS();
+        const appWebUrl = "https://ais-pre-qz4kyugvcygsa57ugyzcqo-167397067583.asia-east1.run.app";
+        if (window.AndroidNative && typeof window.AndroidNative.openInChrome === 'function') {
+            window.AndroidNative.showToast("গুগল ক্রোম চালু হচ্ছে—এখানে ১০০% নিখুঁত ক্রোম পিডিএফ সেভ করতে পারবেন!");
+            window.AndroidNative.openInChrome(appWebUrl);
+        } else {
+            showToast("গুগল ক্রোমে প্রিন্ট প্রিভিউ চালু হচ্ছে...");
+            window.print();
+        }
     }
     
     function toggleHeaderContent() {

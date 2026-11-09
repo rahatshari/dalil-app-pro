@@ -361,5 +361,29 @@ class MainActivity : ComponentActivity() {
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
         }
+
+        @JavascriptInterface
+        fun openInChrome(url: String?) {
+            runOnUiThread {
+                try {
+                    val appUrl = if (!url.isNullOrBlank()) url else "https://ais-pre-qz4kyugvcygsa57ugyzcqo-167397067583.asia-east1.run.app"
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(appUrl)).apply {
+                        setPackage("com.android.chrome")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    try {
+                        val appUrl = if (!url.isNullOrBlank()) url else "https://ais-pre-qz4kyugvcygsa57ugyzcqo-167397067583.asia-east1.run.app"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(appUrl)).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        context.startActivity(intent)
+                    } catch (ex: Exception) {
+                        Toast.makeText(context, "ব্রাউজার চালু করা যায়নি", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 }
