@@ -824,7 +824,7 @@
             grid-template-columns: 1.35fr 1.35fr 1.1fr;
             gap: 10px;
         }
-        @media (max-width: 650px) {
+        @media screen and (max-width: 650px) {
             .middle-save-actions {
                 grid-template-columns: 1fr;
             }
@@ -966,7 +966,7 @@
             box-sizing: border-box;
             width: 100%;
         }
-        @media (max-width: 650px) {
+        @media screen and (max-width: 650px) {
             .doc-desk {
                 padding: 10px 4px 16px 4px;
                 border-radius: 8px;
@@ -1176,7 +1176,7 @@
         .a4-sheet.margin-standard { padding: 32px 28px; }
         .a4-sheet.margin-wide { padding: 44px 38px; }
 
-        @media (max-width: 650px) {
+        @media screen and (max-width: 650px) {
             .a4-sheet {
                 padding: 16px 8px 20px 8px;
                 border-radius: 2px;
@@ -1243,7 +1243,7 @@
         }
         .header-col-right strong { font-weight: 700; color: #000000; }
 
-        @media (max-width: 650px) {
+        @media screen and (max-width: 650px) {
             .container {
                 padding: 0 6px;
                 margin: 6px auto;
@@ -1255,7 +1255,7 @@
 
         #default-title { display: none; }
 
-        /* Table Styling */
+        /* Table Styling - Uses border-collapse: separate + border-spacing: 0 to prevent Chromium rowspan border-drop bug */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -1265,16 +1265,20 @@
         table#main-table { 
             width: 100%; 
             min-width: 680px; 
-            border-collapse: collapse; 
+            border-collapse: separate; 
+            border-spacing: 0;
             font-size: 12.5px; 
             background: #ffffff; 
-            border: 1px solid #000000;
+            border: none;
             font-family: 'Noto Serif Bengali', serif;
             table-layout: fixed;
             box-sizing: border-box;
         }
         table#main-table th, table#main-table td { 
-            border: 1px solid #000000; 
+            border-top: none;
+            border-left: none;
+            border-right: 1px solid #000000; 
+            border-bottom: 1px solid #000000; 
             padding: 6px 5px; 
             vertical-align: middle; 
             line-height: 1.4; 
@@ -1282,6 +1286,13 @@
             box-sizing: border-box;
             word-break: break-word;
             overflow-wrap: break-word;
+        }
+        table#main-table thead tr:first-child th {
+            border-top: 1px solid #000000;
+        }
+        table#main-table th:first-child,
+        table#main-table td.first-col-cell {
+            border-left: 1px solid #000000;
         }
         table#main-table th { 
             background-color: #ededed; 
@@ -1506,22 +1517,33 @@
                 width: 100% !important; 
                 min-width: 0 !important;
                 max-width: 100% !important;
-                border-collapse: collapse !important; 
-                border: 1.2px solid #000000 !important; 
+                border-collapse: separate !important; 
+                border-spacing: 0 !important;
+                border: none !important; 
                 box-sizing: border-box !important;
                 margin: 0 !important;
                 table-layout: fixed !important;
                 font-family: 'Noto Serif Bengali', serif !important;
             }
             table#main-table th, table#main-table td { 
-                border: 1px solid #000000 !important; 
+                border-top: none !important;
+                border-left: none !important;
+                border-right: 1pt solid #000000 !important; 
+                border-bottom: 1pt solid #000000 !important; 
                 padding: 4px 3px !important; 
                 color: #000000 !important;
-                vertical-align: top !important;
+                vertical-align: middle !important;
                 line-height: 1.35 !important;
                 box-sizing: border-box !important;
                 word-break: break-word !important;
                 overflow-wrap: break-word !important;
+            }
+            table#main-table thead tr:first-child th {
+                border-top: 1pt solid #000000 !important;
+            }
+            table#main-table th:first-child,
+            table#main-table td.first-col-cell {
+                border-left: 1pt solid #000000 !important;
             }
             table#main-table th { 
                 background-color: #ededed !important; 
@@ -2437,14 +2459,83 @@
         styleTag.innerHTML = `@page { size: A4 ${currentOrientation}; margin: ${marginCSS}; }`;
     }
 
+    function getCurrentHeaderSnapshot() {
+        return {
+            title: document.getElementById('out_main_title')?.innerText || 'দলিলে জমির হিসাব',
+            zila: document.getElementById('out_zila')?.innerText || 'বাগেরহাট',
+            upazila: document.getElementById('out_upazila')?.innerText || 'মোড়েলগঞ্জ',
+            mouza: document.getElementById('out_mouza')?.innerText || '৯৩ পাঠামারা',
+            creator: document.getElementById('out_creator')?.innerText || 'মোঃ আব্দুল্লাহ আল রাহাত',
+            date: document.getElementById('out_g_date')?.innerText || ''
+        };
+    }
+
+    async function downloadServerChromePdf() {
+        if (!dalilRecords || dalilRecords.length === 0) {
+            showToast("প্রিন্ট করার মতো কোনো দলিল নেই! আগে টেবিলে তথ্য যোগ করুন।");
+            return false;
+        }
+        try {
+            showToast("গুগল ক্রোম ইঞ্জিনে নিখুঁত PDF তৈরি হচ্ছে...");
+            const res = await fetch('/api/generate-pdf', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    records: dalilRecords,
+                    header: getCurrentHeaderSnapshot(),
+                    orientation: currentOrientation
+                })
+            });
+            if (!res.ok) return false;
+            const blob = await res.blob();
+            if (!blob || blob.size === 0) return false;
+
+            const mouzaRaw = (document.getElementById('out_mouza')?.innerText || 'Dalil_Figure').trim();
+            const safeMouza = mouzaRaw.replace(/[/\\?%*:|"<>]/g, '_').replace(/\s+/g, '_');
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `দলিল_ফিগার_${safeMouza}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
+            showToast("গুগল ক্রোমের নিখুঁত PDF ডাউনলোড সম্পন্ন হয়েছে!");
+            return true;
+        } catch (err) {
+            return false;
+        }
+    }
+
     function triggerPrintDocument() {
         updateDynamicPrintCSS();
-        
+        if (!dalilRecords || dalilRecords.length === 0) {
+            showToast("প্রিন্ট করার মতো কোনো দলিল নেই! আগে টেবিলে তথ্য যোগ করুন।");
+            return;
+        }
+
+        // Temporarily set desktop viewport width so mobile WebView / mobile Chrome prints full A4 width
+        const vpMeta = document.querySelector('meta[name="viewport"]');
+        const originalVp = vpMeta ? vpMeta.getAttribute('content') : '';
+        if (vpMeta) {
+            vpMeta.setAttribute('content', 'width=1024, initial-scale=1.0');
+        }
+        window.scrollTo(0, 0);
+
+        const restoreViewport = () => {
+            if (vpMeta && originalVp) {
+                vpMeta.setAttribute('content', originalVp);
+            }
+        };
+        window.addEventListener('afterprint', restoreViewport, { once: true });
+
         setTimeout(() => {
             if (window.AndroidNative && typeof window.AndroidNative.printPage === 'function') {
                 window.AndroidNative.printPage(currentOrientation);
+                setTimeout(restoreViewport, 2000);
             } else {
                 window.print();
+                setTimeout(restoreViewport, 1500);
             }
         }, 150);
     }
@@ -2468,6 +2559,25 @@
         html2pdf().set(opt).from(element).save();
     }
 
+    function showChromePrintBanner() {
+        if (document.getElementById('chrome-ready-print-banner')) return;
+        const banner = document.createElement('div');
+        banner.id = 'chrome-ready-print-banner';
+        banner.className = 'no-print';
+        banner.style.cssText = 'position:fixed; top:0; left:0; right:0; z-index:9999; background:#1a73e8; color:#fff; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; box-shadow:0 4px 12px rgba(0,0,0,0.25);';
+        banner.innerHTML = `
+            <div style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600;">
+                <span class="material-icons">print</span>
+                <span>দলিলের তালিকা প্রিন্ট ও PDF এর জন্য প্রস্তুত!</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <button type="button" onclick="triggerPrintDocument()" style="background:#ffffff; color:#1a73e8; border:none; border-radius:6px; padding:8px 14px; font-weight:700; font-size:13px; cursor:pointer;">এখনই প্রিন্ট / Save PDF</button>
+                <button type="button" onclick="this.closest('#chrome-ready-print-banner').remove()" style="background:transparent; color:#ffffff; border:1px solid rgba(255,255,255,0.6); border-radius:6px; padding:6px 10px; font-size:12px; cursor:pointer;">বন্ধ</button>
+            </div>
+        `;
+        document.body.prepend(banner);
+    }
+
     function checkUrlDataAutoLoad() {
         try {
             const hash = window.location.hash;
@@ -2487,9 +2597,12 @@
                     if (payload && payload.orientation) {
                         applyOrientation(payload.orientation);
                     }
-                    // Auto trigger print in Chrome after rendering
+                    showChromePrintBanner();
+                    const pdfSec = document.getElementById('pdf-section');
+                    if (pdfSec) pdfSec.scrollIntoView({ behavior: 'smooth' });
+                    // Also attempt auto-print or direct server PDF generation
                     setTimeout(() => {
-                        window.print();
+                        triggerPrintDocument();
                     }, 500);
                 }
             }
@@ -2498,25 +2611,23 @@
         }
     }
 
-    function openChromePrintMode() {
+    async function openChromePrintMode() {
         updateDynamicPrintCSS();
         if (!dalilRecords || dalilRecords.length === 0) {
             showToast("প্রিন্ট করার মতো কোনো দলিল নেই! আগে টেবিলে তথ্য যোগ করুন।");
             return;
         }
 
-        const headerSnapshot = {
-            title: document.getElementById('out_main_title')?.innerText || 'দলিলে জমির হিসাব',
-            zila: document.getElementById('out_zila')?.innerText || '',
-            upazila: document.getElementById('out_upazila')?.innerText || '',
-            mouza: document.getElementById('out_mouza')?.innerText || '',
-            creator: document.getElementById('out_creator')?.innerText || '',
-            date: document.getElementById('out_g_date')?.innerText || ''
-        };
+        // First try direct server-side genuine Google Chrome headless PDF generation (works everywhere including iframes & mobile!)
+        const downloaded = await downloadServerChromePdf();
+        if (downloaded) {
+            return;
+        }
 
+        // Fallback if offline or inside standalone APK without server
         const payload = {
             records: dalilRecords,
-            header: headerSnapshot,
+            header: getCurrentHeaderSnapshot(),
             orientation: currentOrientation
         };
 
@@ -2529,8 +2640,7 @@
             window.AndroidNative.showToast("গুগল ক্রোমে ডেটা সহ খোলা হচ্ছে...");
             window.AndroidNative.openInChrome(fullChromeUrl);
         } else {
-            showToast("গুগল ক্রোমে প্রিন্ট প্রিভিউ চালু হচ্ছে...");
-            window.print();
+            triggerPrintDocument();
         }
     }
     
@@ -2947,7 +3057,7 @@
             let k0Format = (k0.type && k0.no !== '-') ? `<b>${k0.type}:</b> ${k0.no}` : (k0.type ? `<b>${k0.type}</b>` : (k0.no !== '-' ? k0.no : '-'));
             let k0Dag = (k0.dag && k0.dag !== '-') ? k0.dag.replace(/,\s*/g, ', ') : '-';
             
-            firstRow.innerHTML = `<td rowspan="${kCount}" class="align-center">${record.sl_no}</td><td rowspan="${kCount}" class="align-center">${record.dalil_no}</td><td rowspan="${kCount}" class="align-center">${record.dateVal}</td><td rowspan="${kCount}">${record.receiversHTML}</td><td rowspan="${kCount}">${record.donorsHTML}</td><td rowspan="${kCount}" class="align-center">${record.total_land}</td><td class="align-center">${k0Format}</td><td class="align-center">${k0.land}</td><td class="align-center dag-cell">${k0Dag}</td><td rowspan="${kCount}" class="no-print align-center"><div class="action-cell-btns"><div style="display:flex; justify-content:center; gap:5px; margin-bottom:5px;"><button class="icon-btn move-btn" onclick="moveRecord(${index}, -1)" title="উপরে নিন" ${index===0?'disabled style="opacity:0.3;"':''}><span class="material-icons" style="font-size:18px;">arrow_upward</span></button><button class="icon-btn move-btn" onclick="moveRecord(${index}, 1)" title="নিচে নিন" ${index===dalilRecords.length-1?'disabled style="opacity:0.3;"':''}><span class="material-icons" style="font-size:18px;">arrow_downward</span></button></div><div style="display:flex; justify-content:center; gap:5px;"><button class="icon-btn edit-btn" onclick="editRecord(${index})" title="এডিট করুন"><span class="material-icons" style="font-size:18px;">edit</span></button><button class="icon-btn delete-btn" onclick="deleteRecord(${index})" title="ডিলিট করুন"><span class="material-icons" style="font-size:18px;">delete</span></button></div></div></td>`;
+            firstRow.innerHTML = `<td rowspan="${kCount}" class="align-center first-col-cell">${record.sl_no}</td><td rowspan="${kCount}" class="align-center">${record.dalil_no}</td><td rowspan="${kCount}" class="align-center">${record.dateVal}</td><td rowspan="${kCount}">${record.receiversHTML}</td><td rowspan="${kCount}">${record.donorsHTML}</td><td rowspan="${kCount}" class="align-center">${record.total_land}</td><td class="align-center">${k0Format}</td><td class="align-center">${k0.land}</td><td class="align-center dag-cell">${k0Dag}</td><td rowspan="${kCount}" class="no-print align-center"><div class="action-cell-btns"><div style="display:flex; justify-content:center; gap:5px; margin-bottom:5px;"><button class="icon-btn move-btn" onclick="moveRecord(${index}, -1)" title="উপরে নিন" ${index===0?'disabled style="opacity:0.3;"':''}><span class="material-icons" style="font-size:18px;">arrow_upward</span></button><button class="icon-btn move-btn" onclick="moveRecord(${index}, 1)" title="নিচে নিন" ${index===dalilRecords.length-1?'disabled style="opacity:0.3;"':''}><span class="material-icons" style="font-size:18px;">arrow_downward</span></button></div><div style="display:flex; justify-content:center; gap:5px;"><button class="icon-btn edit-btn" onclick="editRecord(${index})" title="এডিট করুন"><span class="material-icons" style="font-size:18px;">edit</span></button><button class="icon-btn delete-btn" onclick="deleteRecord(${index})" title="ডিলিট করুন"><span class="material-icons" style="font-size:18px;">delete</span></button></div></div></td>`;
             
             tbody.appendChild(firstRow);
             

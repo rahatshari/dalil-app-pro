@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-            setBackgroundColor(getColor(R.color.bg_light))
+            setBackgroundColor(getColor(R.color.surface_white))
         }
 
         // Top loading indicator
