@@ -41,11 +41,6 @@ jobs:
           VERSION_NAME="1.0.${{ github.run_number }}"
           echo "Building Version Code: $VERSION_CODE | Version Name: $VERSION_NAME"
           
-          if [ -f "./index.html" ] && [ -d "./android/app/src/main/assets/www" ]; then
-            cp -f ./index.html ./android/app/src/main/assets/www/index.html
-            echo "Synced root index.html to Android assets/www/index.html"
-          fi
-          
           if [ -d "./android" ]; then
             cd android
             ./gradlew assembleRelease -PversionCode=$VERSION_CODE -PversionName=$VERSION_NAME --stacktrace
