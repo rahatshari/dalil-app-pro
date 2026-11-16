@@ -24,3 +24,4 @@ Thumbs.db
 .aistudio/
 .playwright-cli/
 public/assets/aistudio/
+build-output/

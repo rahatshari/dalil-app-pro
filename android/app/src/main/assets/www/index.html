@@ -2357,7 +2357,7 @@
         initPreviewScaleObserver();
         updatePreviewSheetScale();
 
-        if ('serviceWorker' in navigator) {
+        if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
             navigator.serviceWorker.register('./service-worker.js')
                 .then(reg => {
                     console.log('PWA Service Worker active:', reg.scope);
@@ -3081,7 +3081,16 @@
 
     function exportData() {
         if(dalilRecords.length === 0) { showToast("ব্যাকআপ নেওয়ার মতো কোনো তথ্য নেই!"); return; }
-        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(dalilRecords)], { type: "application/json" })); a.download = `Dalil_Backup_${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); toggleSettings(); showToast("ব্যাকআপ ডাউনলোড শুরু হয়েছে!");
+        const filename = `Dalil_Backup_${new Date().toISOString().slice(0,10)}.json`;
+        const jsonContent = JSON.stringify(dalilRecords, null, 2);
+        const menu = document.getElementById('settings-menu');
+        if (menu) menu.style.display = 'none';
+
+        if (window.AndroidNative && typeof window.AndroidNative.saveJsonFile === 'function') {
+            window.AndroidNative.saveJsonFile(filename, jsonContent);
+            return;
+        }
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([jsonContent], { type: "application/json" })); a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); showToast("ব্যাকআপ ডাউনলোড শুরু হয়েছে!");
     }
 
     // --- App Update & Device Integration ---
