@@ -13,8 +13,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.rahatsharif.dalilapp.ui.theme.PrimaryBlue
-import com.rahatsharif.dalilapp.ui.theme.SecondaryTeal
 import com.rahatsharif.dalilapp.util.BanglaUtils
 import com.rahatsharif.dalilapp.util.UpdateInfo
 import com.rahatsharif.dalilapp.util.UpdateManager
@@ -39,7 +37,7 @@ fun UpdateDialog(
             Icon(
                 Icons.Default.SystemUpdate,
                 contentDescription = "আপডেট",
-                tint = PrimaryBlue,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(36.dp)
             )
         },
@@ -49,7 +47,7 @@ fun UpdateDialog(
                     text = "নতুন আপডেট উপলব্ধ!",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
-                    color = PrimaryBlue
+                    color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
@@ -66,7 +64,7 @@ fun UpdateDialog(
                         text = "নতুন যা যুক্ত হয়েছে:",
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 13.sp,
-                        color = SecondaryTeal
+                        color = MaterialTheme.colorScheme.secondary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
@@ -117,7 +115,7 @@ fun UpdateDialog(
                 },
                 enabled = !isDownloading,
                 shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text(if (isDownloading) "ডাউনলোড হচ্ছে..." else "এখনই আপডেট করুন")
             }

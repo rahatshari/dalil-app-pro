@@ -3,6 +3,8 @@
     <color name="primary_dark">#1557B0</color>
     <color name="accent">#0D9488</color>
     <color name="bg_light">#F2F2F7</color>
+    <color name="bg_dark">#0F141A</color>
     <color name="surface_white">#FFFFFF</color>
+    <color name="surface_dark">#1A212B</color>
     <color name="ic_launcher_background">#111827</color>
 </resources>
