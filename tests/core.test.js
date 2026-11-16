@@ -7,6 +7,7 @@ import { normalizeRecord, mergeRecords } from '../src/core/importer.js';
 test('Bangla numeral conversions', () => {
     assert.equal(toBanglaNum(1234567890), '১২৩৪৫৬৭৮৯০');
     assert.equal(toBanglaNum('23/12/2001'), '২৩/১২/২০০১');
+    assert.equal(toBanglaNum(0), '০');
     assert.equal(toBanglaNum(''), '');
     assert.equal(toBanglaNum(null), '');
 

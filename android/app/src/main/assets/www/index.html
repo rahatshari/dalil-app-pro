@@ -1106,26 +1106,6 @@
             transition: all 0.18s ease;
         }
         .btn-print-main:hover { background: #1557b0; }
-        .btn-chrome-print {
-            background: #ffffff;
-            color: #202124;
-            border: 1px solid #dadce0;
-            border-radius: 7px;
-            padding: 8px 14px;
-            font-size: 13px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            transition: all 0.18s ease;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        }
-        .btn-chrome-print:hover {
-            background: #f8f9fa;
-            border-color: #ea4335;
-            color: #ea4335;
-        }
         .btn-clear-main {
             background: #ea4335;
             color: #ffffff;
@@ -1142,27 +1122,55 @@
         }
         .btn-clear-main:hover { background: #c5221f; }
 
+        .preview-zoom-group {
+            display: inline-flex;
+            background: #f1f3f4;
+            border-radius: 8px;
+            padding: 3px;
+            border: 1px solid #dadce0;
+        }
+        .preview-zoom-group.is-hidden-fit {
+            display: none;
+        }
+
+        /* Preview Stage & Sizer for Full-Page Fit (ফুলফিল প্রিন্ট প্রিভিউ) */
+        .a4-preview-stage {
+            width: 100%;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: visible;
+            box-sizing: border-box;
+        }
+        .a4-preview-stage.zoom-full {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .a4-sheet-sizer {
+            position: relative;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
         /* The Authentic A4 Paper Sheet (প্রকৃত কাগজের পাতা) */
         .a4-sheet {
             background: #ffffff;
             width: 100%;
             max-width: 860px;
             margin: 0 auto;
-            padding: 34px 28px 40px 28px;
+            padding: 26px 22px 32px 22px;
             border-radius: 2px;
             border: 1px solid #cfd4dc;
             box-shadow: 0 4px 22px rgba(0,0,0,0.10), 0 1px 3px rgba(0,0,0,0.06);
             box-sizing: border-box;
             font-family: 'Noto Serif Bengali', 'SolaimanLipi', 'Kalpurush', -apple-system, serif;
             position: relative;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            transition: max-width 0.25s ease, padding 0.2s ease;
+            overflow: visible;
+            transform-origin: top left;
         }
         /* Landscape on-screen preview */
         .a4-sheet.orient-landscape {
             max-width: 1140px;
-            padding: 30px 32px 36px 32px;
+            padding: 24px 26px 30px 26px;
         }
         /* Outer border toggle on screen */
         .a4-sheet.has-outer-border {
@@ -1172,34 +1180,30 @@
         }
         
         /* Margin Presets */
-        .a4-sheet.margin-minimum { padding: 18px 16px; }
-        .a4-sheet.margin-standard { padding: 32px 28px; }
-        .a4-sheet.margin-wide { padding: 44px 38px; }
+        .a4-sheet.margin-minimum { padding: 16px 14px; }
+        .a4-sheet.margin-standard { padding: 24px 20px 28px 20px; }
+        .a4-sheet.margin-wide { padding: 36px 32px; }
 
         @media screen and (max-width: 650px) {
-            .a4-sheet {
-                padding: 16px 8px 20px 8px;
-                border-radius: 2px;
-            }
             .print-settings-toolbar {
                 top: 54px;
                 padding: 10px 10px;
             }
         }
 
-        /* Authentic Clean 3-Column Header (Never stacks or breaks into vertical list) */
+        /* Authentic Clean 3-Column Header (Matches Table Width 100%) */
         .print-header {
             display: flex; 
             justify-content: space-between;
             align-items: flex-start;
-            padding: 0 0 12px 0;
+            padding: 0 0 10px 0;
             background: transparent;
             border-bottom: none;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             gap: 10px;
             box-sizing: border-box;
             width: 100%;
-            min-width: 680px;
+            min-width: 0;
             font-family: 'Noto Serif Bengali', serif;
         }
         .header-col-left { 
@@ -1207,14 +1211,14 @@
             display: flex; 
             flex-direction: column; 
             justify-content: flex-start; 
-            font-size: 13px; 
-            line-height: 1.55; 
+            font-size: 12.5px; 
+            line-height: 1.5; 
             color: #000000; 
             text-align: left; 
         }
         .header-col-left strong { font-weight: 700; color: #000000; }
         .header-col-center { 
-            flex: 1.4; 
+            flex: 1.3; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
@@ -1222,7 +1226,7 @@
         }
         .header-col-center h3 { 
             margin: 0; 
-            font-size: 21px; 
+            font-size: 20px; 
             font-weight: 700; 
             color: #000000; 
             text-decoration: underline; 
@@ -1237,8 +1241,8 @@
             justify-content: flex-start; 
             align-items: flex-end; 
             text-align: right; 
-            font-size: 13px; 
-            line-height: 1.55; 
+            font-size: 12.5px; 
+            line-height: 1.5; 
             color: #000000; 
         }
         .header-col-right strong { font-weight: 700; color: #000000; }
@@ -1255,19 +1259,18 @@
 
         #default-title { display: none; }
 
-        /* Table Styling - Uses border-collapse: separate + border-spacing: 0 to prevent Chromium rowspan border-drop bug */
+        /* Table Styling - Exact 100% alignment with header & border-collapse: separate for rowspan borders */
         .table-responsive {
             width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+            overflow: visible;
             box-sizing: border-box;
         }
         table#main-table { 
             width: 100%; 
-            min-width: 680px; 
+            min-width: 0; 
             border-collapse: separate; 
             border-spacing: 0;
-            font-size: 12.5px; 
+            font-size: 12px; 
             background: #ffffff; 
             border: none;
             font-family: 'Noto Serif Bengali', serif;
@@ -1310,9 +1313,9 @@
         /* On-screen 10-column distribution using colgroup */
         #main-table col.col-1 { width: 4.5%; }
         #main-table col.col-2 { width: 8%; }
-        #main-table col.col-3 { width: 9.5%; }
-        #main-table col.col-4 { width: 19%; }
-        #main-table col.col-5 { width: 19%; }
+        #main-table col.col-3 { width: 11%; }
+        #main-table col.col-4 { width: 18.25%; }
+        #main-table col.col-5 { width: 18.25%; }
         #main-table col.col-6 { width: 7.5%; }
         #main-table col.col-7 { width: 8.5%; }
         #main-table col.col-8 { width: 8.5%; }
@@ -1416,13 +1419,24 @@
             }
 
             /* Natural Pure White Sheet Layout */
+            .a4-preview-stage, .a4-sheet-sizer {
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
+                display: block !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
             #pdf-section, .a4-sheet { 
                 box-shadow: none !important; 
                 background: #ffffff !important; 
                 padding: 0 !important; 
                 margin: 0 !important; 
                 width: 100% !important; 
+                min-width: 0 !important;
                 max-width: 100% !important;
+                height: auto !important;
+                transform: none !important;
                 box-sizing: border-box !important;
                 border: none !important; 
                 outline: none !important;
@@ -1561,9 +1575,9 @@
             /* Accurate 100% Full-Width Column Proportions in Print via <col> (Safe with rowspan) */
             #main-table col.col-1 { width: 4.5% !important; }
             #main-table col.col-2 { width: 8.5% !important; }
-            #main-table col.col-3 { width: 9.5% !important; }
-            #main-table col.col-4 { width: 21% !important; }
-            #main-table col.col-5 { width: 21% !important; }
+            #main-table col.col-3 { width: 11% !important; }
+            #main-table col.col-4 { width: 20.25% !important; }
+            #main-table col.col-5 { width: 20.25% !important; }
             #main-table col.col-6 { width: 8% !important; }
             #main-table col.col-7 { width: 9% !important; }
             #main-table col.col-8 { width: 8.5% !important; }
@@ -1872,11 +1886,17 @@
                     <span>প্রিন্ট করুন</span>
                 </button>
 
-                <!-- Google Chrome Print Button (100% Chrome PDF Output) -->
-                <button type="button" class="btn-chrome-print" onclick="openChromePrintMode()" title="গুগল ক্রোম ব্রাউজারে খুলুন ও ১০০% নিখুঁত ক্রোম পিডিএফ তৈরি করুন">
-                    <span class="material-icons" style="font-size:18px; color:#ea4335;">open_in_browser</span>
-                    <span>গুগল ক্রোমে প্রিন্ট (নিখুঁত PDF)</span>
-                </button>
+                <!-- Fit vs 100% Zoom Toggle (Visible when screen is narrower than A4 page) -->
+                <div class="preview-zoom-group is-hidden-fit" id="preview-zoom-group" title="প্রিভিউ জুম পরিবর্তন করুন">
+                    <button type="button" class="orient-pill-btn active" id="btn-zoom-fit" onclick="setPreviewZoomMode('fit')">
+                        <span class="material-icons" style="font-size:15px;">fit_screen</span>
+                        <span>পূর্ণ পেজ</span>
+                    </button>
+                    <button type="button" class="orient-pill-btn" id="btn-zoom-full" onclick="setPreviewZoomMode('full')">
+                        <span class="material-icons" style="font-size:15px;">zoom_in</span>
+                        <span>১০০% জুম</span>
+                    </button>
+                </div>
 
                 <!-- Clear Records Button -->
                 <button type="button" class="btn-clear-main" onclick="clearAllRecords()" title="সম্পূর্ণ তালিকা মুছুন">
@@ -1887,6 +1907,8 @@
         </div>
 
         <!-- 2. The Authentic A4 Paper Sheet (প্রকৃত কাগজের পাতা) -->
+        <div class="a4-preview-stage" id="a4-preview-stage">
+        <div class="a4-sheet-sizer" id="a4-sheet-sizer">
         <div class="a4-sheet orient-portrait margin-standard" id="pdf-section">
             <!-- Authentic Legal Header -->
             <div id="print-header-layout" class="print-header">
@@ -1938,6 +1960,8 @@
                     <!-- Table Body -->
                 </table>
             </div>
+        </div>
+        </div>
         </div>
     </div>
 </div>
@@ -2356,7 +2380,8 @@
         initOfflineDetection();
         setupDateInputs();
         updateMiddleSectionUI();
-        checkUrlDataAutoLoad();
+        initPreviewScaleObserver();
+        updatePreviewSheetScale();
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./service-worker.js')
@@ -2449,6 +2474,94 @@
         if (selectSettings) selectSettings.value = orient;
 
         updateDynamicPrintCSS();
+        updatePreviewSheetScale();
+    }
+
+    let currentPreviewZoomMode = localStorage.getItem('previewZoomMode') || 'fit';
+
+    function setPreviewZoomMode(mode) {
+        currentPreviewZoomMode = mode === 'full' ? 'full' : 'fit';
+        localStorage.setItem('previewZoomMode', currentPreviewZoomMode);
+        const btnFit = document.getElementById('btn-zoom-fit');
+        const btnFull = document.getElementById('btn-zoom-full');
+        if (btnFit && btnFull) {
+            btnFit.classList.toggle('active', currentPreviewZoomMode === 'fit');
+            btnFull.classList.toggle('active', currentPreviewZoomMode === 'full');
+        }
+        updatePreviewSheetScale();
+    }
+
+    function updatePreviewSheetScale() {
+        const stage = document.getElementById('a4-preview-stage');
+        const sizer = document.getElementById('a4-sheet-sizer');
+        const sheet = document.getElementById('pdf-section');
+        const zoomGroup = document.getElementById('preview-zoom-group');
+        if (!stage || !sizer || !sheet) return;
+
+        const baseWidth = currentOrientation === 'landscape' ? 1040 : 720;
+        const availableWidth = stage.clientWidth;
+        if (!availableWidth || availableWidth <= 0) return;
+
+        const needsScaling = availableWidth < baseWidth;
+        if (zoomGroup) {
+            zoomGroup.classList.toggle('is-hidden-fit', !needsScaling);
+        }
+
+        const btnFit = document.getElementById('btn-zoom-fit');
+        const btnFull = document.getElementById('btn-zoom-full');
+        if (btnFit && btnFull) {
+            btnFit.classList.toggle('active', currentPreviewZoomMode === 'fit');
+            btnFull.classList.toggle('active', currentPreviewZoomMode === 'full');
+        }
+
+        if (!needsScaling) {
+            // Desktop / wide tablet: fits natively at 100%
+            stage.classList.remove('zoom-full');
+            sizer.style.width = '';
+            sizer.style.height = '';
+            sheet.style.width = '';
+            sheet.style.minWidth = '';
+            sheet.style.maxWidth = '';
+            sheet.style.transform = '';
+            return;
+        }
+
+        if (currentPreviewZoomMode === 'full') {
+            // User chose 100% scrollable zoom on narrow screen
+            stage.classList.add('zoom-full');
+            sizer.style.width = baseWidth + 'px';
+            sizer.style.height = 'auto';
+            sheet.style.width = baseWidth + 'px';
+            sheet.style.minWidth = baseWidth + 'px';
+            sheet.style.maxWidth = 'none';
+            sheet.style.transform = 'none';
+            return;
+        }
+
+        // Default Fit-to-Screen ("পূর্ণ পেজ"): entire A4 sheet fits 100% width with zero cutoff or blank space
+        stage.classList.remove('zoom-full');
+        sheet.style.width = baseWidth + 'px';
+        sheet.style.minWidth = baseWidth + 'px';
+        sheet.style.maxWidth = 'none';
+
+        const scale = Math.min(1, availableWidth / baseWidth);
+        sheet.style.transform = `scale(${scale})`;
+        const naturalHeight = sheet.offsetHeight;
+        sizer.style.width = Math.round(baseWidth * scale) + 'px';
+        sizer.style.height = Math.ceil(naturalHeight * scale) + 'px';
+    }
+
+    function initPreviewScaleObserver() {
+        window.addEventListener('resize', () => {
+            requestAnimationFrame(updatePreviewSheetScale);
+        });
+        const stage = document.getElementById('a4-preview-stage');
+        if (stage && typeof ResizeObserver === 'function') {
+            const ro = new ResizeObserver(() => {
+                requestAnimationFrame(updatePreviewSheetScale);
+            });
+            ro.observe(stage);
+        }
     }
 
     function updateDynamicPrintCSS() {
@@ -2459,54 +2572,6 @@
         styleTag.innerHTML = `@page { size: A4 ${currentOrientation}; margin: ${marginCSS}; }`;
     }
 
-    function getCurrentHeaderSnapshot() {
-        return {
-            title: document.getElementById('out_main_title')?.innerText || 'দলিলে জমির হিসাব',
-            zila: document.getElementById('out_zila')?.innerText || 'বাগেরহাট',
-            upazila: document.getElementById('out_upazila')?.innerText || 'মোড়েলগঞ্জ',
-            mouza: document.getElementById('out_mouza')?.innerText || '৯৩ পাঠামারা',
-            creator: document.getElementById('out_creator')?.innerText || 'মোঃ আব্দুল্লাহ আল রাহাত',
-            date: document.getElementById('out_g_date')?.innerText || ''
-        };
-    }
-
-    async function downloadServerChromePdf() {
-        if (!dalilRecords || dalilRecords.length === 0) {
-            showToast("প্রিন্ট করার মতো কোনো দলিল নেই! আগে টেবিলে তথ্য যোগ করুন।");
-            return false;
-        }
-        try {
-            showToast("গুগল ক্রোম ইঞ্জিনে নিখুঁত PDF তৈরি হচ্ছে...");
-            const res = await fetch('/api/generate-pdf', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    records: dalilRecords,
-                    header: getCurrentHeaderSnapshot(),
-                    orientation: currentOrientation
-                })
-            });
-            if (!res.ok) return false;
-            const blob = await res.blob();
-            if (!blob || blob.size === 0) return false;
-
-            const mouzaRaw = (document.getElementById('out_mouza')?.innerText || 'Dalil_Figure').trim();
-            const safeMouza = mouzaRaw.replace(/[/\\?%*:|"<>]/g, '_').replace(/\s+/g, '_');
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `দলিল_ফিগার_${safeMouza}.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(url), 5000);
-            showToast("গুগল ক্রোমের নিখুঁত PDF ডাউনলোড সম্পন্ন হয়েছে!");
-            return true;
-        } catch (err) {
-            return false;
-        }
-    }
-
     function triggerPrintDocument() {
         updateDynamicPrintCSS();
         if (!dalilRecords || dalilRecords.length === 0) {
@@ -2514,28 +2579,51 @@
             return;
         }
 
-        // Temporarily set desktop viewport width so mobile WebView / mobile Chrome prints full A4 width
+        // Temporarily clear preview transform and set desktop viewport width so mobile WebView prints full A4 width
         const vpMeta = document.querySelector('meta[name="viewport"]');
         const originalVp = vpMeta ? vpMeta.getAttribute('content') : '';
+        const stage = document.getElementById('a4-preview-stage');
+        const sizer = document.getElementById('a4-sheet-sizer');
+        const sheet = document.getElementById('pdf-section');
+
+        if (sheet) {
+            sheet.style.transform = 'none';
+            sheet.style.width = '100%';
+            sheet.style.minWidth = '0';
+            sheet.style.maxWidth = '100%';
+        }
+        if (sizer) {
+            sizer.style.width = '100%';
+            sizer.style.height = 'auto';
+        }
+        if (stage) {
+            stage.style.overflow = 'visible';
+        }
+
         if (vpMeta) {
             vpMeta.setAttribute('content', 'width=1024, initial-scale=1.0');
         }
         window.scrollTo(0, 0);
 
-        const restoreViewport = () => {
+        let restored = false;
+        const restorePreview = () => {
+            if (restored) return;
+            restored = true;
             if (vpMeta && originalVp) {
                 vpMeta.setAttribute('content', originalVp);
             }
+            if (stage) stage.style.overflow = '';
+            requestAnimationFrame(updatePreviewSheetScale);
         };
-        window.addEventListener('afterprint', restoreViewport, { once: true });
+        window.addEventListener('afterprint', restorePreview, { once: true });
 
         setTimeout(() => {
             if (window.AndroidNative && typeof window.AndroidNative.printPage === 'function') {
                 window.AndroidNative.printPage(currentOrientation);
-                setTimeout(restoreViewport, 2000);
+                setTimeout(restorePreview, 2500);
             } else {
                 window.print();
-                setTimeout(restoreViewport, 1500);
+                setTimeout(restorePreview, 1500);
             }
         }, 150);
     }
@@ -2557,91 +2645,6 @@
             pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
         };
         html2pdf().set(opt).from(element).save();
-    }
-
-    function showChromePrintBanner() {
-        if (document.getElementById('chrome-ready-print-banner')) return;
-        const banner = document.createElement('div');
-        banner.id = 'chrome-ready-print-banner';
-        banner.className = 'no-print';
-        banner.style.cssText = 'position:fixed; top:0; left:0; right:0; z-index:9999; background:#1a73e8; color:#fff; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; box-shadow:0 4px 12px rgba(0,0,0,0.25);';
-        banner.innerHTML = `
-            <div style="display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600;">
-                <span class="material-icons">print</span>
-                <span>দলিলের তালিকা প্রিন্ট ও PDF এর জন্য প্রস্তুত!</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-                <button type="button" onclick="triggerPrintDocument()" style="background:#ffffff; color:#1a73e8; border:none; border-radius:6px; padding:8px 14px; font-weight:700; font-size:13px; cursor:pointer;">এখনই প্রিন্ট / Save PDF</button>
-                <button type="button" onclick="this.closest('#chrome-ready-print-banner').remove()" style="background:transparent; color:#ffffff; border:1px solid rgba(255,255,255,0.6); border-radius:6px; padding:6px 10px; font-size:12px; cursor:pointer;">বন্ধ</button>
-            </div>
-        `;
-        document.body.prepend(banner);
-    }
-
-    function checkUrlDataAutoLoad() {
-        try {
-            const hash = window.location.hash;
-            if (hash && hash.includes('printData=')) {
-                const match = hash.match(/printData=([^&]+)/);
-                if (match && match[1]) {
-                    const rawJson = decodeURIComponent(match[1]);
-                    const payload = JSON.parse(rawJson);
-                    if (payload && Array.isArray(payload.records) && payload.records.length > 0) {
-                        dalilRecords = payload.records;
-                        recalculateSerialNumbers();
-                        renderTable();
-                    }
-                    if (payload && payload.header) {
-                        applyHeaderToUI(payload.header);
-                    }
-                    if (payload && payload.orientation) {
-                        applyOrientation(payload.orientation);
-                    }
-                    showChromePrintBanner();
-                    const pdfSec = document.getElementById('pdf-section');
-                    if (pdfSec) pdfSec.scrollIntoView({ behavior: 'smooth' });
-                    // Also attempt auto-print or direct server PDF generation
-                    setTimeout(() => {
-                        triggerPrintDocument();
-                    }, 500);
-                }
-            }
-        } catch (e) {
-            console.error("Error auto loading URL print data", e);
-        }
-    }
-
-    async function openChromePrintMode() {
-        updateDynamicPrintCSS();
-        if (!dalilRecords || dalilRecords.length === 0) {
-            showToast("প্রিন্ট করার মতো কোনো দলিল নেই! আগে টেবিলে তথ্য যোগ করুন।");
-            return;
-        }
-
-        // First try direct server-side genuine Google Chrome headless PDF generation (works everywhere including iframes & mobile!)
-        const downloaded = await downloadServerChromePdf();
-        if (downloaded) {
-            return;
-        }
-
-        // Fallback if offline or inside standalone APK without server
-        const payload = {
-            records: dalilRecords,
-            header: getCurrentHeaderSnapshot(),
-            orientation: currentOrientation
-        };
-
-        const jsonStr = JSON.stringify(payload);
-        const encodedStr = encodeURIComponent(jsonStr);
-        const baseUrl = "https://ais-pre-qz4kyugvcygsa57ugyzcqo-167397067583.asia-east1.run.app";
-        const fullChromeUrl = `${baseUrl}#printData=${encodedStr}`;
-
-        if (window.AndroidNative && typeof window.AndroidNative.openInChrome === 'function') {
-            window.AndroidNative.showToast("গুগল ক্রোমে ডেটা সহ খোলা হচ্ছে...");
-            window.AndroidNative.openInChrome(fullChromeUrl);
-        } else {
-            triggerPrintDocument();
-        }
     }
     
     function toggleHeaderContent() {
@@ -2738,13 +2741,14 @@
         document.getElementById('out_mouza').innerText = data.mouza; 
         document.getElementById('out_creator').innerText = data.creator; 
         document.getElementById('out_g_date').innerText = data.date;
+        requestAnimationFrame(updatePreviewSheetScale);
     }
 
     const enToBnObj = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
     const bnToEnObj = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
 
-    function toBanglaNum(str) { return str ? str.toString().replace(/[0-9]/g, match => enToBnObj[match]) : ''; }
-    function toEnglishNum(str) { return str ? str.toString().replace(/[০-৯]/g, match => bnToEnObj[match]) : ''; }
+    function toBanglaNum(str) { return (str === null || str === undefined || str === '') ? '' : str.toString().replace(/[0-9]/g, match => enToBnObj[match]); }
+    function toEnglishNum(str) { return (str === null || str === undefined || str === '') ? '' : str.toString().replace(/[০-৯]/g, match => bnToEnObj[match]); }
 
     // Automatic Slash Formatting for Date Inputs (e.g. 23122001 -> ২৩/১২/২০০১)
     function formatAutoDate(val) {
@@ -3078,6 +3082,7 @@
         if (sheetBadge) {
             sheetBadge.innerText = dalilRecords.length > 0 ? `${toBanglaNum(dalilRecords.length)}টি দলিল` : '০টি দলিল';
         }
+        requestAnimationFrame(updatePreviewSheetScale);
     }
 
     function deleteRecord(index) {
