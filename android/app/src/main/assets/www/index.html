@@ -576,24 +576,27 @@
             top: 60px;
             left: 10px;
             background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            width: 260px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+            width: 285px;
+            max-width: calc(100vw - 20px);
+            max-height: calc(100vh - 76px);
+            overflow-y: auto;
             border: 1px solid #dadce0;
             z-index: 1001;
         }
         .settings-menu h4 {
             margin: 0;
-            padding: 15px;
+            padding: 13px 16px;
             background: #f8f9fa;
             font-size: 14px;
             color: #3c4043;
             border-bottom: 1px solid #dadce0;
-            border-radius: 8px 8px 0 0;
+            border-radius: 10px 10px 0 0;
         }
         .settings-menu ul { list-style: none; padding: 0; margin: 0; }
         .settings-menu li {
-            padding: 15px;
+            padding: 13px 16px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -601,6 +604,47 @@
             color: #3c4043;
             font-size: 14px;
             border-bottom: 1px solid #f1f3f4;
+        }
+        .settings-menu li.menu-btn-row {
+            padding: 0;
+        }
+        .settings-menu-btn {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 13px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+            color: #3c4043;
+            font-size: 14px;
+            font-family: inherit;
+            text-align: left;
+            transition: background 0.15s ease;
+        }
+        .settings-menu-btn:hover,
+        .settings-menu-btn:active {
+            background: #f1f3f4;
+        }
+        .settings-menu-btn.menu-highlight-primary {
+            background: #e8f0fe;
+            color: #1a73e8;
+            font-weight: 600;
+        }
+        .settings-menu-btn.menu-highlight-primary:hover,
+        .settings-menu-btn.menu-highlight-primary:active {
+            background: #d2e3fc;
+        }
+        .settings-menu-btn.menu-highlight-secondary {
+            background: #f3f6fb;
+            color: #1967d2;
+            font-weight: 600;
+        }
+        .settings-menu-btn.menu-highlight-secondary:hover,
+        .settings-menu-btn.menu-highlight-secondary:active {
+            background: #e8f0fe;
         }
         .settings-menu li:active { background: #f1f3f4; color: #1a73e8; }
         .settings-menu li .material-icons { font-size: 20px; color: #5f6368; }
@@ -764,110 +808,38 @@
 
         .btn-add { background-color: #1e8e3e; margin-top: 10px; }
         
-        /* --- Middle Save & Projects Archive Section --- */
+        /* --- Middle Save Section (Compact Single-Action Bar) --- */
         .middle-save-card {
             background: #ffffff;
             border-radius: 12px;
-            padding: 16px 20px;
+            padding: 12px 16px;
             box-shadow: 0 1px 4px rgba(0,0,0,0.08);
             border: 1px solid #e8eaed;
-            margin-bottom: 22px;
+            margin-bottom: 16px;
             transition: all 0.2s;
         }
         .middle-save-card:hover {
             border-color: #d2e3fc;
             box-shadow: 0 3px 10px rgba(26,115,232,0.12);
         }
-        .middle-save-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-        .middle-save-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .middle-status-badges {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .count-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            font-weight: 500;
-            padding: 4px 10px;
-            border-radius: 16px;
-            user-select: none;
-        }
-        .current-pill {
-            background: #e8f0fe;
-            color: #1a73e8;
-            border: 1px solid #d2e3fc;
-        }
-        .saved-pill {
-            background: #fef7e0;
-            color: #b06000;
-            border: 1px solid #f9ab00;
-            transition: background 0.15s;
-        }
-        .saved-pill:hover { background: #feefc3; }
         .middle-save-actions {
-            display: grid;
-            grid-template-columns: 1.35fr 1.35fr 1.1fr;
-            gap: 10px;
-        }
-        @media screen and (max-width: 650px) {
-            .middle-save-actions {
-                grid-template-columns: 1fr;
-            }
+            display: flex;
+            justify-content: center;
         }
         .btn-middle-save {
             background-color: #1e8e3e;
             color: #ffffff;
             font-size: 14px;
-            padding: 11px 14px;
+            padding: 11px 16px;
             border-radius: 8px;
             font-weight: 500;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 7px;
+            width: 100%;
         }
         .btn-middle-save:hover { background-color: #187532; }
-        .btn-middle-load {
-            background-color: #1a73e8;
-            color: #ffffff;
-            font-size: 14px;
-            padding: 11px 14px;
-            border-radius: 8px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .btn-middle-load:hover { background-color: #1557b0; }
-        .btn-middle-file {
-            background-color: #5f6368;
-            color: #ffffff;
-            font-size: 14px;
-            padding: 11px 14px;
-            border-radius: 8px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .btn-middle-file:hover { background-color: #494c50; }
         .quick-collection-chips {
             display: flex;
             gap: 8px;
@@ -1253,7 +1225,7 @@
                 margin: 6px auto;
             }
             .middle-save-card {
-                padding: 12px 8px;
+                padding: 10px;
             }
         }
 
@@ -1634,7 +1606,7 @@
     <!-- App Top Bar -->
     <div class="app-bar no-print">
         <div class="app-bar-left">
-            <button class="settings-btn" onclick="toggleSettings()" title="মেনু ও সংরক্ষিত দলিল">
+            <button class="settings-btn" onclick="toggleSettings()" title="মেনু ও সংরক্ষিত দলিল" aria-label="মেনু ও সংরক্ষিত দলিল">
                 <span class="material-icons">more_vert</span>
             </button>
             <h1>
@@ -1658,21 +1630,31 @@
         <div id="settings-menu" class="settings-menu">
             <h4>মেনু ও সংরক্ষিত দলিল</h4>
             <ul>
-                <li onclick="toggleSettings(); openSavedCollectionsModal();" style="background:#e8f0fe; color:#1a73e8; font-weight:600; display:flex; align-items:center; justify-content:space-between;">
-                    <div style="display:flex; align-items:center; gap:12px;">
-                        <span class="material-icons" style="color:#1a73e8;">folder_special</span>
-                        <span>সংরক্ষিত দলিলের তালিকা</span>
-                    </div>
-                    <span id="menu-saved-count-badge" style="background:#1a73e8; color:#ffffff; font-size:11px; padding:2px 8px; border-radius:12px; font-weight:bold;">০ টি</span>
+                <li class="menu-btn-row">
+                    <button type="button" class="settings-menu-btn menu-highlight-primary" onclick="toggleSettings(); openSavedCollectionsModal();" title="পূর্বে সেভ করা দলিলসমূহ দেখুন ও টেবিলে আনুন">
+                        <span style="display:flex; align-items:center; gap:12px;">
+                            <span class="material-icons" style="color:#1a73e8;">folder_open</span>
+                            <span>সংরক্ষিত দলিল আনুন</span>
+                        </span>
+                        <span id="menu-saved-count-badge" style="background:#1a73e8; color:#ffffff; font-size:11px; padding:2px 8px; border-radius:12px; font-weight:bold; flex-shrink:0;">০ টি</span>
+                    </button>
                 </li>
-                <li onclick="toggleSettings(); openWhatsNewModal('1.0.2');" style="border-bottom: 1px solid #f1f3f4; padding: 11px 16px;">
-                    <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-                        <div style="display:flex; align-items:center; gap:12px;">
+                <li class="menu-btn-row">
+                    <button type="button" class="settings-menu-btn menu-highlight-secondary" onclick="toggleSettings(); openBackupRestoreHub('import');" title="ফোন বা কম্পিউটার থেকে সংরক্ষিত ব্যাকআপ ফাইল আনুন">
+                        <span style="display:flex; align-items:center; gap:12px;">
+                            <span class="material-icons" style="color:#1967d2;">settings_backup_restore</span>
+                            <span>সংরক্ষিত ফাইল থেকে আনুন</span>
+                        </span>
+                    </button>
+                </li>
+                <li class="menu-btn-row">
+                    <button type="button" class="settings-menu-btn" onclick="toggleSettings(); openWhatsNewModal('1.0.2');">
+                        <span style="display:flex; align-items:center; gap:12px;">
                             <span class="material-icons" style="color:#e37400;">campaign</span>
                             <span style="font-weight: 500; color:#202124;">নতুন আপডেটের পরিবর্তনসমূহ</span>
-                        </div>
-                        <span id="whats-new-menu-badge" style="font-size:10.5px; background:#fef7e0; color:#b06000; border:1px solid #f9ab00; padding:1px 7px; border-radius:10px; font-weight:700;">নতুন v১.০.২</span>
-                    </div>
+                        </span>
+                        <span id="whats-new-menu-badge" style="font-size:10.5px; background:#fef7e0; color:#b06000; border:1px solid #f9ab00; padding:1px 7px; border-radius:10px; font-weight:700; flex-shrink:0;">নতুন v১.০.২</span>
+                    </button>
                 </li>
                 <li style="border-bottom: 1px solid #f1f3f4; padding: 10px 16px;">
                     <label style="display:flex; align-items:center; justify-content:space-between; cursor:pointer; width:100%; margin:0;">
@@ -1686,14 +1668,14 @@
                         <input type="checkbox" id="toggle-auto-update" onchange="toggleAutoUpdateSetting(this.checked)" style="width:18px; height:18px; margin:0;" checked>
                     </label>
                 </li>
-                <li onclick="toggleSettings(); triggerAppUpdateCheck(true);">
-                    <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-                        <div style="display:flex; align-items:center; gap:12px;">
+                <li class="menu-btn-row">
+                    <button type="button" class="settings-menu-btn" onclick="toggleSettings(); triggerAppUpdateCheck(true);">
+                        <span style="display:flex; align-items:center; gap:12px;">
                             <span class="material-icons" style="color:#1a73e8;">system_update</span>
                             <span style="color:#1a73e8; font-weight: 500;">এখনই আপডেট চেক করুন</span>
-                        </div>
-                        <span id="current-app-version-badge" style="font-size:11px; background:#e8f0fe; color:#1a73e8; padding:2px 8px; border-radius:10px; font-weight:600;">v১.০.২</span>
-                    </div>
+                        </span>
+                        <span id="current-app-version-badge" style="font-size:11px; background:#e8f0fe; color:#1a73e8; padding:2px 8px; border-radius:10px; font-weight:600; flex-shrink:0;">v১.০.২</span>
+                    </button>
                 </li>
                 <li>
                     <label style="display:flex; align-items:center; gap:12px; cursor:pointer; width:100%; margin:0;">
@@ -1702,7 +1684,7 @@
                     </label>
                 </li>
                 <!-- Dynamic Orientation Selection -->
-                <li style="padding-top: 5px; padding-bottom: 5px;">
+                <li style="padding-top: 8px; padding-bottom: 8px;">
                     <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
                         <span style="font-size: 13px; color: #5f6368;"><span class="material-icons" style="font-size: 16px; vertical-align: middle;">print</span> প্রিন্ট পেজ লেআউট:</span>
                         <select id="print-orientation" onchange="changeOrientation(this.value)" style="padding:8px; border-radius:6px; border:1px solid #dadce0; font-size:14px; outline:none; background:#f8f9fa;">
@@ -1711,8 +1693,14 @@
                         </select>
                     </div>
                 </li>
-                <li onclick="toggleSettings(); openBackupRestoreHub('export');"><span class="material-icons" style="color:#1e8e3e;">cloud_download</span> ব্যাকআপ নিন (ডাউনলোড)</li>
-                <li onclick="toggleSettings(); openBackupRestoreHub('import');"><span class="material-icons" style="color:#1a73e8;">settings_backup_restore</span> ব্যাকআপ রিস্টোর (এক বা একাধিক ফাইল)</li>
+                <li class="menu-btn-row">
+                    <button type="button" class="settings-menu-btn" onclick="toggleSettings(); openBackupRestoreHub('export');">
+                        <span style="display:flex; align-items:center; gap:12px;">
+                            <span class="material-icons" style="color:#1e8e3e;">cloud_download</span>
+                            <span>ব্যাকআপ নিন (ডাউনলোড)</span>
+                        </span>
+                    </button>
+                </li>
             </ul>
         </div>
         <input type="file" id="importFile" style="display:none;" accept=".json" multiple onchange="handleBackupFileSelect(event)">
@@ -1833,28 +1821,14 @@
         </div>
     </div>
 
-    <!-- অ্যাপের মাঝখানে দলিল সংরক্ষণাগার ও প্রজেক্ট ম্যানেজার (Save & Restore Deeds in Middle) -->
+    <!-- অ্যাপের মাঝখানে সংরক্ষণ বাটন (Compact Save Action) -->
     <div class="middle-save-card no-print">
         <div class="middle-save-actions">
-            <!-- Save Button -->
             <button type="button" class="action-btn btn-middle-save" onclick="openSaveCurrentCollectionModal()" title="বর্তমানে টেবিলে থাকা সব দলিল সেভ করুন">
                 <span class="material-icons">bookmark_add</span>
                 <span>বর্তমান দলিলগুলো সেভ করুন</span>
             </button>
-
-            <!-- Load Saved Projects Button -->
-            <button type="button" class="action-btn btn-middle-load" onclick="openSavedCollectionsModal()" title="পূর্বে সেভ করা দলিলসমূহ দেখুন ও টেবিলে আনুন">
-                <span class="material-icons">folder_open</span>
-                <span>সংরক্ষিত দলিল আনুন (<span id="btn-saved-count-badge">০</span>)</span>
-            </button>
-
-            <!-- Load from JSON File Button -->
-            <button type="button" class="action-btn btn-middle-file" onclick="openBackupRestoreHub('import')" title="কম্পিউটার বা ফোন থেকে এক বা একাধিক ব্যাকআপ ফাইল আনুন">
-                <span class="material-icons">settings_backup_restore</span>
-                <span>ফাইল থেকে আনুন (রিস্টোর)</span>
-            </button>
         </div>
-
     </div>
 
     <!-- প্রিন্ট ও আউটপুট সেকশন (Google Chrome-like Print Hub & A4 Document Sheet) -->
@@ -3998,9 +3972,6 @@
         const savedProjects = getSavedCollections();
         const savedCountText = document.getElementById('middle-saved-count-text');
         if (savedCountText) savedCountText.innerText = toBanglaNum(savedProjects.length);
-
-        const badgeText = document.getElementById('btn-saved-count-badge');
-        if (badgeText) badgeText.innerText = toBanglaNum(savedProjects.length);
 
         const menuBadge = document.getElementById('menu-saved-count-badge');
         if (menuBadge) menuBadge.innerText = `${toBanglaNum(savedProjects.length)} টি`;
